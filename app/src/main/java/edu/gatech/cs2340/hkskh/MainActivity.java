@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"logging out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
         });

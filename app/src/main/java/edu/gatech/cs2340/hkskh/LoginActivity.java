@@ -21,23 +21,22 @@ public class LoginActivity extends AppCompatActivity {
         ed2 = findViewById(R.id.passText);
         b1 = findViewById(R.id.logButton);
         b2 = findViewById(R.id.button);
-        /**
-         * setup login button
-         */
+
+        // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ed1.getText().toString().equals("user") && ed2.getText().toString().equals("pass")) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
-                else { //failed login
+                else {
+                    // Failed login
                     Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        /**
-         * setup cancel button
-         */
+
+        // Setup cancel button
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
