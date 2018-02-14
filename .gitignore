@@ -3,5 +3,6 @@ local.properties
 .gradle/*
 build/*
 gradle/*
-app/app.iml
 .idea/*
+*.iml
+app/app.iml
