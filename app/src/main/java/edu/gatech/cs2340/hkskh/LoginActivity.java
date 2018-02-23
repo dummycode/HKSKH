@@ -22,12 +22,17 @@ public class LoginActivity extends AppCompatActivity {
         b1 = findViewById(R.id.logButton);
         b2 = findViewById(R.id.button);
 
+        final AccountManager accounts = new AccountManager();
+
+        final Intent toMain = new Intent(this, MainActivity.class);
+
         // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ed1.getText().toString().equals("user") && ed2.getText().toString().equals("pass")) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if (accounts.checkEntry(ed1.getText().toString(), ed2.getText().toString())) {
+                    toMain.putExtra("Name", accounts.getUserName(ed1.getText().toString()));
+                    startActivity(toMain);
                 }
                 else {
                     // Failed login
