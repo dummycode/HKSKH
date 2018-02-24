@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh;
+package edu.gatech.cs2340.hkskh.Model;
 
 /**
  * Created by Kirby on 2/16/2018.
@@ -44,17 +44,3 @@ public class User {
     //---------------------------------------------------------
 }
 
-enum UserType {
-    USER("User"), ADMIN("Admin");
-
-    private String acctType;
-
-    UserType(String type) {
-        acctType = type;
-    }
-
-    public String getAcctString(){
-        return acctType;
-    }
-
-}

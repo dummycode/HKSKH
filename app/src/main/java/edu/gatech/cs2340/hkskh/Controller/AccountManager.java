@@ -1,6 +1,8 @@
-package edu.gatech.cs2340.hkskh;
+package edu.gatech.cs2340.hkskh.Controller;
 
 import java.util.HashMap;
+import edu.gatech.cs2340.hkskh.Model.User;
+import edu.gatech.cs2340.hkskh.Model.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
