@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.gatech.cs2340.hkskh.Controller.RegisterActivity">
+    tools:context="edu.gatech.cs2340.hkskh.Controllers.RegisterActivity">
 
     <TextView
         android:id="@+id/textView2"

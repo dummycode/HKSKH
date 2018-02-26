@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh.Controller;
+package edu.gatech.cs2340.hkskh.Controllers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import edu.gatech.cs2340.hkskh.Model.UserType;
+import edu.gatech.cs2340.hkskh.Models.UserType;
 import edu.gatech.cs2340.hkskh.R;
 
 public class RegisterActivity extends AppCompatActivity {

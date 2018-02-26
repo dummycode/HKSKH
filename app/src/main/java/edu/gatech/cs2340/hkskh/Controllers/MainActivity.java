@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh.Controller;
+package edu.gatech.cs2340.hkskh.Controllers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

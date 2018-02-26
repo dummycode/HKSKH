@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh.Model;
+package edu.gatech.cs2340.hkskh.Models;
 
 /**
  * Created by baohd on 2/24/2018.
