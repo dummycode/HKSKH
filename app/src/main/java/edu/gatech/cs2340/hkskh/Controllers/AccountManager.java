@@ -1,6 +1,8 @@
-package edu.gatech.cs2340.hkskh;
+package edu.gatech.cs2340.hkskh.Controllers;
 
 import java.util.HashMap;
+import edu.gatech.cs2340.hkskh.Models.User;
+import edu.gatech.cs2340.hkskh.Models.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
@@ -12,11 +14,11 @@ public class AccountManager {
     public AccountManager() {
     }
 
-    //Will return false if there is no user key, hashmap is empty, or the passed in password is incorrect
-    //Will return true if the user-pass mapping matches what is passed in
-
     /**
      * Use to validate the login credentials
+     *
+     * Will return false if there is no user key, hashmap is empty, or the passed in password is incorrect
+     * Will return true if the user-pass mapping matches what is passed in
      *
      * @param user a username, String
      * @param pass a password, String
@@ -30,11 +32,7 @@ public class AccountManager {
         }
         User check;
         check = login.get(user);
-        if (check != null && check.getPassword().equals(pass)) {
-            return true;
-        } else {
-            return false;
-        }
+        return check != null && check.getPassword().equals(pass);
     }
 
     /**
@@ -66,7 +64,7 @@ public class AccountManager {
     /**
      * Use for retrieving Name field of user
      *
-     * @param username
+     * @param username username of the user
      * @return the name of the user with username as its key
      */
     public String getUserName(String username) {
