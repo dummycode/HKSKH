@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".Controllers.LoginActivity" />
         <activity android:name=".Controllers.MainActivity" />
-        <activity android:name=".Controllers.RegisterActivity"></activity>
+        <activity android:name=".Controllers.RegisterActivity" />
     </application>
 
 </manifest>
