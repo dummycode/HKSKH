@@ -10,6 +10,10 @@ import java.util.Collection;
 public class ShelterList {
     private Map<Integer, Object> shelters = new HashMap<>();
 
+    /**
+     * stores the first instance of shelters
+     * @param node the node to initialize
+     */
     public ShelterList(Shelter node) {
         this.addShelter(node);
     }
