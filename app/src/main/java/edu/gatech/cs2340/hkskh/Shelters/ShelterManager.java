@@ -16,14 +16,16 @@ public class ShelterManager {
     static private Map<Integer, Object> shelters = new HashMap<>();
 
     /**
+     * Add a shelter to the HashMap
      *
-     * @param node shelter to be added to the list
+     * @param node shelter to be added
      */
     static void addShelter(Shelter node) {
         shelters.put(node.hashCode(), node);
     }
 
     /**
+     * Get a shelter
      *
      * @param key they key of the shelter to be found
      * @return the shelter they request, or if it doesn't exist return null
@@ -37,7 +39,6 @@ public class ShelterManager {
     }
 
     /**
-     *
      * @return the string equivalent of the hashmap.
      */
     public String toString() {
@@ -45,7 +46,6 @@ public class ShelterManager {
     }
 
     /**
-     *
      * @return returns a generic collection of all the shelters
      */
     public Collection<Object> getAll() {

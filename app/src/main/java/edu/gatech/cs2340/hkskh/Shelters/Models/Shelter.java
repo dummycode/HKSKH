@@ -3,7 +3,6 @@ package edu.gatech.cs2340.hkskh.Shelters.Models;
 /**
  * Created by baohd on 2/26/2018.
  */
-
 public class Shelter {
     private int key;
     private String name;
@@ -47,7 +46,6 @@ public class Shelter {
     }
 
     /**
-     *
      * @return the id of the shelter. Should never be returned to the user.
      */
     public int getKey() {
@@ -55,7 +53,6 @@ public class Shelter {
     }
 
     /**
-     *
      * @return the name of shelter
      */
     public String getName() {
@@ -63,7 +60,6 @@ public class Shelter {
     }
 
     /**
-     *
      * @return the family room capacity
      */
     public int getCapacityFam() {
@@ -71,41 +67,66 @@ public class Shelter {
     }
 
     /**
-     *
-     * @return the individual rooms
+     * @return the individual room capacity
      */
     public int getCapacityInd() {
         return this.capacityInd;
     }
 
+    /**
+     * @return the restrictions
+     */
     public String getRestrictions() {
         return this.restrictions;
     }
 
+    /**
+     * @return the longitude of the shelter
+     */
     public double getLongitude() {
         return this.longitude;
     }
 
+    /**
+     * @return the latitude of the shelter
+     */
     public double getLatitude() {
         return this.latitude;
     }
 
+    /**
+     * @return the address of the shelter
+     */
     public String getAddress() {
         return this.address;
     }
 
+    /**
+     * @return notes associated with shelter
+     */
     public String getNotes() {
         return this.notes;
     }
 
+    /**
+     * @return phone number of shelter
+     */
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
+    /**
+     * @return number of vacancies
+     */
     public int getVacancies() {
         return this.vacancies;
     }
 
+    /**
+     * String representation of a shelter
+     *
+     * @return {key} : {name}
+     */
     @Override
     public String toString() {
         return this.key + " : " + this.name;

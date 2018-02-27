@@ -16,6 +16,7 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  * Created by henry on 2/27/18.
  */
 public class ShelterServiceProvider {
+
     /**
      * Load data from CSV file
      */
