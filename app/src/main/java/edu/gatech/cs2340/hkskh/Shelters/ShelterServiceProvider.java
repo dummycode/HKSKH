@@ -60,7 +60,6 @@ public class ShelterServiceProvider {
             // TODO handle errors better
             System.out.println("Fuck");
         }
-        System.out.println(new ShelterManager());
     }
 
     /**
