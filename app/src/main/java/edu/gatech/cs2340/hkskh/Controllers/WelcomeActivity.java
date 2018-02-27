@@ -9,6 +9,7 @@ import android.widget.Button;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterServiceProvider;
 import edu.gatech.cs2340.hkskh.Users.Controllers.LoginActivity;
+import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WelcomeActivity.this, LoginActivity.RegisterActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
             }
         });
         ShelterServiceProvider.load(getBaseContext());
