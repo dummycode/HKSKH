@@ -1,17 +1,16 @@
-package edu.gatech.cs2340.hkskh.Controllers;
+package edu.gatech.cs2340.hkskh.Users;
 
 import java.util.HashMap;
-import edu.gatech.cs2340.hkskh.Models.User;
-import edu.gatech.cs2340.hkskh.Models.UserType;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
  */
-
-public class AccountManager {
+public class UserManager {
     private static HashMap<String, User> login = new HashMap<>();
 
-    public AccountManager() {
+    public UserManager() {
     }
 
     /**

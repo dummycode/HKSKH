@@ -1,4 +1,6 @@
-package edu.gatech.cs2340.hkskh.Models;
+package edu.gatech.cs2340.hkskh.Users.Models;
+
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
