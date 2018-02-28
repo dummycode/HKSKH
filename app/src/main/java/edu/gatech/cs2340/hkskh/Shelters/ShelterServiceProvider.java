@@ -59,7 +59,7 @@ public class ShelterServiceProvider {
             reader.close();
         } catch (IOException e) {
             // TODO handle errors better
-            System.out.println("Fuck");
+            System.out.println("Dang");
         }
     }
 
