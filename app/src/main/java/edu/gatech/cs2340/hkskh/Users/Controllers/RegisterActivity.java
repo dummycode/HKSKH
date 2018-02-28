@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh.Controllers;
+package edu.gatech.cs2340.hkskh.Users.Controllers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import edu.gatech.cs2340.hkskh.Models.UserType;
+import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         b2 = findViewById(R.id.cancelButton);
         sp1 = findViewById(R.id.typeSelect);
 
-        final AccountManager accounts = new AccountManager();
+        final UserManager accounts = new UserManager();
 
         final Intent toWelcome = new Intent(this, WelcomeActivity.class);
 

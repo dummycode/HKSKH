@@ -1,14 +1,21 @@
-package edu.gatech.cs2340.hkskh.Controllers;
+package edu.gatech.cs2340.hkskh.Users.Controllers;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
+import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
+import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,9 +31,9 @@ public class LoginActivity extends AppCompatActivity {
         b1 = findViewById(R.id.logButton);
         b2 = findViewById(R.id.button);
 
-        final AccountManager accounts = new AccountManager();
+        final UserManager accounts = new UserManager();
 
-        final Intent toMain = new Intent(this, MainActivity.class);
+        final Intent toMain = new Intent(this, ShelterListActivity.class);
 
         // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {
@@ -35,8 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (accounts.checkEntry(ed1.getText().toString(), ed2.getText().toString())) {
                     toMain.putExtra("Name", accounts.getUserName(ed1.getText().toString()));
                     startActivity(toMain);
-                }
-                else {
+                } else {
                     // Failed login
                     Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
                 }

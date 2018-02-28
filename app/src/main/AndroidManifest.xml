@@ -16,9 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controllers.LoginActivity" />
+        <activity android:name=".Users.Controllers.LoginActivity" />
         <activity android:name=".Controllers.MainActivity" />
-        <activity android:name=".Controllers.RegisterActivity" />
+        <activity android:name=".Users.Controllers.RegisterActivity" />
+        <activity
+            android:name=".Shelters.Controllers.ShelterListActivity"
+            android:label="@string/title_activity_shelter_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Shelters.Controllers.ShelterDetailActivity"
+            android:label="@string/title_activity_shelter_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
