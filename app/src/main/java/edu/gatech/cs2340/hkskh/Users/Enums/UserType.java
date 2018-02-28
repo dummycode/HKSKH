@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.hkskh.Models;
+package edu.gatech.cs2340.hkskh.Users.Enums;
 
 /**
  * Created by baohd on 2/24/2018.
