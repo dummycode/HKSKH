@@ -7,6 +7,8 @@
 
     <TextView
         android:id="@+id/shelter_list_item"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

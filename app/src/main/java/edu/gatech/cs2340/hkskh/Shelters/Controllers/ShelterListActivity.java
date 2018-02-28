@@ -114,7 +114,7 @@ public class ShelterListActivity extends AppCompatActivity {
                             pass along the id of the course so we can retrieve the correct data in
                             the next window
                          */
-                        intent.putExtra("course hash key", ((Shelter) holder.shelter).hashCode());
+                        intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
 
                         //now just display the new window
                         context.startActivity(intent);
