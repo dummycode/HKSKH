@@ -13,6 +13,7 @@ import android.widget.Toast;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
 import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final UserManager accounts = new UserManager();
 
-        final Intent toMain = new Intent(this, MainActivity.class);
+        final Intent toMain = new Intent(this, ShelterListActivity.class);
 
         // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {

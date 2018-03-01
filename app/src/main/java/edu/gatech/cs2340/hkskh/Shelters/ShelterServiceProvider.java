@@ -21,45 +21,47 @@ public class ShelterServiceProvider {
      * Load data from CSV file
      */
     public static void load(Context context) {
-        // Load from CSV
-        try {
-            InputStream is = context.getResources().openRawResource(R.raw.shelters);
-            CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
-            String[] row;
-            reader.readNext(); // Dump header
-            while ((row = reader.readNext()) != null) {
-                try {
-                    int key = Integer.parseInt(row[0]);
-                    String name = row[1];
-                    String capacityInd = row[2]; // TODO parse out individual and family
-                    String restrictions = row[3];
-                    double longitude = Double.parseDouble(row[4]);
-                    double latitude = Double.parseDouble(row[5]);
-                    String address = row[6];
-                    String notes = row[7];
-                    String phone = row[8];
-                    ShelterManager.addShelter(new Shelter(
-                            key,
-                            name,
-                            0,
-                            0,
-                            restrictions,
-                            longitude,
-                            latitude,
-                            address,
-                            notes,
-                            phone
-                    ));
-                } catch (NumberFormatException nfe) {
-                    // TODO handle errors better
-                    System.out.println("Invalid CSV");
-                    System.out.println(nfe.getMessage());
+        if (!ShelterManager.isLoaded) {// Load from CSV
+            try {
+                InputStream is = context.getResources().openRawResource(R.raw.shelters);
+                CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
+                String[] row;
+                reader.readNext(); // Dump header
+                while ((row = reader.readNext()) != null) {
+                    try {
+                        int key = Integer.parseInt(row[0]);
+                        String name = row[1];
+                        String capacityInd = row[2]; // TODO parse out individual and family
+                        String restrictions = row[3];
+                        double longitude = Double.parseDouble(row[4]);
+                        double latitude = Double.parseDouble(row[5]);
+                        String address = row[6];
+                        String notes = row[7];
+                        String phone = row[8];
+                        ShelterManager.addShelter(new Shelter(
+                                key,
+                                name,
+                                0,
+                                0,
+                                restrictions,
+                                longitude,
+                                latitude,
+                                address,
+                                notes,
+                                phone
+                        ));
+                    } catch (NumberFormatException nfe) {
+                        // TODO handle errors better
+                        System.out.println("Invalid CSV");
+                        System.out.println(nfe.getMessage());
+                    }
                 }
+                reader.close();
+            } catch (IOException e) {
+                // TODO handle errors better
+                System.out.println("Dang");
             }
-            reader.close();
-        } catch (IOException e) {
-            // TODO handle errors better
-            System.out.println("Dang");
+            ShelterManager.isLoaded = true;
         }
     }
 
