@@ -2,6 +2,9 @@ package edu.gatech.cs2340.hkskh.Shelters;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
@@ -13,7 +16,7 @@ public class ShelterManager {
     /**
      * HashMap of shelters
      */
-    static private Map<Integer, Object> shelters = new HashMap<>();
+    static private Map<Integer, Shelter> shelters = new HashMap<>();
     static boolean isLoaded = false;
 
     /**
@@ -40,6 +43,47 @@ public class ShelterManager {
     }
 
     /**
+     * Looks for the shelters that fit the parameters and deletes the others which are not
+     * @param name the shelter's name you are looking for
+     * @return List of the shelters
+     */
+    public List<Shelter> getByName(String name) {
+        List<Shelter> shelterList = new ArrayList(shelters.values());
+        int i = 0;
+        while (i < shelterList.size()) {
+            if (!shelterList.get(i).getName().equals(name)) {
+                shelterList.remove(i);
+            }
+        }
+        if (shelterList.size() == 0) {
+            throw new NoSuchElementException("THere is no shelter with this name. Are you sure it exists?");
+        } else {
+            return shelterList;
+        }
+    }
+
+    /**
+     * Search for appropriate shelter using age or gender as a parameter and return list of appropriate shelters
+     * @param restrictions the age or gender. We are searching for exact matches for the criteria of age or gender.
+     * @return the list of appropriate shelters
+     */
+    public List<Shelter> getByGenderOrAge(String restrictions) {
+        List<Shelter> shelterList = new ArrayList(shelters.values());
+        int i = 0;
+        while (i < shelterList.size()) {
+            if (!shelterList.get(i).getRestrictions().equals(restrictions)) {
+                shelterList.remove(i);
+            }
+        }
+        if (shelterList.size() == 0) {
+            throw new NoSuchElementException("THere is no shelter with this name. Are you sure it exists?");
+        } else {
+            return shelterList;
+        }
+    }
+
+
+    /**
      * @return the string equivalent of the hashmap.
      */
     public String toString() {
@@ -49,7 +93,7 @@ public class ShelterManager {
     /**
      * @return returns a generic collection of all the shelters
      */
-    public Collection<Object> getAll() {
+    public Collection<Shelter> getAll() {
         return shelters.values();
     }
 
