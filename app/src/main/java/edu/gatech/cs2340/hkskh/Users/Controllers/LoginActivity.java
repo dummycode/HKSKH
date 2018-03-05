@@ -33,7 +33,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final UserManager accounts = new UserManager();
 
-        final Intent toMain = new Intent(this, ShelterListActivity.class);
+        // moves to the main activity
+        final Intent toMain = new Intent(this, MainActivity.class);
 
         // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {

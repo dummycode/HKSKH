@@ -50,8 +50,9 @@ public class ShelterManager {
     public List<Shelter> getByName(String name) {
         List<Shelter> shelterList = new ArrayList(shelters.values());
         int i = 0;
+        //if the name is not the same, remove it
         while (i < shelterList.size()) {
-            if (!shelterList.get(i).getName().equals(name)) {
+            if (!shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
                 shelterList.remove(i);
             }
         }
@@ -70,6 +71,7 @@ public class ShelterManager {
     public List<Shelter> getByGenderOrAge(String restrictions) {
         List<Shelter> shelterList = new ArrayList(shelters.values());
         int i = 0;
+        //removes the shelter if it doesn't fit our requirements
         while (i < shelterList.size()) {
             if (!shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
                 shelterList.remove(i);
