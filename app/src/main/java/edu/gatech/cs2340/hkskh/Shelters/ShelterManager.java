@@ -14,6 +14,7 @@ public class ShelterManager {
      * HashMap of shelters
      */
     static private Map<Integer, Object> shelters = new HashMap<>();
+    static boolean isLoaded = false;
 
     /**
      * Add a shelter to the HashMap
