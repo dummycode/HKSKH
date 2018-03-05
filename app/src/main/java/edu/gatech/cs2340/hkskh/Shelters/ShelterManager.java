@@ -71,12 +71,12 @@ public class ShelterManager {
         List<Shelter> shelterList = new ArrayList(shelters.values());
         int i = 0;
         while (i < shelterList.size()) {
-            if (!shelterList.get(i).getRestrictions().equals(restrictions)) {
+            if (!shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
                 shelterList.remove(i);
             }
         }
         if (shelterList.size() == 0) {
-            throw new NoSuchElementException("THere is no shelter with this name. Are you sure it exists?");
+            throw new NoSuchElementException("THere is no shelter that fits these parameters. Please broaden your search.");
         } else {
             return shelterList;
         }
