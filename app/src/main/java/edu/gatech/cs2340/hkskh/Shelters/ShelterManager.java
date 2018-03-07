@@ -1,10 +1,9 @@
 package edu.gatech.cs2340.hkskh.Shelters;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+
 
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
@@ -34,53 +33,11 @@ public class ShelterManager {
      * @param key they key of the shelter to be found
      * @return the shelter they request, or if it doesn't exist return null
      */
-    public Object getShelter(int key) {
+    public Shelter getShelter(int key) {
         if (shelters.containsKey(key)) {
             return shelters.get(key);
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Looks for the shelters that fit the parameters and deletes the others which are not
-     * @param name the shelter's name you are looking for
-     * @return List of the shelters
-     */
-    public List<Shelter> getByName(String name) {
-        List<Shelter> shelterList = new ArrayList(shelters.values());
-        int i = 0;
-        //if the name is not the same, remove it
-        while (i < shelterList.size()) {
-            if (!shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
-                shelterList.remove(i);
-            }
-        }
-        if (shelterList.size() == 0) {
-            throw new NoSuchElementException("THere is no shelter with this name. Are you sure it exists?");
-        } else {
-            return shelterList;
-        }
-    }
-
-    /**
-     * Search for appropriate shelter using age or gender as a parameter and return list of appropriate shelters
-     * @param restrictions the age or gender. We are searching for exact matches for the criteria of age or gender.
-     * @return the list of appropriate shelters
-     */
-    public List<Shelter> getByGenderOrAge(String restrictions) {
-        List<Shelter> shelterList = new ArrayList(shelters.values());
-        int i = 0;
-        //removes the shelter if it doesn't fit our requirements
-        while (i < shelterList.size()) {
-            if (!shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
-                shelterList.remove(i);
-            }
-        }
-        if (shelterList.size() == 0) {
-            throw new NoSuchElementException("THere is no shelter that fits these parameters. Please broaden your search.");
-        } else {
-            return shelterList;
         }
     }
 
