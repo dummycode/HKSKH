@@ -26,11 +26,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
         TextView text = findViewById(R.id.main_name);
+        //search button, button to shelter, and spinner
         searchButton = findViewById(R.id.button2);
         fullList = findViewById(R.id.button3);
+        Spinner searchSpinner = findViewById(R.id.spinner1);
 
         String name = this.getIntent().getStringExtra("Name");
         text.setText("Signed in as: " + name);
+
+        //Sets up the search options spinner and loads the options in.
+        //Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arrays.asList("name", "age", "gender"));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        searchSpinner.setAdapter(adapter);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
