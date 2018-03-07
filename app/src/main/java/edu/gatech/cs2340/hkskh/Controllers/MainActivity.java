@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button searchButton;
     private Button fullList;
+    private Spinner searchSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         //search button, button to shelter, and spinner
         searchButton = findViewById(R.id.button2);
         fullList = findViewById(R.id.button3);
-        Spinner searchSpinner = findViewById(R.id.spinner1);
+        searchSpinner = findViewById(R.id.spinner1);
 
         String name = this.getIntent().getStringExtra("Name");
         text.setText("Signed in as: " + name);
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
+                        .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
                                         }
