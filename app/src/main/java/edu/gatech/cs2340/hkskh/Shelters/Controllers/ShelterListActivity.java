@@ -51,8 +51,8 @@ public class ShelterListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         ShelterManager shelters = new ShelterManager();
-        Collection<Object> values = shelters.getAll();
-        ArrayList<Object> shelterList = new ArrayList<>(values);
+        Collection<Shelter> values = shelters.getAll();
+        ArrayList<Shelter> shelterList = new ArrayList<>(values);
         recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelterList));
     }
 
@@ -62,13 +62,13 @@ public class ShelterListActivity extends AppCompatActivity {
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<Object> shelterList;
+        private final List<Shelter> shelterList;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleShelterRecyclerViewAdapter(List<Object> items) {
+        public SimpleShelterRecyclerViewAdapter(List<Shelter> items) {
             shelterList = items;
         }
 
@@ -137,7 +137,7 @@ public class ShelterListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView nameView;
-            public Object shelter;
+            public Shelter shelter;
 
             public ViewHolder(View view) {
                 super(view);
