@@ -17,6 +17,7 @@ import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    //the widgets that form the search function and the button that goes to the full list
     private Button searchButton;
     private Button fullList;
     private Spinner searchSpinner;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //passes on the type of search into the search activity
                 Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
                         .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
