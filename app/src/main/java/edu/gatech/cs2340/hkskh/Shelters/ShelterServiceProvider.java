@@ -41,6 +41,7 @@ public class ShelterServiceProvider {
                         ShelterManager.addShelter(new Shelter(
                                 key,
                                 name,
+                                setCapacity(row[2]),
                                 0,
                                 0,
                                 restrictions,
@@ -71,5 +72,17 @@ public class ShelterServiceProvider {
     public static void reload(Context context) {
         ShelterManager.clear();
         load(context);
+    }
+
+    /**
+     * @param capacity the capacity string read in from the csv
+     * @return "unspecified" string if capacity is the empty string, capacity otherwise
+     */
+    private static String setCapacity(String capacity) {
+        if (capacity.equals("")) {
+            return "unspecified";
+        } else {
+            return capacity;
+        }
     }
 }
