@@ -56,22 +56,22 @@ public class FilteredSheltersActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         SearchService search = new SearchService();
 
+        //get the desired search type and filter
         String searchRequested = this.getIntent().getStringExtra("Search Type");
         String filter = this.getIntent().getStringExtra("Filter");
 
         ArrayList<Shelter> list;
 
+        //put in try-catch because the search methods throw errors
         try {
             list = (ArrayList) search.searchChoices(searchRequested, filter);
         } catch (IllegalArgumentException exception){
             list = new ArrayList<>();
-            Log.d("Checks", "Uh oh. Invalid Search filter");
         } catch (NoSuchElementException exception) {
             list = new ArrayList<>();
-            Log.d("Checks", "Uh oh. No search results");
         }
-        Log.d("Checks", "got to setup");
-        recyclerView.setAdapter(new SearchShelterRecyclerViewAdapter(list));
+
+        recyclerView.setAdapter(new SearchShelterRecyclerViewAdapter(list, searchRequested, filter));
     }
 
     public class SearchShelterRecyclerViewAdapter
@@ -81,13 +81,17 @@ public class FilteredSheltersActivity extends AppCompatActivity {
          * Collection of the items to be shown in this list.
          */
         private final List<Shelter> shelterList;
+        private final String searchType;
+        private final String filter;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SearchShelterRecyclerViewAdapter(List<Shelter> items) {
+        public SearchShelterRecyclerViewAdapter(List<Shelter> items, String searchType, String filter) {
             shelterList = items;
+            this.searchType = searchType;
+            this.filter = filter;
         }
 
         @Override
@@ -129,11 +133,16 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                     //create our new intent with the new screen (activity)
                     Intent intent = new Intent(context, ShelterDetailActivity.class);
                         /*
-                            pass along the id of the course so we can retrieve the correct data in
+                            pass along the id of the shelter so we can retrieve the correct data in
                             the next window
                          */
                     intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                    //Give info to next screen about this activity
                     intent.putExtra("Previous Screen", "filtered list");
+                    //we need to let the details page keep track of the search type and filter so it can
+                    //so we can regenerate the list if the user hits back on the details page
+                    intent.putExtra("Search Type", searchType);
+                    intent.putExtra("Filter", filter);
 
                     //now just display the new window
                     context.startActivity(intent);

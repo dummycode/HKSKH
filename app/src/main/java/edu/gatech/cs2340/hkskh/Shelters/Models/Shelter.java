@@ -6,6 +6,7 @@ package edu.gatech.cs2340.hkskh.Shelters.Models;
 public class Shelter {
     private int key;
     private String name;
+    private String capacityString;
     private int capacityInd;
     private int capacityFam;
     private String restrictions;
@@ -21,6 +22,7 @@ public class Shelter {
      *
      *  @param key the unique id for the shelter
      *  @param name the name of the shelter
+     *  @param capacityString
      *  @param capacityFam the amount of family rooms the shelter has
      *  @param capacityInd the amount of individual space the shelter has
      *  @param restrictions the restrictions of the shelter
@@ -30,10 +32,11 @@ public class Shelter {
      *  @param notes special considerations and such
      *  @param phoneNumber the contact info of the shelter
      */
-    public Shelter(int key, String name, int capacityFam, int capacityInd, String restrictions,
+    public Shelter(int key, String name, String capacityString, int capacityFam, int capacityInd, String restrictions,
                    double longitude, double latitude, String address, String notes, String phoneNumber) {
         this.key = key;
         this.name = name;
+        this.capacityString = capacityString;
         this.capacityFam = capacityFam;
         this.capacityInd = capacityInd;
         this.restrictions = restrictions;
@@ -57,6 +60,13 @@ public class Shelter {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * @return the capacity of the shelter as a string
+     */
+    public String getCapacityString() {
+        return this.capacityString;
     }
 
     /**

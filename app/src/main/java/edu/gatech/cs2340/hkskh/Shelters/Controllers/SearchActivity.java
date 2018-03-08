@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
+import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.R;
 
 public class SearchActivity extends AppCompatActivity {
@@ -50,9 +51,10 @@ public class SearchActivity extends AppCompatActivity {
         Button search = (Button) findViewById(R.id.search_button_search);
 
         final Intent toFilteredList = new Intent(this, FilteredSheltersActivity.class);
+        //pass the search type as an extra to the next screen so we can make the list to display
         toFilteredList.putExtra("Search Type", searchEntered);
 
-
+        //make sure to pass the filter to the next screen as an extra because we need it to generate the list
         search.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     if (searchEntered.equals("name")) {
@@ -80,8 +82,7 @@ public class SearchActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
     }

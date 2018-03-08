@@ -57,11 +57,12 @@ public class SearchService {
      */
     public List<Shelter> getByName(String name) {
         List<Shelter> shelterList = new ArrayList(shelters);
+        List<Shelter> toReturn = new ArrayList<>();
         int i = 0;
-        //if the name is not the same, remove it
+        //if the name is the same, add it
         while (i < shelterList.size()) {
-            if (!(shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase()))) {
-                shelterList.remove(i);
+            if (shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
+                toReturn.add(shelterList.get(i));
             }
             i++;
         }
@@ -69,7 +70,7 @@ public class SearchService {
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
         } else {
-            return shelterList;
+            return toReturn;
         }
     }
 
@@ -80,11 +81,12 @@ public class SearchService {
      */
     public List<Shelter> getByAge(String restrictions) {
         List<Shelter> shelterList = new ArrayList(shelters);
+        List<Shelter> toReturn = new ArrayList<>();
         int i = 0;
-        //removes the shelter if it doesn't fit our requirements
+        //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
-            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase()))) {
-                shelterList.remove(i);
+            if (shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
+                toReturn.add(shelterList.get(i));
             }
             i++;
         }
@@ -92,7 +94,7 @@ public class SearchService {
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
-            return shelterList;
+            return toReturn;
         }
     }
 
@@ -102,12 +104,13 @@ public class SearchService {
      */
     public List<Shelter> getMen() {
         List<Shelter> shelterList = new ArrayList(shelters);
+        List<Shelter> toReturn = new ArrayList<>();
         int i = 0;
-        //removes the shelter if it doesn't fit our requirements
+        //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
-            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains("men")
-                    && !(shelterList.get(i).getRestrictions().toLowerCase().contains("women")))) {
-                shelterList.remove(i);
+            if (shelterList.get(i).getRestrictions().toLowerCase().contains("men")
+                    && !(shelterList.get(i).getRestrictions().toLowerCase().contains("women"))) {
+                toReturn.add(shelterList.get(i));
             }
             i++;
         }
@@ -115,7 +118,7 @@ public class SearchService {
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
-            return shelterList;
+            return toReturn;
         }
     }
 
@@ -125,11 +128,12 @@ public class SearchService {
      */
     public List<Shelter> getWomen() {
         List<Shelter> shelterList = new ArrayList(shelters);
+        List<Shelter> toReturn = new ArrayList<>();
         int i = 0;
-        //removes the shelter if it doesn't fit our requirements
+        //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
-            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains("women"))) {
-                shelterList.remove(i);
+            if (shelterList.get(i).getRestrictions().toLowerCase().contains("women")) {
+                toReturn.add(shelterList.get(i));
             }
             i++;
         }
@@ -137,7 +141,7 @@ public class SearchService {
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
-            return shelterList;
+            return toReturn;
         }
     }
 
