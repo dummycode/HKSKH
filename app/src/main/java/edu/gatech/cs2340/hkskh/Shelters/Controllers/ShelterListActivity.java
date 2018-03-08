@@ -116,6 +116,7 @@ public class ShelterListActivity extends AppCompatActivity {
                             the next window
                          */
                         intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                        intent.putExtra("Previous Screen", "full list");
 
                         //now just display the new window
                         context.startActivity(intent);

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.SearchService;
@@ -38,13 +40,15 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);
         setupRecyclerView(filteredList);
 
+        LinearLayoutManager newLayoutManager = new LinearLayoutManager(this);
+        filteredList.setLayoutManager(newLayoutManager);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
     }
@@ -58,16 +62,13 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         ArrayList<Shelter> list;
 
         try {
-            if (searchRequested.equals("name")) {
-                list = (ArrayList) (search.getByName(filter));
-                Log.d("Checks", "got to search by name");
-            } else {
-                list = (ArrayList) (search.getByGenderOrAge(filter));
-                Log.d("Checks", "got to search by age");
-            }
-        } catch (NoSuchElementException exception){
+            list = (ArrayList) search.searchChoices(searchRequested, filter);
+        } catch (IllegalArgumentException exception){
             list = new ArrayList<>();
-            Log.d("Checks", "Uh oh");
+            Log.d("Checks", "Uh oh. Invalid Search filter");
+        } catch (NoSuchElementException exception) {
+            list = new ArrayList<>();
+            Log.d("Checks", "Uh oh. No search results");
         }
         Log.d("Checks", "got to setup");
         recyclerView.setAdapter(new SearchShelterRecyclerViewAdapter(list));
@@ -98,7 +99,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.content_shelter_list, parent, false);
+                    .inflate(R.layout.filtered_recycler_layout, parent, false);
             return new ViewHolder(view);
         }
 
@@ -132,6 +133,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                             the next window
                          */
                     intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                    intent.putExtra("Previous Screen", "filtered list");
 
                     //now just display the new window
                     context.startActivity(intent);
@@ -159,7 +161,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                nameView = (TextView) view.findViewById(R.id.shelter_list_item);
+                nameView = (TextView) view.findViewById(R.id.filtered_recycler_item);
             }
 
             @Override

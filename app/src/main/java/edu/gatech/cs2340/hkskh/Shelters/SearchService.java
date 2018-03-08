@@ -34,8 +34,16 @@ public class SearchService {
     public List<Shelter> searchChoices(String param, String find) {
         if (param.toLowerCase().equals("name")) {
             return this.getByName(find);
-        } else if (param.toLowerCase().equals("gender") || param.toLowerCase().equals("age")) {
-            return this.getByGenderOrAge(find);
+        } else if (param.toLowerCase().equals("age")) {
+            return this.getByAge(find);
+        } else if (param.toLowerCase().equals("gender")) {
+            if (find.toLowerCase().equals("men")) {
+                return this.getMen();
+            } else if (find.toLowerCase().equals("women")) {
+                return this.getWomen();
+            } else {
+                throw new IllegalArgumentException("Invalid parameter");
+            }
         } else {
             throw new IllegalArgumentException("This is not a valid type of search. Please choose a valid type of search.");
         }
@@ -52,7 +60,7 @@ public class SearchService {
         int i = 0;
         //if the name is not the same, remove it
         while (i < shelterList.size()) {
-            if (!shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
+            if (!(shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase()))) {
                 shelterList.remove(i);
             }
             i++;
@@ -70,12 +78,12 @@ public class SearchService {
      * @param restrictions the age or gender. We are searching for exact matches for the criteria of age or gender.
      * @return the list of appropriate shelters
      */
-    public List<Shelter> getByGenderOrAge(String restrictions) {
+    public List<Shelter> getByAge(String restrictions) {
         List<Shelter> shelterList = new ArrayList(shelters);
         int i = 0;
         //removes the shelter if it doesn't fit our requirements
         while (i < shelterList.size()) {
-            if (!shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
+            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase()))) {
                 shelterList.remove(i);
             }
             i++;
@@ -87,5 +95,52 @@ public class SearchService {
             return shelterList;
         }
     }
+
+    /**
+     *
+     * @return a list of shelters that cater to men
+     */
+    public List<Shelter> getMen() {
+        List<Shelter> shelterList = new ArrayList(shelters);
+        int i = 0;
+        //removes the shelter if it doesn't fit our requirements
+        while (i < shelterList.size()) {
+            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains("men")
+                    && !(shelterList.get(i).getRestrictions().toLowerCase().contains("women")))) {
+                shelterList.remove(i);
+            }
+            i++;
+        }
+        //if it doesn't have any shelters left then it doesn't exist
+        if (shelterList.size() == 0) {
+            throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
+        } else {
+            return shelterList;
+        }
+    }
+
+    /**
+     *
+     * @return a list of shelters that cater to women
+     */
+    public List<Shelter> getWomen() {
+        List<Shelter> shelterList = new ArrayList(shelters);
+        int i = 0;
+        //removes the shelter if it doesn't fit our requirements
+        while (i < shelterList.size()) {
+            if (!(shelterList.get(i).getRestrictions().toLowerCase().contains("women"))) {
+                shelterList.remove(i);
+            }
+            i++;
+        }
+        //if it doesn't have any shelters left then it doesn't exist
+        if (shelterList.size() == 0) {
+            throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
+        } else {
+            return shelterList;
+        }
+    }
+
+
 
 }

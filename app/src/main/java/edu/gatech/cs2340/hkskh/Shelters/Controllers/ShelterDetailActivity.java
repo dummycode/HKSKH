@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
@@ -47,11 +48,17 @@ public class ShelterDetailActivity extends AppCompatActivity {
         address.setText("Address: " + selected.getAddress());
         phone.setText("Phone Number: " + selected.getPhoneNumber());
 
+        final String previous = getIntent().getStringExtra("Previous Screen");
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), ShelterListActivity.class));
+                if (previous.equals("full list")) {
+                    startActivity(new Intent(view.getContext(), ShelterListActivity.class));
+                } else {
+                    startActivity(new Intent(view.getContext(), MainActivity.class));
+                }
             }
         });
     }
