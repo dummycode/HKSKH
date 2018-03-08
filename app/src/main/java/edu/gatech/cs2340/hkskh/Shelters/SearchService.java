@@ -59,7 +59,7 @@ public class SearchService {
         }
         // if everything was removed, the shelter doesn't exist
         if (shelterList.size() == 0) {
-            throw new NoSuchElementException("THere is no shelter with this name. Are you sure it exists?");
+            throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
         } else {
             return shelterList;
         }

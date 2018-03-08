@@ -27,14 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
-        TextView text = findViewById(R.id.main_name);
         //search button, button to shelter, and spinner
         searchButton = findViewById(R.id.button2);
         fullList = findViewById(R.id.button3);
         searchSpinner = findViewById(R.id.spinner1);
 
-        String name = this.getIntent().getStringExtra("Name");
-        text.setText("Signed in as: " + name);
 
         //Sets up the search options spinner and loads the options in.
         //Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
@@ -57,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 //passes on the type of search into the search activity
                 Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
                         .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                startActivity(myIntent);
             }
-                                        }
-        );
+        });
 
         //When they click the button for a full List it transitions to full list
         fullList.setOnClickListener( new View.OnClickListener() {
