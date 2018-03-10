@@ -42,8 +42,6 @@ public class ShelterServiceProvider {
                                 key,
                                 name,
                                 setCapacity(capacityInd),
-                                0,
-                                0,
                                 restrictions,
                                 longitude,
                                 latitude,

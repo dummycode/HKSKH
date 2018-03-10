@@ -41,7 +41,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         //Set the textviews to show the specific info for the selected shelter
         name.setText(selected.getName());
-        capacity.setText("Capacity: " + selected.getCapacityString());
+        capacity.setText("Capacity: " + selected.getCapacityFam() + " Family rooms, " + selected.getCapacityInd()
+            + " Individual rooms");
         gender.setText("Genders/Restrictions: " + selected.getRestrictions());
         longitude.setText("Longitude: " + selected.getLongitude());
         latitude.setText("Latitude: " + selected.getLatitude());
