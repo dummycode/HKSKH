@@ -7,7 +7,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.R;
@@ -23,9 +26,12 @@ public class ShelterDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final EditText amount = findViewById(R.id.editText2);
+        //set up the checkout button
+        Button checkin = findViewById(R.id.button4);
         //Instantiate a ShelterManager to gain access to the correct schelter
         ShelterManager shelters = new ShelterManager();
-        Shelter selected;
+        final Shelter selected;
         //Use passed hashcode from intent to gain access to correct shelter
         int shelterKey = getIntent().getIntExtra("shelter hash key", 0 );
         selected = (Shelter) (shelters.getShelter(shelterKey));
@@ -38,6 +44,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         TextView latitude = findViewById(R.id.shelter_detail_latitude);
         TextView address = findViewById(R.id.shelter_detail_address);
         TextView phone = findViewById(R.id.shelter_detail_phone);
+        final TextView vacancies = findViewById(R.id.Shelter_Detail_Vacancies);
 
         //Set the textviews to show the specific info for the selected shelter
         name.setText(selected.getName());
@@ -48,6 +55,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         latitude.setText("Latitude: " + selected.getLatitude());
         address.setText("Address: " + selected.getAddress());
         phone.setText("Phone Number: " + selected.getPhoneNumber());
+        vacancies.setText(selected.getVacancy());
 
         //get info about what screen came before this
         final String previous = getIntent().getStringExtra("Previous Screen");
@@ -58,6 +66,26 @@ public class ShelterDetailActivity extends AppCompatActivity {
             filteredList.putExtra("Filter", getIntent().getStringExtra("Filter"));
         }
 
+        //checkin button updates
+        checkin.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (amount.getText().toString().isEmpty()) {
+                            Toast.makeText(getApplicationContext(), "Please enter a " +
+                                    "number for how many beds you wish to check out", Toast.LENGTH_LONG).show();
+                        } else if (Integer.parseInt(amount.getText().toString()) <= 0) {
+                            Toast.makeText(getApplicationContext(), "Warning: Cannot enter negative or zero beds. " +
+                                    "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
+                        } else if (Integer.parseInt(amount.getText().toString()) > (selected.getVacancyInd()
+                                + selected.getVacancyFam())){
+                            Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist. " +
+                                            "Please choose number less than the vacancies", Toast.LENGTH_LONG).show();
+                        } else {
+                            selected.updateVacancy(Integer.parseInt(amount.getText().toString()));
+                            vacancies.setText(selected.getVacancy());
+                        }
+                    }
+                }
+        );
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +97,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
 }

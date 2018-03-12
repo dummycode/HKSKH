@@ -10,6 +10,7 @@ public class User {
     private String name;
     private UserType type;
     private String pass;
+    private int shelterID = -1;
 
     /**
      * Creates a new user
@@ -41,6 +42,10 @@ public class User {
 
     public UserType getAccountType() {
         return type;
+    }
+
+    public void setShelterID(int key) {
+        this.shelterID = key;
     }
 }
 

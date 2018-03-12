@@ -186,13 +186,40 @@ public class Shelter {
     }
 
     /**
+     * returns family vacancies
      * @return number of vacancies
      */
     public int getVacancyFam() {
         return this.vacanFam;
     }
 
+    /**
+     * returns individual vacancies
+     * @return individual vacancies
+     */
     public int getVacancyInd() { return this.vacanInd; }
+
+    /**
+     * updates the vacancies by removing number of beds that are checked out
+     * @param taken the amount of beds that are checked in.
+     */
+    public void updateVacancy(int taken) {
+        if (taken > this.vacanInd) {
+            taken = taken - this.vacanInd;
+            this.vacanInd = 0;
+            this.vacanFam = this.vacanFam - taken;
+        } else {
+            //takes individual spots first then family spots
+            this.vacanInd = this.vacanInd - taken;
+        }
+    }
+
+    /**
+     * return the vacancies a digestible string
+     * @return the vacancy string
+     */
+    public String getVacancy() { return "Spots remaining: " +this.getVacancyFam() + " family beds, "
+            +this.getVacancyInd() + " individual beds.";}
 
     /**
      * String representation of a shelter
