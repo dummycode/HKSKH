@@ -26,10 +26,11 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class ShelterListActivity extends AppCompatActivity {
-
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userName = this.getIntent().getStringExtra("Username");
         setContentView(R.layout.activity_shelter_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,7 +46,7 @@ public class ShelterListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class));
+                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
             }
         });
     }
@@ -100,7 +101,6 @@ public class ShelterListActivity extends AppCompatActivity {
              */
             holder.nameView.setText("" + ((Shelter)(shelterList.get(position))).getName());
 
-
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
@@ -117,6 +117,7 @@ public class ShelterListActivity extends AppCompatActivity {
                          */
                         intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
                         intent.putExtra("Previous Screen", "full list");
+                        intent.putExtra("Username", userName);
 
                         //now just display the new window
                         context.startActivity(intent);

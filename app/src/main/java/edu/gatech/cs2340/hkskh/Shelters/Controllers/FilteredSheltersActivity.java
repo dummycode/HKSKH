@@ -29,7 +29,7 @@ import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class FilteredSheltersActivity extends AppCompatActivity {
-
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +37,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        userName = this.getIntent().getStringExtra("Username");
         RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);
         setupRecyclerView(filteredList);
 
@@ -48,7 +49,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class));
+                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
             }
         });
     }
@@ -139,6 +140,8 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                     intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
                     //Give info to next screen about this activity
                     intent.putExtra("Previous Screen", "filtered list");
+                    //pass on username
+                    intent.putExtra("Username", userName);
                     //we need to let the details page keep track of the search type and filter so it can
                     //so we can regenerate the list if the user hits back on the details page
                     intent.putExtra("Search Type", searchType);

@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
         //search button, button to shelter, and spinner
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
         });
-
+        final String userName = this.getIntent().getStringExtra("Username");
         //WHen search button is clicked, it goes to search
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 //passes on the type of search into the search activity
                 Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
                         .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
+                myIntent.putExtra("Username", userName);
                 startActivity(myIntent);
             }
         });
@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         fullList.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ShelterListActivity.class));
+                startActivity(new Intent(MainActivity.this,
+                        ShelterListActivity.class).putExtra("Username", userName));
             }
         });
         }
