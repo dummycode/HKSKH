@@ -207,9 +207,9 @@ public class Shelter {
      */
     public void updateVacancy(int taken, boolean in_Out, boolean family) {
         if (in_Out) {
-            if (taken < this.vacanFam && family) {
+            if (taken <= this.vacanFam && family) {
                 this.vacanFam = this.vacanFam - taken;
-            } else if (taken < this.vacanInd && !family) {
+            } else if (taken <= this.vacanInd && !family) {
                 //takes individual spots
                 this.vacanInd = this.vacanInd - taken;
             }
