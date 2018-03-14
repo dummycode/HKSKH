@@ -10,6 +10,9 @@ public class User {
     private String name;
     private UserType type;
     private String pass;
+    private int shelterID = -1;
+    private int numFamily = 0;
+    private int numInd = 0;
 
     /**
      * Creates a new user
@@ -41,6 +44,43 @@ public class User {
 
     public UserType getAccountType() {
         return type;
+    }
+
+    public int getNumBeds(boolean family) {
+        if (family)
+            return this.numFamily;
+        else {
+            return this.numInd;
+        }
+    }
+
+    public int getShelterID() {
+        return this.shelterID;
+    }
+
+    public void setShelterID(int key) {
+        this.shelterID = key;
+    }
+
+    /**
+     * updates the number of beds the user has checked into
+     * @param beds the number of beds the user checked into
+     * @param family if it's family rooms or not
+     */
+    public void setNumBeds(int beds, boolean family, boolean release) {
+        if (release) {
+            if (family) {
+                this.numFamily += beds;
+            } else {
+                this.numInd += beds;
+            }
+        } else {
+            if (family && this.numFamily - beds >= 0) {
+                this.numFamily -= beds;
+            } else if (!family && this.numInd - beds >= 0) {
+                this.numInd -= beds;
+            }
+        }
     }
 }
 

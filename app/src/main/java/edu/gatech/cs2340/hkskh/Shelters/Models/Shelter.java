@@ -1,11 +1,15 @@
 package edu.gatech.cs2340.hkskh.Shelters.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by baohd on 2/26/2018.
  */
 public class Shelter {
     private int key;
     private String name;
+    private String capacityString;
     private int capacityInd;
     private int capacityFam;
     private String restrictions;
@@ -14,15 +18,15 @@ public class Shelter {
     private String address;
     private String notes;
     private String phoneNumber;
-    private int vacancies;
+    private int vacanInd;
+    private int vacanFam;
 
     /**
      *  Constructor that initiates all the data.
      *
      *  @param key the unique id for the shelter
      *  @param name the name of the shelter
-     *  @param capacityFam the amount of family rooms the shelter has
-     *  @param capacityInd the amount of individual space the shelter has
+     *  @param capacityString the string of capacity to break down
      *  @param restrictions the restrictions of the shelter
      *  @param longitude the longitude of the shelter
      *  @param latitude the latitude of the shelter
@@ -30,19 +34,20 @@ public class Shelter {
      *  @param notes special considerations and such
      *  @param phoneNumber the contact info of the shelter
      */
-    public Shelter(int key, String name, int capacityFam, int capacityInd, String restrictions,
+    public Shelter(int key, String name, String capacityString, String restrictions,
                    double longitude, double latitude, String address, String notes, String phoneNumber) {
         this.key = key;
         this.name = name;
-        this.capacityFam = capacityFam;
-        this.capacityInd = capacityInd;
+        this.capacityString = capacityString;
+        this.translateCapacity();
         this.restrictions = restrictions;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phoneNumber;
-        this.vacancies = capacityFam + capacityInd;
+        this.vacanFam = capacityFam;
+        this.vacanInd = capacityInd;
     }
 
     /**
@@ -59,6 +64,71 @@ public class Shelter {
         return this.name;
     }
 
+    /**
+     * @return the capacity of the shelter as a string
+     */
+    public String getCapacityString() {
+        return this.capacityString;
+    }
+
+    /**
+     * translate the capacity string into family capacity and individual capacity
+     */
+    private void translateCapacity() {
+        String cap1 = "";
+        String cap2 = "";
+        String capString = this.capacityString.toLowerCase();
+        int fam = capString.lastIndexOf("famil");
+        int a = 0;
+        int first = -1;
+        int second = -1;
+        for (int i = 0; i < capString.length(); i++) {
+            //the first variable will be concatenated if the number exists
+            if (Character.isDigit(capString.charAt(i)) && a == 0) {
+                if (first == -1) {
+                    first = i;
+                }
+                cap1 = cap1 + capString.charAt(i);
+                //if the thing is no longer a digit stop adding and sign that there is a break
+            } else if (!Character.isDigit(capString.charAt(i)) && a == 0) {
+                a++;
+                //if this isn't the first number then this must be a separate number
+            } else if (Character.isDigit(capString.charAt(i)) && a != 0) {
+                if (second == -1) {
+                    second = i;
+                }
+                cap2 = cap2 + capString.charAt(i);
+            }
+        }
+        if (first == -1) {
+            //no number at all, does not specify the capacity at all
+            capacityInd = 0;
+            capacityFam = 0;
+        } else if (second != -1) {
+            //if there are two variables and the substring famil is between them, then the first number must be family
+            //else the first is individual
+            if (fam < second) {
+                capacityFam = Integer.parseInt(cap1);
+                capacityInd = Integer.parseInt(cap2);
+            } else {
+                capacityFam = Integer.parseInt(cap2);
+                capacityInd = Integer.parseInt(cap1);
+            }
+
+        } else {
+            //there's only one number
+            //if family exists then it's family else it's individual
+            if (fam != -1) {
+                capacityFam = Integer.parseInt(cap1);
+                capacityInd = 0;
+            } else {
+                capacityFam = 0;
+                capacityInd = Integer.parseInt(cap1);
+            }
+        }
+        vacanFam = capacityFam;
+        vacanInd = capacityInd;
+    }
     /**
      * @return the family room capacity
      */
@@ -116,11 +186,49 @@ public class Shelter {
     }
 
     /**
+     * returns family vacancies
      * @return number of vacancies
      */
-    public int getVacancies() {
-        return this.vacancies;
+    public int getVacancyFam() {
+        return this.vacanFam;
     }
+
+    /**
+     * returns individual vacancies
+     * @return individual vacancies
+     */
+    public int getVacancyInd() { return this.vacanInd; }
+
+    /**
+     * updates the vacancies by removing number of beds that are checked out
+     * @param taken the amount of beds that are checked in.
+     * @param in_Out the check to see if it's going to be checking in or checking out
+     * @param family the check if it's family or individual
+     */
+    public void updateVacancy(int taken, boolean in_Out, boolean family) {
+        if (in_Out) {
+            if (taken < this.vacanFam && family) {
+                this.vacanFam = this.vacanFam - taken;
+            } else if (taken < this.vacanInd && !family) {
+                //takes individual spots
+                this.vacanInd = this.vacanInd - taken;
+            }
+        } else {
+            //checking out, if the amount will be greater than capacity then stop
+            if (this.vacanFam + taken <= this.capacityFam && family) {
+                this.vacanFam += taken;
+            } else if (this.vacanInd + taken <= this.capacityInd && !family) {
+                this.vacanInd += taken;
+            }
+        }
+    }
+
+    /**
+     * return the vacancies a digestible string
+     * @return the vacancy string
+     */
+    public String getVacancy() { return "Spots remaining: " +this.getVacancyFam() + " family beds, "
+            +this.getVacancyInd() + " individual beds.";}
 
     /**
      * String representation of a shelter

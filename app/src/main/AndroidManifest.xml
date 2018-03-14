@@ -26,6 +26,14 @@
         <activity
             android:name=".Shelters.Controllers.ShelterDetailActivity"
             android:label="@string/title_activity_shelter_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Shelters.Controllers.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Shelters.Controllers.FilteredSheltersActivity"
+            android:label="@string/title_activity_filtered_shelters"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

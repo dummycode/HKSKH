@@ -41,8 +41,7 @@ public class ShelterServiceProvider {
                         ShelterManager.addShelter(new Shelter(
                                 key,
                                 name,
-                                0,
-                                0,
+                                setCapacity(capacityInd),
                                 restrictions,
                                 longitude,
                                 latitude,
@@ -71,5 +70,17 @@ public class ShelterServiceProvider {
     public static void reload(Context context) {
         ShelterManager.clear();
         load(context);
+    }
+
+    /**
+     * @params capacity string
+     * @return the adjusted capacity string, sets it to "unspecified" if it is empty
+     */
+    public static String setCapacity(String capacity) {
+        if (capacity.equals("")) {
+            return "unspecified";
+        } else {
+            return capacity;
+        }
     }
 }

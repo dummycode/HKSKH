@@ -4,4 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_shelter_list">ShelterListActivity</string>
     <string name="title_activity_shelter_detail">ShelterDetailActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_filtered_shelters">FilteredSheltersActivity</string>
 </resources>

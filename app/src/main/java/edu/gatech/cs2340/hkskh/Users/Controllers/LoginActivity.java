@@ -33,13 +33,15 @@ public class LoginActivity extends AppCompatActivity {
 
         final UserManager accounts = new UserManager();
 
-        final Intent toMain = new Intent(this, ShelterListActivity.class);
+        // moves to the main activity
+        final Intent toMain = new Intent(this, MainActivity.class);
 
         // Setup login button
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (accounts.checkEntry(ed1.getText().toString(), ed2.getText().toString())) {
+                    toMain.putExtra("Username", ed1.getText().toString());
                     toMain.putExtra("Name", accounts.getUserName(ed1.getText().toString()));
                     startActivity(toMain);
                 } else {

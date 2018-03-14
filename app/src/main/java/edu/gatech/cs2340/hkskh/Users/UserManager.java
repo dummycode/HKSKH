@@ -69,5 +69,32 @@ public class UserManager {
     public String getUserName(String username) {
         return login.get(username).getName();
     }
+
+    /**
+     * updates the check in
+     * @param username the username of the user
+     * @param key the key of the shelter
+     * @param rooms number of spots they want to reserve
+     * @param family checks if it's family or individuals
+     */
+    public void checkIn(String username, int key, int rooms, boolean family) {
+        login.get(username).setShelterID(key);
+        login.get(username).setNumBeds(rooms, family, true);
+    }
+
+    public void checkOut(String username, int rooms, boolean family) {
+        login.get(username).setNumBeds(rooms, family, false);
+        if (login.get(username).getNumBeds(family) == 0) {
+            login.get(username).setShelterID(-1);
+        }
+    }
+
+    public int getShelterId(String username) {
+        return login.get(username).getShelterID();
+    }
+
+    public int getNumBeds(String username, boolean family) {
+        return login.get(username).getNumBeds(family);
+    }
 }
 

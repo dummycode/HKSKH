@@ -10,36 +10,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
-import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
+import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
-public class ShelterListActivity extends AppCompatActivity {
+public class FilteredSheltersActivity extends AppCompatActivity {
     private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userName = this.getIntent().getStringExtra("Username");
-        setContentView(R.layout.activity_shelter_list);
+        setContentView(R.layout.activity_filtered_shelters);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView shelterRecycler = (RecyclerView) findViewById(R.id.course_list_recycler);
-        setupRecyclerView(shelterRecycler);
+        userName = this.getIntent().getStringExtra("Username");
+        RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);
+        setupRecyclerView(filteredList);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        shelterRecycler.setLayoutManager(layoutManager);
+        LinearLayoutManager newLayoutManager = new LinearLayoutManager(this);
+        filteredList.setLayoutManager(newLayoutManager);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -52,26 +55,44 @@ public class ShelterListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        ShelterManager shelters = new ShelterManager();
-        Collection<Shelter> values = shelters.getAll();
-        ArrayList<Shelter> shelterList = new ArrayList<>(values);
-        recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelterList));
+        SearchService search = new SearchService();
+
+        //get the desired search type and filter
+        String searchRequested = this.getIntent().getStringExtra("Search Type");
+        String filter = this.getIntent().getStringExtra("Filter");
+
+        ArrayList<Shelter> list;
+
+        //put in try-catch because the search methods throw errors
+        try {
+            list = (ArrayList) search.searchChoices(searchRequested, filter);
+        } catch (IllegalArgumentException exception){
+            list = new ArrayList<>();
+        } catch (NoSuchElementException exception) {
+            list = new ArrayList<>();
+        }
+
+        recyclerView.setAdapter(new SearchShelterRecyclerViewAdapter(list, searchRequested, filter));
     }
 
-    public class SimpleShelterRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleShelterRecyclerViewAdapter.ViewHolder> {
+    public class SearchShelterRecyclerViewAdapter
+            extends RecyclerView.Adapter<SearchShelterRecyclerViewAdapter.ViewHolder> {
 
         /**
          * Collection of the items to be shown in this list.
          */
         private final List<Shelter> shelterList;
+        private final String searchType;
+        private final String filter;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleShelterRecyclerViewAdapter(List<Shelter> items) {
+        public SearchShelterRecyclerViewAdapter(List<Shelter> items, String searchType, String filter) {
             shelterList = items;
+            this.searchType = searchType;
+            this.filter = filter;
         }
 
         @Override
@@ -83,7 +104,7 @@ public class ShelterListActivity extends AppCompatActivity {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.content_shelter_list, parent, false);
+                    .inflate(R.layout.filtered_recycler_layout, parent, false);
             return new ViewHolder(view);
         }
 
@@ -101,26 +122,33 @@ public class ShelterListActivity extends AppCompatActivity {
              */
             holder.nameView.setText("" + ((Shelter)(shelterList.get(position))).getName());
 
+
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        //on a phone, we need to change windows to the detail view
-                        Context context = v.getContext();
-                        //create our new intent with the new screen (activity)
-                        Intent intent = new Intent(context, ShelterDetailActivity.class);
+                    //on a phone, we need to change windows to the detail view
+                    Context context = v.getContext();
+                    //create our new intent with the new screen (activity)
+                    Intent intent = new Intent(context, ShelterDetailActivity.class);
                         /*
-                            pass along the id of the course so we can retrieve the correct data in
+                            pass along the id of the shelter so we can retrieve the correct data in
                             the next window
                          */
-                        intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
-                        intent.putExtra("Previous Screen", "full list");
-                        intent.putExtra("Username", userName);
+                    intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                    //Give info to next screen about this activity
+                    intent.putExtra("Previous Screen", "filtered list");
+                    //pass on username
+                    intent.putExtra("Username", userName);
+                    //we need to let the details page keep track of the search type and filter so it can
+                    //so we can regenerate the list if the user hits back on the details page
+                    intent.putExtra("Search Type", searchType);
+                    intent.putExtra("Filter", filter);
 
-                        //now just display the new window
-                        context.startActivity(intent);
+                    //now just display the new window
+                    context.startActivity(intent);
 
                 }
             });
@@ -145,7 +173,7 @@ public class ShelterListActivity extends AppCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                nameView = (TextView) view.findViewById(R.id.shelter_list_item);
+                nameView = (TextView) view.findViewById(R.id.filtered_recycler_item);
             }
 
             @Override
@@ -154,5 +182,7 @@ public class ShelterListActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
