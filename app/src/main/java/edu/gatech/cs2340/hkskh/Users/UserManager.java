@@ -84,7 +84,7 @@ public class UserManager {
 
     public void checkOut(String username, int rooms, boolean family) {
         login.get(username).setNumBeds(rooms, family, false);
-        if (login.get(username).getNumBeds(family) == 0) {
+        if (login.get(username).getNumBeds(family) == 0 && login.get(username).getNumBeds(!family) == 0) {
             login.get(username).setShelterID(-1);
         }
     }
