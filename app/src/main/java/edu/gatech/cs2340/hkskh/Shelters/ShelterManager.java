@@ -4,27 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collection;
 
-
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by baohd on 2/26/2018.
  */
 public class ShelterManager {
+    
+    private AppDatabase adb;
+
+    public ShelterManager(AppDatabase adb) {
+        this.adb = adb;
+    }
 
     /**
-     * HashMap of shelters
-     */
-    static private Map<Integer, Shelter> shelters = new HashMap<>();
-    static boolean isLoaded = false;
-
-    /**
-     * Add a shelter to the HashMap
+     * Add a shelter
      *
-     * @param node shelter to be added
+     * @param shelter shelter to be added
      */
-    static void addShelter(Shelter node) {
-        shelters.put(node.hashCode(), node);
+    public void addShelter(Shelter shelter) {
+        adb.shelterDao().insert(shelter);
     }
 
     /**
@@ -34,32 +34,21 @@ public class ShelterManager {
      * @return the shelter they request, or if it doesn't exist return null
      */
     public Shelter getShelter(int key) {
-        if (shelters.containsKey(key)) {
-            return shelters.get(key);
-        } else {
-            return null;
-        }
-    }
-
-
-    /**
-     * @return the string equivalent of the hashmap.
-     */
-    public String toString() {
-        return shelters.toString();
+        Shelter shelter = adb.shelterDao().findShelterById(key);
+        return shelter;
     }
 
     /**
      * @return returns a generic collection of all the shelters
      */
     public Collection<Shelter> getAll() {
-        return shelters.values();
+        return adb.shelterDao().getAll();
     }
 
     /**
      * Wipe out the current shelters
      */
-    static void clear() {
-        shelters = new HashMap<>();
+    public void clear() {
+        adb.shelterDao().clear();
     }
 }

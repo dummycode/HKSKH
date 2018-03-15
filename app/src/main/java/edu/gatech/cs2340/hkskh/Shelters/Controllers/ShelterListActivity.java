@@ -21,15 +21,22 @@ import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class ShelterListActivity extends AppCompatActivity {
     private String userName;
+    private AppDatabase mdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+
         userName = this.getIntent().getStringExtra("Username");
         setContentView(R.layout.activity_shelter_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,7 +59,7 @@ public class ShelterListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        ShelterManager shelters = new ShelterManager();
+        ShelterManager shelters = new ShelterManager(this.mdb);
         Collection<Shelter> values = shelters.getAll();
         ArrayList<Shelter> shelterList = new ArrayList<>(values);
         recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelterList));

@@ -11,15 +11,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private AppDatabase mdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        final UserManager userManager = new UserManager(this.mdb);
+
         setContentView(R.layout.activity_register);
         final EditText ed1, ed2, ed3, ed4;
         Button b1, b2;
@@ -32,8 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         b2 = findViewById(R.id.cancelButton);
         sp1 = findViewById(R.id.typeSelect);
 
-        final UserManager accounts = new UserManager();
-
         final Intent toWelcome = new Intent(this, WelcomeActivity.class);
 
         ArrayAdapter<UserType> userAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, UserType.values());
@@ -43,14 +48,20 @@ public class RegisterActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (accounts.register(ed1.getText().toString(), ed4.getText().toString(),
-                        (UserType) sp1.getSelectedItem(), ed2.getText().toString(), ed3.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                    startActivity(toWelcome);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Try Again. Either the username is taken"
-                            + " or passwords don't match", Toast.LENGTH_LONG).show();
+                String username = ed1.getText().toString();
+                String pass1 = ed2.getText().toString();
+                String pass2 = ed3.getText().toString();
+                String name = ed4.getText().toString();
+
+                if (!pass1.equals(pass2)) {
+                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                } else {
+                    if (userManager.register(username, name, (UserType) sp1.getSelectedItem(), pass1)) {
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        startActivity(toWelcome);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Try Again. Username is taken or is shorter than 3 characters.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

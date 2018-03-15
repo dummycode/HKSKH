@@ -23,19 +23,25 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class FilteredSheltersActivity extends AppCompatActivity {
+
     private String userName;
+    private AppDatabase mdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtered_shelters);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
 
         userName = this.getIntent().getStringExtra("Username");
         RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);
@@ -55,7 +61,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        SearchService search = new SearchService();
+        SearchService search = new SearchService(this.mdb);
 
         //get the desired search type and filter
         String searchRequested = this.getIntent().getStringExtra("Search Type");

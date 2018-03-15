@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
@@ -20,8 +21,8 @@ public class SearchService {
      */
     private List<Shelter> shelters;
 
-    public SearchService() {
-        ShelterManager sheltersList = new ShelterManager();
+    public SearchService(AppDatabase adb) {
+        ShelterManager sheltersList = new ShelterManager(adb);
         shelters = new ArrayList(sheltersList.getAll());
     }
 

@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.hkskh.Users;
 
-import java.util.HashMap;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
+import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
@@ -8,9 +9,15 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
  * Created by Kirby on 2/16/2018.
  */
 public class UserManager {
-    private static HashMap<String, User> login = new HashMap<>();
+    private AppDatabase adb;
 
-    public UserManager() {
+    /**
+     * Constructor for the user manager
+     *
+     * @param adb dependency injected database
+     */
+    public UserManager(AppDatabase adb) {
+        this.adb = adb;
     }
 
     /**
@@ -19,82 +26,128 @@ public class UserManager {
      * Will return false if there is no user key, hashmap is empty, or the passed in password is incorrect
      * Will return true if the user-pass mapping matches what is passed in
      *
-     * @param user a username, String
+     * @param username a username, String
      * @param pass a password, String
      * @return false if any parameter is null, user is not a valid key, or pass does not equal
      *         the stored password of the user. True if pass matches the stored password for the user
      *         with user as the key
      */
-    public boolean checkEntry(String user, String pass) {
-        if (user == null || pass == null) {
+    public boolean login(String username, String pass) {
+        if (username == null || pass == null) {
             return false;
         }
-        User check;
-        check = login.get(user);
-        return check != null && check.getPassword().equals(pass);
+        User user = adb.userDao().findUserByUsername(username);
+        return user != null && user.getPass().equals(pass);
     }
 
     /**
      * Use to register a new user
      *
-     * @param user a username
+     * @param username a username
      * @param name the name of the person trying to register
      * @param type a UserType selected by user. Either user or admin
-     * @param pass1 the first password entry
-     * @param pass2 the second password entry
+     * @param pass a password
      * @return false if any parameter is null, the two passwords are not equal, or a user with the
      *         same username already exists. true if a new user is successfully added in the hashmap
      */
-    public boolean register(String user, String name, UserType type, String pass1, String pass2) {
-        if (user == null || name == null || type == null || pass1 == null || pass2 == null) {
+    public boolean register(String username, String name, UserType type, String pass) {
+        // No arguments can be null
+        if (username == null || name == null || type == null || pass == null) {
             return false;
-        } else if (!(pass1.equals(pass2))) {
+        }
+        if (username.length() < 3) {
             return false;
-        } else if (login.containsKey(user)) {
+        }
+        User user = adb.userDao().findUserByUsername(username);
+        // Username is taken
+        if (user != null) {
             return false;
-        } else if (!(user.equals(""))) {
-            User temp = new User(name, type, pass1);
-            login.put(user, temp);
+        } else {
+            user = new User(username, type, pass);
+            adb.userDao().insertAll(user);
             return true;
         }
-        return false;
     }
 
     /**
-     * Use for retrieving Name field of user
+     * Use for retrieving name field of user
      *
      * @param username username of the user
      * @return the name of the user with username as its key
      */
-    public String getUserName(String username) {
-        return login.get(username).getName();
-    }
-
-    /**
-     * updates the check in
-     * @param username the username of the user
-     * @param key the key of the shelter
-     * @param rooms number of spots they want to reserve
-     * @param family checks if it's family or individuals
-     */
-    public void checkIn(String username, int key, int rooms, boolean family) {
-        login.get(username).setShelterID(key);
-        login.get(username).setNumBeds(rooms, family, true);
-    }
-
-    public void checkOut(String username, int rooms, boolean family) {
-        login.get(username).setNumBeds(rooms, family, false);
-        if (login.get(username).getNumBeds(family) == 0 && login.get(username).getNumBeds(!family) == 0) {
-            login.get(username).setShelterID(-1);
+    public String getName(String username) {
+        User user = adb.userDao().findUserByUsername(username);
+        if (user != null) {
+            return user.getName();
+        } else {
+            return "Burdell";
         }
     }
 
-    public int getShelterId(String username) {
-        return login.get(username).getShelterID();
+    /**
+     * Check into rooms
+     *
+     * @param username the username of the user
+     * @param key the key of the shelter
+     * @param count number of spots they want to reserve
+     * @param bedType checks if it's family or individuals
+     */
+    public void checkIn(String username, int key, int count, BedType bedType) {
+        User user = adb.userDao().findUserByUsername(username);
+        if (user != null) {
+            user.setShelterId(key);
+            user.updateBeds(bedType, count);
+            adb.userDao().insert(user);
+        }
     }
 
-    public int getNumBeds(String username, boolean family) {
-        return login.get(username).getNumBeds(family);
+    /**
+     * Check out of rooms
+     *
+     * @param username the username of the user
+     * @param count number of spots they want to reserve
+     * @param bedType checks if it's family or individuals
+     */
+    public void checkOut(String username, int count, BedType bedType) {
+        User user = adb.userDao().findUserByUsername(username);
+        if (user != null) {
+            user.updateBeds(bedType, -count);
+            if (user.getNumFamily() == 0 && user.getNumInd() == 0) {
+                user.setShelterId(-1);
+            }
+            adb.userDao().insert(user);
+        }
+    }
+
+    /**
+     * Get shelterId of given user
+     *
+     * @param username username
+     *
+     * @return the shelter id they are checked into
+     */
+    public int getShelterId(String username) {
+        User user = adb.userDao().findUserByUsername(username);
+        if (user != null) {
+            return user.getShelterId();
+        }
+        return -1;
+    }
+
+    /**
+     * Get the number of beds a user has reserved
+     *
+     * @param username username
+     * @param bedType type of bed requested
+     *
+     * @return number of beds the user has reserved
+     */
+    public int getNumBeds(String username, BedType bedType) {
+        User user = adb.userDao().findUserByUsername(username);
+        if (user != null) {
+            return user.getNumBeds(bedType);
+        }
+        return 0;
     }
 }
 
