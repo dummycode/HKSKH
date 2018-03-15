@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.hkskh.Controllers;
 
 import android.content.Intent;
+import android.os.UserManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private Button searchButton;
     private Button fullList;
     private Spinner searchSpinner;
+    private TextView nameText;
+    private TextView statusText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,22 @@ public class MainActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.button2);
         fullList = findViewById(R.id.button3);
         searchSpinner = findViewById(R.id.spinner1);
+        nameText = findViewById(R.id.main_text_name);
+        statusText = findViewById(R.id.main_status_text);
+
+        edu.gatech.cs2340.hkskh.Users.UserManager users = new edu.gatech.cs2340.hkskh.Users.UserManager();
+        String usersName = users.getUserName(users.getCurrUserName());
+        nameText.setText("Signed in as: " + usersName);
+
+        User currUser = users.getUser(users.getCurrUserName());
+
+        if (currUser.isCheckedIn()) {
+            statusText.setText("Currently checked in to shelter with ID " + currUser.getShelterID()
+            + "\n\nFamily spaces reserved: " + currUser.getNumFamily()
+            + "\n\nIndividual spaces reserved: " + currUser.getNumInd());
+        } else {
+            statusText.setText("Not checked in");
+        }
 
 
         //Sets up the search options spinner and loads the options in.

@@ -100,6 +100,7 @@ public class ShelterListActivity extends AppCompatActivity {
               textview and the string rep of a course in the other.
              */
             holder.nameView.setText("" + ((Shelter)(shelterList.get(position))).getName());
+            holder.idView.setText("" + ((Shelter)shelterList.get(position)).getKey());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -139,6 +140,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
+            public final TextView idView;
             public final TextView nameView;
             public Shelter shelter;
 
@@ -146,6 +148,7 @@ public class ShelterListActivity extends AppCompatActivity {
                 super(view);
                 mView = view;
                 nameView = (TextView) view.findViewById(R.id.shelter_list_item);
+                idView = (TextView) view.findViewById(R.id.shelter_list_id);
             }
 
             @Override

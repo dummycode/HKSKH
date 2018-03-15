@@ -121,6 +121,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
               textview and the string rep of a course in the other.
              */
             holder.nameView.setText("" + ((Shelter)(shelterList.get(position))).getName());
+            holder.idView.setText("" + ((Shelter)shelterList.get(position)).getKey());
 
 
             /*
@@ -167,6 +168,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
+            public final TextView idView;
             public final TextView nameView;
             public Shelter shelter;
 
@@ -174,6 +176,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                 super(view);
                 mView = view;
                 nameView = (TextView) view.findViewById(R.id.filtered_recycler_item);
+                idView = (TextView) view.findViewById(R.id.filtered_recycler_id);
             }
 
             @Override
