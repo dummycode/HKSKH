@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Collection;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
+import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
@@ -36,6 +37,30 @@ public class ShelterManager {
     public Shelter getShelter(int key) {
         Shelter shelter = adb.shelterDao().findShelterById(key);
         return shelter;
+    }
+
+    /**
+     * Update a shelter's vacancy
+     *
+     * @param id the id of the shelter
+     * @param bedType type of bed
+     * @param count count to be changed by
+     */
+    public void updateVacancy(int id, BedType bedType, int count) {
+        Shelter shelter = adb.shelterDao().findShelterById(id);
+        if (shelter != null) {
+            switch (bedType) {
+                case FAMILY:
+                    shelter.setVacancyFam(shelter.getVacancyFam() + count);
+                    break;
+                case INDIVIDUAL:
+                    shelter.setVacancyInd(shelter.getVacancyInd() + count);
+                    break;
+                default:
+                    break;
+            }
+            adb.shelterDao().insert(shelter);
+        }
     }
 
     /**

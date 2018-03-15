@@ -34,7 +34,6 @@ public class ShelterListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
 
         userName = this.getIntent().getStringExtra("Username");
@@ -122,7 +121,7 @@ public class ShelterListActivity extends AppCompatActivity {
                             pass along the id of the course so we can retrieve the correct data in
                             the next window
                          */
-                        intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                        intent.putExtra("shelterId", holder.shelter.getId());
                         intent.putExtra("Previous Screen", "full list");
                         intent.putExtra("Username", userName);
 

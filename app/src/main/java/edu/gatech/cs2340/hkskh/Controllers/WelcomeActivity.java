@@ -41,4 +41,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
         ShelterServiceProvider.load(getBaseContext(), mdb);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
 }

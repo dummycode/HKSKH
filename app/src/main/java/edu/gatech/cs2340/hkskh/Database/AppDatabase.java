@@ -8,6 +8,7 @@ import android.content.Context;
 import edu.gatech.cs2340.hkskh.Shelters.DAOs.ShelterDao;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Users.DAOs.UserDao;
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 /**
@@ -30,7 +31,8 @@ public abstract class AppDatabase extends RoomDatabase {
                             // Don't do this on a real app! See PersistenceBasicSample for an example.
                             .allowMainThreadQueries()
                             .build();
-            // TODO get this off the main thread (it's slowing it down :(((()
+                    INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
+            // TODO get this off the main thread, it may be slowing it down
         }
         return INSTANCE;
     }

@@ -143,7 +143,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                             pass along the id of the shelter so we can retrieve the correct data in
                             the next window
                          */
-                    intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
+                    intent.putExtra("shelterId", holder.shelter.getId());
                     //Give info to next screen about this activity
                     intent.putExtra("Previous Screen", "filtered list");
                     //pass on username
