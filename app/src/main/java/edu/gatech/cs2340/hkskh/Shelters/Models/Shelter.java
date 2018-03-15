@@ -239,30 +239,6 @@ public class Shelter {
     }
 
     /**
-     * updates the vacancies by removing number of beds that are checked out
-     * @param taken the amount of beds that are checked in.
-     * @param in_Out the check to see if it's going to be checking in or checking out
-     * @param family the check if it's family or individual
-     */
-    public void updateVacancy(int taken, boolean in_Out, boolean family) {
-        if (in_Out) {
-            if (taken <= this.vacancyFam && family) {
-                this.vacancyFam = this.vacancyFam - taken;
-            } else if (taken <= this.vacancyInd && !family) {
-                //takes individual spots
-                this.vacancyInd = this.vacancyInd - taken;
-            }
-        } else {
-            //checking out, if the amount will be greater than capacity then stop
-            if (this.vacancyFam + taken <= this.capacityFam && family) {
-                this.vacancyFam += taken;
-            } else if (this.vacancyInd + taken <= this.capacityInd && !family) {
-                this.vacancyInd += taken;
-            }
-        }
-    }
-
-    /**
      * return the vacancies a digestible string
      *
      * @return the vacancy string
