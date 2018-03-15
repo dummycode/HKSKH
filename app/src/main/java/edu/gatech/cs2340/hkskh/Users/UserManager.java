@@ -85,6 +85,17 @@ public class UserManager {
     }
 
     /**
+     * Use for retrieving name field of user
+     *
+     * @param username username of the user
+     * @return the user from the username
+     */
+    public User findByUsername(String username) {
+        User user = adb.userDao().findUserByUsername(username);
+        return user;
+    }
+
+    /**
      * Check into rooms
      *
      * @param username the username of the user
