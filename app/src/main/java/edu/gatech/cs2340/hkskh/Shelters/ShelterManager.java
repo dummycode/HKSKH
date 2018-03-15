@@ -1,7 +1,5 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collection;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;

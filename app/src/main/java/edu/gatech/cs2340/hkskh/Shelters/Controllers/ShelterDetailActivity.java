@@ -44,16 +44,16 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         final EditText amount = findViewById(R.id.editText2);
 
-        //set up the checkout button
+        // Set up the check in/out buttons
         Button checkIn = findViewById(R.id.button4);
         Button checkOut = findViewById(R.id.button5);
 
-        //Use passed hashcode from intent to gain access to correct shelter
+        // Use passed hashcode from intent to gain access to correct shelter
         final int shelterKey = getIntent().getIntExtra("shelterId", 0 );
         final Shelter selected = shelterManager.getShelter(shelterKey);
         final String userName = this.getIntent().getStringExtra("Username");
 
-        // initialize spinner
+        // Initialize spinner
         final Spinner vacanSpinner = findViewById(R.id.spinner);
 
         // Sets up the search options spinner and loads the options in.
@@ -83,9 +83,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
         phone.setText("Phone Number: " + selected.getPhoneNumber());
         vacancies.setText(selected.getVacancy());
 
-        // get info about what screen came before this
+        // Get info about what screen came before this
         final String previous = getIntent().getStringExtra("Previous Screen");
         final Intent filteredList = new Intent(this, FilteredSheltersActivity.class);
+
         // If the details page is to return to the filtered list, it needs the filter and type to generate the recyclerview
         if (getIntent().getStringExtra("Previous Screen").equals("filtered list")) {
             filteredList.putExtra("Search Type", getIntent().getStringExtra("Search Type"));

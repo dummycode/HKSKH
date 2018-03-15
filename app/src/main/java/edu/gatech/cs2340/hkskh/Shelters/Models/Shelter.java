@@ -239,7 +239,7 @@ public class Shelter {
     }
 
     /**
-     * return the vacancies a digestible string
+     * Return the vacancies a digestible string
      *
      * @return the vacancy string
      */
