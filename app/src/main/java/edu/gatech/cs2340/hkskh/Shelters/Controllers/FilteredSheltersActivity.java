@@ -36,7 +36,7 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
 
         userName = this.getIntent().getStringExtra("Username");
         RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);

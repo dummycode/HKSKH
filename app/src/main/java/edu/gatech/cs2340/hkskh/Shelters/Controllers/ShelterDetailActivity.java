@@ -31,7 +31,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
 
         // Instantiate a UserManager and manage the check in and check out
         final UserManager userManager = new UserManager(this.mdb);

@@ -24,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
         final UserManager userManager = new UserManager(this.mdb);
 
         setContentView(R.layout.activity_register);

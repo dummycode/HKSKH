@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
         final UserManager userManager = new UserManager(this.mdb);
 
         final String username = this.getIntent().getStringExtra("Username");

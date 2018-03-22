@@ -21,7 +21,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
 
         Button b1, b2;
         b1 = findViewById(R.id.logButton);

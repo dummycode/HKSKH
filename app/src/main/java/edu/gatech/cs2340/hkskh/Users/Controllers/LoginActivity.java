@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        mdb = AppDatabase.getDatabase(getApplicationContext());
 
         final UserManager userManager = new UserManager(mdb);
 

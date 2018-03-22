@@ -32,7 +32,7 @@ public class ShelterListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getInMemoryDatabase(getApplicationContext());
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
 
         userName = this.getIntent().getStringExtra("Username");
         setContentView(R.layout.activity_shelter_list);
