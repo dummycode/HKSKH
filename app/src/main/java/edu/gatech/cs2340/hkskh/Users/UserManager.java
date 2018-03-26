@@ -9,6 +9,7 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
  */
 public class UserManager {
     private static HashMap<String, User> login = new HashMap<>();
+    private static String currUserName = "";//Useful to keep track of the logged in user
 
     public UserManager() {
     }
@@ -31,7 +32,20 @@ public class UserManager {
         }
         User check;
         check = login.get(user);
-        return check != null && check.getPassword().equals(pass);
+        if (check != null && check.getPassword().equals(pass)) {
+            this.currUserName = user;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @params string key, or username
+     * @return the User with the passed in username
+     */
+    public User getUser(String key){
+        return login.get(key);
     }
 
     /**
@@ -95,6 +109,14 @@ public class UserManager {
 
     public int getNumBeds(String username, boolean family) {
         return login.get(username).getNumBeds(family);
+    }
+
+    /**
+     *
+     * @return the username of the current user that is logged in
+     */
+    public String getCurrUserName() {
+        return this.currUserName;
     }
 }
 

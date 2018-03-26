@@ -42,9 +42,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
         //Use passed hashcode from intent to gain access to correct shelter
         int shelterKey = getIntent().getIntExtra("shelter hash key", 0 );
         selected = (Shelter) (shelters.getShelter(shelterKey));
-        final String userName = this.getIntent().getStringExtra("Username");
+
+        //final String userName = this.getIntent().getStringExtra("Username");
         //Instantiate a UserManager and manage the check in and check out
         final edu.gatech.cs2340.hkskh.Users.UserManager users = new edu.gatech.cs2340.hkskh.Users.UserManager();
+        final String userName = users.getCurrUserName();
 
         //initialize spinner
         final Spinner vacanSpinner = findViewById(R.id.spinner);
