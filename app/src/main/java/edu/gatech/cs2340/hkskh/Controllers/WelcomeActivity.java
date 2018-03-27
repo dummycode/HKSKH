@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterServiceProvider;
 import edu.gatech.cs2340.hkskh.Users.Controllers.LoginActivity;
@@ -13,10 +14,15 @@ import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private AppDatabase mdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        this.mdb = AppDatabase.getDatabase(getApplicationContext());
+
         Button b1, b2;
         b1 = findViewById(R.id.logButton);
         b2 = findViewById(R.id.regButton);
@@ -32,6 +38,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
             }
         });
-        ShelterServiceProvider.load(getBaseContext());
+
+        ShelterServiceProvider.load(getBaseContext(), mdb);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
     }
 }

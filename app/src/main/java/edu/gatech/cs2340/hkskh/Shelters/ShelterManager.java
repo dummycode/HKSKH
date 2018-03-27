@@ -1,30 +1,29 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collection;
 
-
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
+import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by baohd on 2/26/2018.
  */
 public class ShelterManager {
+    
+    private AppDatabase adb;
+
+    public ShelterManager(AppDatabase adb) {
+        this.adb = adb;
+    }
 
     /**
-     * HashMap of shelters
-     */
-    static private Map<Integer, Shelter> shelters = new HashMap<>();
-    static boolean isLoaded = false;
-
-    /**
-     * Add a shelter to the HashMap
+     * Add a shelter
      *
-     * @param node shelter to be added
+     * @param shelter shelter to be added
      */
-    static void addShelter(Shelter node) {
-        shelters.put(node.hashCode(), node);
+    public void addShelter(Shelter shelter) {
+        adb.shelterDao().insert(shelter);
     }
 
     /**
@@ -34,32 +33,45 @@ public class ShelterManager {
      * @return the shelter they request, or if it doesn't exist return null
      */
     public Shelter getShelter(int key) {
-        if (shelters.containsKey(key)) {
-            return shelters.get(key);
-        } else {
-            return null;
-        }
+        Shelter shelter = adb.shelterDao().findShelterById(key);
+        return shelter;
     }
 
-
     /**
-     * @return the string equivalent of the hashmap.
+     * Update a shelter's vacancy
+     *
+     * @param id the id of the shelter
+     * @param bedType type of bed
+     * @param count count to be changed by
      */
-    public String toString() {
-        return shelters.toString();
+    public void updateVacancy(int id, BedType bedType, int count) {
+        Shelter shelter = adb.shelterDao().findShelterById(id);
+        if (shelter != null) {
+            switch (bedType) {
+                case FAMILY:
+                    shelter.setVacancyFam(shelter.getVacancyFam() + count);
+                    break;
+                case INDIVIDUAL:
+                    shelter.setVacancyInd(shelter.getVacancyInd() + count);
+                    break;
+                default:
+                    break;
+            }
+            adb.shelterDao().insert(shelter);
+        }
     }
 
     /**
      * @return returns a generic collection of all the shelters
      */
     public Collection<Shelter> getAll() {
-        return shelters.values();
+        return adb.shelterDao().getAll();
     }
 
     /**
      * Wipe out the current shelters
      */
-    static void clear() {
-        shelters = new HashMap<>();
+    public void clear() {
+        adb.shelterDao().clear();
     }
 }
