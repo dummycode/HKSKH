@@ -21,6 +21,7 @@ import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 /**
@@ -60,6 +61,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Get user from state
         final int userId = state.getCurrentUserId();
+        final User user = userManager.findById(userId);
 
         // Initialize spinner
         final Spinner vacanSpinner = findViewById(R.id.spinner);
@@ -123,7 +125,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                int shelterId = userManager.getShelterId(userId);
+                int shelterId = user.getShelterId();
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
@@ -135,9 +137,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
                     String currentName = shelterManager.getShelter(shelterId).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
-                    shelterManager.updateVacancy(selected.getId(), bedType, -count);
-                    vacancies.setText(shelterManager.getShelter(selectedShelterId).getVacancy());
-                    userManager.checkIn(userId, selectedShelterId, count, bedType);
+                    shelterManager.updateVacancy(selected, bedType, -count);
+                    userManager.checkIn(user, selectedShelterId, count, bedType);
+
+                    vacancies.setText(selected.getVacancy());
                 }
             }
         });
@@ -166,17 +169,18 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > userManager.getNumBeds(userId, BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
+                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out.", Toast.LENGTH_LONG).show();
-                } else if (count > userManager.getNumBeds(userId, BedType.FAMILY) && bedType == BedType.FAMILY) {
+                } else if (count > user.getNumBeds(BedType.FAMILY) && bedType == BedType.FAMILY) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
-                } else if (userManager.getShelterId(userId) != selectedShelterId){
-                    String currentName = shelterManager.getShelter(userManager.getShelterId(userId)).getName();
+                } else if (user.getShelterId() != selectedShelterId){
+                    String currentName = shelterManager.getShelter(user.getShelterId()).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
-                    shelterManager.updateVacancy(selectedShelterId, bedType, count);
-                    vacancies.setText(shelterManager.getShelter(selectedShelterId).getVacancy());
-                    userManager.checkOut(userId, count, bedType);
+                    shelterManager.updateVacancy(selected, bedType, count);
+                    userManager.checkOut(user, count, bedType);
+
+                    vacancies.setText(selected.getVacancy());
                 }
             }
         });

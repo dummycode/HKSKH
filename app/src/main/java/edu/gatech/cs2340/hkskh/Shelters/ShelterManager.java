@@ -37,15 +37,15 @@ public class ShelterManager {
         return shelter;
     }
 
+
     /**
      * Update a shelter's vacancy
      *
-     * @param id the id of the shelter
+     * @param shelter the shelter to be updated
      * @param bedType type of bed
      * @param count count to be changed by
      */
-    public void updateVacancy(int id, BedType bedType, int count) {
-        Shelter shelter = adb.shelterDao().findShelterById(id);
+    public void updateVacancy(Shelter shelter, BedType bedType, int count) {
         if (shelter != null) {
             switch (bedType) {
                 case FAMILY:
