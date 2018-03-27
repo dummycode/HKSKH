@@ -52,8 +52,6 @@ public class SearchActivity extends AppCompatActivity {
         final Intent toFilteredList = new Intent(SearchActivity.this, FilteredSheltersActivity.class);
         // Pass the search type as an extra to the next screen so we can make the list to display
         toFilteredList.putExtra("Search Type", searchEntered);
-        toFilteredList.putExtra("Username", this.getIntent().getStringExtra("Username"));
-        final String userName = this.getIntent().getStringExtra("Username");
 
         // Make sure to pass the filter to the next screen as an extra because we need it to generate the list
         search.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
     }

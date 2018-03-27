@@ -18,14 +18,14 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private AppDatabase mdb;
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
-        final UserManager userManager = new UserManager(this.mdb);
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        final UserManager userManager = new UserManager(this.adb);
 
         setContentView(R.layout.activity_register);
         final EditText ed1, ed2, ed3, ed4;

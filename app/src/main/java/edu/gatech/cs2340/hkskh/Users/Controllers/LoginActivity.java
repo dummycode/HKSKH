@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
@@ -16,16 +17,16 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private AppDatabase mdb;
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mdb = AppDatabase.getDatabase(getApplicationContext());
+        adb = AppDatabase.getDatabase(getApplicationContext());
 
-        final UserManager userManager = new UserManager(mdb);
+        final UserManager userManager = new UserManager(adb);
 
         Button b1, b2;
         final EditText ed1, ed2;
@@ -44,8 +45,8 @@ public class LoginActivity extends AppCompatActivity {
                 String username = ed1.getText().toString();
                 String password = ed2.getText().toString();
                 if (userManager.login(username, password)) {
-                    toMain.putExtra("Username", username);
-                    toMain.putExtra("Name", userManager.getName(username));
+                    Application state = (Application) getApplicationContext();
+                    state.setCurrentUserId(userManager.findByUsername(username).getId());
                     startActivity(toMain);
                 } else {
                     // Failed login

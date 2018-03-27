@@ -85,7 +85,18 @@ public class UserManager {
     }
 
     /**
-     * Use for retrieving name field of user
+     * Retrieve user given an id
+     *
+     * @param userId id of the user
+     * @return the user from the id
+     */
+    public User findById(int userId) {
+        User user = adb.userDao().findUserById(userId);
+        return user;
+    }
+
+    /**
+     * Retrieve user given a username
      *
      * @param username username of the user
      * @return the user from the username
@@ -98,13 +109,13 @@ public class UserManager {
     /**
      * Check into rooms
      *
-     * @param username the username of the user
+     * @param userId the id of the user
      * @param key the key of the shelter
      * @param count number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkIn(String username, int key, int count, BedType bedType) {
-        User user = adb.userDao().findUserByUsername(username);
+    public void checkIn(int userId, int key, int count, BedType bedType) {
+        User user = adb.userDao().findUserById(userId);
         if (user != null) {
             user.setShelterId(key);
             user.updateBeds(bedType, count);
@@ -115,12 +126,12 @@ public class UserManager {
     /**
      * Check out of rooms
      *
-     * @param username the username of the user
+     * @param userId the id of the user
      * @param count number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkOut(String username, int count, BedType bedType) {
-        User user = adb.userDao().findUserByUsername(username);
+    public void checkOut(int userId, int count, BedType bedType) {
+        User user = adb.userDao().findUserById(userId);
         if (user != null) {
             user.updateBeds(bedType, -count);
             if (user.getNumFamily() == 0 && user.getNumInd() == 0) {
@@ -133,12 +144,12 @@ public class UserManager {
     /**
      * Get shelterId of given user
      *
-     * @param username username
+     * @param userId id of user
      *
      * @return the shelter id they are checked into
      */
-    public int getShelterId(String username) {
-        User user = adb.userDao().findUserByUsername(username);
+    public int getShelterId(int userId) {
+        User user = adb.userDao().findUserById(userId);
         if (user != null) {
             return user.getShelterId();
         }
@@ -148,13 +159,13 @@ public class UserManager {
     /**
      * Get the number of beds a user has reserved
      *
-     * @param username username
+     * @param userId id of user
      * @param bedType type of bed requested
      *
      * @return number of beds the user has reserved
      */
-    public int getNumBeds(String username, BedType bedType) {
-        User user = adb.userDao().findUserByUsername(username);
+    public int getNumBeds(int userId, BedType bedType) {
+        User user = adb.userDao().findUserById(userId);
         if (user != null) {
             return user.getNumBeds(bedType);
         }
