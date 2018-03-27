@@ -67,10 +67,10 @@ public class ShelterServiceProvider {
     /**
      * Clear current data and load
      */
-    public void reload(Context context, AppDatabase adb) {
+    public static void reload(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();
-        this.load(context, adb);
+        load(context, adb);
     }
 
     /**

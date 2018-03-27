@@ -2,6 +2,7 @@ package edu.gatech.cs2340.hkskh.Shelters.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -48,6 +49,9 @@ public class Shelter {
     @ColumnInfo(name = "vacancyFam")
     private int vacancyFam;
 
+    @Ignore
+    private final int DEFAULT_CAPACITY = 0;
+
     /**
      *  Constructor that initiates all the data.
      *
@@ -64,15 +68,13 @@ public class Shelter {
                    double longitude, double latitude, String address, String notes, String phoneNumber) {
         this.name = name;
         this.capacityString = capacityString;
-        this.translateCapacity();
+        this.translateCapacity(capacityString);
         this.restrictions = restrictions;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phoneNumber;
-        this.vacancyInd = capacityFam;
-        this.vacancyFam = capacityInd;
     }
 
 
@@ -164,7 +166,9 @@ public class Shelter {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getVacancyInd() { return this.vacancyInd; }
+    public int getVacancyInd() {
+        return this.vacancyInd;
+    }
 
     public void setVacancyInd(int vacancyInd) {
         this.vacancyInd = vacancyInd;
@@ -182,58 +186,54 @@ public class Shelter {
     /**
      * Translate the capacity string into family capacity and individual capacity
      */
-    private void translateCapacity() {
+    private void translateCapacity(String capacityString) {
         String cap1 = "";
         String cap2 = "";
-        String capString = this.capacityString.toLowerCase();
-        int fam = capString.lastIndexOf("famil");
+
+        int fam = capacityString.lastIndexOf("famil");
         int a = 0;
         int first = -1;
         int second = -1;
-        for (int i = 0; i < capString.length(); i++) {
-            //the first variable will be concatenated if the number exists
-            if (Character.isDigit(capString.charAt(i)) && a == 0) {
+
+        for (int i = 0; i < capacityString.length(); i++) {
+            // the first variable will be concatenated if the number exists
+            if (Character.isDigit(capacityString.charAt(i)) && a == 0) {
                 if (first == -1) {
                     first = i;
                 }
-                cap1 = cap1 + capString.charAt(i);
-                //if the thing is no longer a digit stop adding and sign that there is a break
-            } else if (!Character.isDigit(capString.charAt(i)) && a == 0) {
+                cap1 = cap1 + capacityString.charAt(i);
+                // if the thing is no longer a digit stop adding and sign that there is a break
+            } else if (!Character.isDigit(capacityString.charAt(i)) && a == 0) {
                 a++;
-                //if this isn't the first number then this must be a separate number
-            } else if (Character.isDigit(capString.charAt(i)) && a != 0) {
+                // if this isn't the first number then this must be a separate number
+            } else if (Character.isDigit(capacityString.charAt(i)) && a != 0) {
                 if (second == -1) {
                     second = i;
                 }
-                cap2 = cap2 + capString.charAt(i);
+                cap2 = cap2 + capacityString.charAt(i);
             }
         }
-        if (first == -1) {
-            //no number at all, does not specify the capacity at all
-            capacityInd = 0;
-            capacityFam = 0;
-        } else if (second != -1) {
-            //if there are two variables and the substring famil is between them, then the first number must be family
-            //else the first is individual
-            if (fam < second) {
-                capacityFam = Integer.parseInt(cap1);
-                capacityInd = Integer.parseInt(cap2);
-            } else {
-                capacityFam = Integer.parseInt(cap2);
-                capacityInd = Integer.parseInt(cap1);
-            }
 
+        if (first == -1) {
+            // No number at all, does not specify the capacity at all
+            capacityInd = DEFAULT_CAPACITY;
+            capacityFam = DEFAULT_CAPACITY;
+        } else if (second != -1) {
+            // if there are two variables and the substring famil is between them, then the first number must be family
+            capacityFam = Integer.parseInt(cap1);
+            capacityInd = Integer.parseInt(cap2);
         } else {
-            //there's only one number
-            //if family exists then it's family else it's individual
+            // There's only one number
+            // if family exists then it's family else it's individual
             if (fam != -1) {
                 capacityFam = Integer.parseInt(cap1);
-                capacityInd = 0;
+                capacityInd = DEFAULT_CAPACITY;
             } else {
-                capacityFam = 0;
+                capacityFam = DEFAULT_CAPACITY;
                 capacityInd = Integer.parseInt(cap1);
             }
         }
+
         vacancyFam = capacityFam;
         vacancyInd = capacityInd;
     }
@@ -243,8 +243,10 @@ public class Shelter {
      *
      * @return the vacancy string
      */
-    public String getVacancy() { return "Spots remaining: " + this.getVacancyFam() + " family beds, "
-            + this.getVacancyInd() + " individual beds.";}
+    public String getVacancy() {
+        return "Spots remaining: " + vacancyFam + " family beds, "
+            + vacancyInd + " individual beds.";
+    }
 
     /**
      * String representation of a shelter
