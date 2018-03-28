@@ -33,16 +33,18 @@ public class ShelterServiceProvider {
                 while ((row = reader.readNext()) != null) {
                     try {
                         String name = row[1];
-                        String capacityInd = row[2]; // TODO parse out individual and family
-                        String restrictions = row[3];
-                        double longitude = Double.parseDouble(row[4]);
-                        double latitude = Double.parseDouble(row[5]);
-                        String address = row[6];
-                        String notes = row[7];
-                        String phone = row[8];
+                        int capacityInd = Integer.parseInt(row[2]);
+                        int capacityFamily = Integer.parseInt(row[3]);
+                        String restrictions = row[4];
+                        double longitude = Double.parseDouble(row[5]);
+                        double latitude = Double.parseDouble(row[6]);
+                        String address = row[7];
+                        String notes = row[8];
+                        String phone = row[9];
                         shelterManager.addShelter(new Shelter(
                                 name,
-                                setCapacity(capacityInd),
+                                capacityInd,
+                                capacityFamily,
                                 restrictions,
                                 longitude,
                                 latitude,
@@ -71,17 +73,5 @@ public class ShelterServiceProvider {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();
         load(context, adb);
-    }
-
-    /**
-     * @params capacity string
-     * @return the adjusted capacity string, sets it to "unspecified" if it is empty
-     */
-    public static String setCapacity(String capacity) {
-        if (capacity.equals("")) {
-            return "unspecified";
-        } else {
-            return capacity;
-        }
     }
 }
