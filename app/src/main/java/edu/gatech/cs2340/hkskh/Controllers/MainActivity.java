@@ -16,6 +16,8 @@ import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
+import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
+import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         this.state = (Application) getApplication();
 
         UserManager userManager = new UserManager(adb);
+        ShelterManager shelterManager = new ShelterManager(adb);
 
         final int userId = state.getCurrentUserId();
         final User user = userManager.findById(userId);
@@ -57,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         nameText.setText("Signed in as: " + user.getUsername());
 
         if (user.isCheckedIn()) {
-            statusText.setText("Currently checked in to shelter with ID " + user.getShelterId()
+            Shelter shelter = shelterManager.findById(user.getShelterId());
+            statusText.setText("Currently checked in to shelter " + shelter.getName() + " (" + shelter.getId() + ") "
                     + "\n\nFamily spaces reserved: " + user.getNumFamily()
                     + "\n\nIndividual spaces reserved: " + user.getNumInd());
         } else {

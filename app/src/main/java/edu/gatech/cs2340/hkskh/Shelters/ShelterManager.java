@@ -32,7 +32,7 @@ public class ShelterManager {
      * @param key they key of the shelter to be found
      * @return the shelter they request, or if it doesn't exist return null
      */
-    public Shelter getShelter(int key) {
+    public Shelter findById(int key) {
         Shelter shelter = adb.shelterDao().findShelterById(key);
         return shelter;
     }

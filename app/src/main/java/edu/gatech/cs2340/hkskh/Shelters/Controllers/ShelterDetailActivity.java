@@ -57,7 +57,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Use passed id from intent to select correct shelter
         final int shelterKey = getIntent().getIntExtra("shelterId", 0 );
-        final Shelter selected = shelterManager.getShelter(shelterKey);
+        final Shelter selected = shelterManager.findById(shelterKey);
 
         // Get user from state
         final int userId = state.getCurrentUserId();
@@ -134,7 +134,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 } else if (count > (selected.getVacancyFam()) && bedType == BedType.FAMILY){
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
                 } else if (shelterId != selectedShelterId && shelterId != -1){
-                    String currentName = shelterManager.getShelter(shelterId).getName();
+                    String currentName = shelterManager.findById(shelterId).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
                     shelterManager.updateVacancy(selected, bedType, -count);
@@ -176,7 +176,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 } else if (count > user.getNumBeds(BedType.FAMILY) && bedType == BedType.FAMILY) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
                 } else if (user.getShelterId() != selectedShelterId){
-                    String currentName = shelterManager.getShelter(user.getShelterId()).getName();
+                    String currentName = shelterManager.findById(user.getShelterId()).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
                     shelterManager.updateVacancy(selected, bedType, count);
