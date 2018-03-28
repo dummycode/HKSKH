@@ -84,8 +84,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Set the textviews to show the specific info for the selected shelter
         name.setText(selected.getName());
-        capacity.setText("Capacity: " + selected.getCapacityFam() + " Family rooms, " + selected.getCapacityInd()
-            + " Individual rooms");
+        capacity.setText("Capacity: " + selected.getCapacityFam() + " family rooms, " + selected.getCapacityInd()
+            + " individual rooms");
         gender.setText("Genders/Restrictions: " + selected.getRestrictions());
         longitude.setText("Longitude: " + selected.getLongitude());
         latitude.setText("Latitude: " + selected.getLatitude());
@@ -141,6 +141,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
                     userManager.checkIn(user, selectedShelterId, count, bedType);
 
                     vacancies.setText(selected.getVacancy());
+
+                    Toast.makeText(getApplicationContext(), "Checked into " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -181,6 +183,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
                     userManager.checkOut(user, count, bedType);
 
                     vacancies.setText(selected.getVacancy());
+
+                    Toast.makeText(getApplicationContext(), "Checked out of " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
                 }
             }
         });

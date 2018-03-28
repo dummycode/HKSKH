@@ -16,9 +16,6 @@ public class Shelter {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "capacityString")
-    private String capacityString;
-
     @ColumnInfo(name = "capacityInd")
     private int capacityInd;
 
@@ -56,7 +53,8 @@ public class Shelter {
      *  Constructor that initiates all the data.
      *
      *  @param name the name of the shelter
-     *  @param capacityString the string of capacity to break down
+     *  @param capacityInd the individual capacity of the shelter
+     *  @param capacityFam the family capacity of the shelter
      *  @param restrictions the restrictions of the shelter
      *  @param longitude the longitude of the shelter
      *  @param latitude the latitude of the shelter
@@ -64,17 +62,29 @@ public class Shelter {
      *  @param notes special considerations and such
      *  @param phoneNumber the contact info of the shelter
      */
-    public Shelter(String name, String capacityString, String restrictions,
-                   double longitude, double latitude, String address, String notes, String phoneNumber) {
+    public Shelter(
+            String name,
+            int capacityInd,
+            int capacityFam,
+            String restrictions,
+            double longitude,
+            double latitude,
+            String address,
+            String notes,
+            String phoneNumber
+    ) {
         this.name = name;
-        this.capacityString = capacityString;
-        this.translateCapacity(capacityString);
+        this.capacityInd = capacityInd;
+        this.capacityFam = capacityFam;
         this.restrictions = restrictions;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phoneNumber;
+
+        this.vacancyInd = capacityInd;
+        this.vacancyFam = capacityFam;
     }
 
 
@@ -92,14 +102,6 @@ public class Shelter {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCapacityString() {
-        return this.capacityString;
-    }
-
-    public void setCapacityString(String capacityString) {
-        this.capacityString = capacityString;
     }
 
     public int getCapacityInd() {
@@ -182,61 +184,6 @@ public class Shelter {
         this.vacancyFam = vacancyFam;
     }
 
-
-    /**
-     * Translate the capacity string into family capacity and individual capacity
-     */
-    private void translateCapacity(String capacityString) {
-        String cap1 = "";
-        String cap2 = "";
-
-        int fam = capacityString.lastIndexOf("famil");
-        int a = 0;
-        int first = -1;
-        int second = -1;
-
-        for (int i = 0; i < capacityString.length(); i++) {
-            // the first variable will be concatenated if the number exists
-            if (Character.isDigit(capacityString.charAt(i)) && a == 0) {
-                if (first == -1) {
-                    first = i;
-                }
-                cap1 = cap1 + capacityString.charAt(i);
-                // if the thing is no longer a digit stop adding and sign that there is a break
-            } else if (!Character.isDigit(capacityString.charAt(i)) && a == 0) {
-                a++;
-                // if this isn't the first number then this must be a separate number
-            } else if (Character.isDigit(capacityString.charAt(i)) && a != 0) {
-                if (second == -1) {
-                    second = i;
-                }
-                cap2 = cap2 + capacityString.charAt(i);
-            }
-        }
-
-        if (first == -1) {
-            // No number at all, does not specify the capacity at all
-            capacityInd = DEFAULT_CAPACITY;
-            capacityFam = DEFAULT_CAPACITY;
-        } else if (second != -1) {
-            // if there are two variables and the substring famil is between them, then the first number must be family
-            capacityFam = Integer.parseInt(cap1);
-            capacityInd = Integer.parseInt(cap2);
-        } else {
-            // There's only one number
-            // if family exists then it's family else it's individual
-            if (fam != -1) {
-                capacityFam = Integer.parseInt(cap1);
-                capacityInd = DEFAULT_CAPACITY;
-            } else {
-                capacityFam = DEFAULT_CAPACITY;
-                capacityInd = Integer.parseInt(cap1);
-            }
-        }
-
-        vacancyFam = capacityFam;
-        vacancyInd = capacityInd;
-    }
 
     /**
      * Return the vacancies a digestible string
