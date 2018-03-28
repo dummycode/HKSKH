@@ -84,7 +84,7 @@ public class Shelter {
         this.phoneNumber = phoneNumber;
 
         this.vacancyInd = capacityInd;
-        this.capacityFam = capacityFam;
+        this.vacancyFam = capacityFam;
     }
 
 
