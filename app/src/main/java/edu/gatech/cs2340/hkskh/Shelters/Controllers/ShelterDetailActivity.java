@@ -15,28 +15,35 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
+import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
-
+/**
+ * Created by henry on 3/26/18.
+ */
 public class ShelterDetailActivity extends AppCompatActivity {
 
-    private AppDatabase mdb;
+    private AppDatabase adb;
+    private Application state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        this.state = (Application) getApplication();
+
 
         // Instantiate a UserManager and manage the check in and check out
-        final UserManager userManager = new UserManager(this.mdb);
+        final UserManager userManager = new UserManager(this.adb);
         // Instantiate a ShelterManager to gain access to the correct schelter
-        final ShelterManager shelterManager = new ShelterManager(this.mdb);
+        final ShelterManager shelterManager = new ShelterManager(this.adb);
 
         setContentView(R.layout.activity_shelter_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,10 +55,13 @@ public class ShelterDetailActivity extends AppCompatActivity {
         Button checkIn = findViewById(R.id.button4);
         Button checkOut = findViewById(R.id.button5);
 
-        // Use passed hashcode from intent to gain access to correct shelter
+        // Use passed id from intent to select correct shelter
         final int shelterKey = getIntent().getIntExtra("shelterId", 0 );
         final Shelter selected = shelterManager.getShelter(shelterKey);
-        final String userName = this.getIntent().getStringExtra("Username");
+
+        // Get user from state
+        final int userId = state.getCurrentUserId();
+        final User user = userManager.findById(userId);
 
         // Initialize spinner
         final Spinner vacanSpinner = findViewById(R.id.spinner);
@@ -115,19 +125,22 @@ public class ShelterDetailActivity extends AppCompatActivity {
                     return;
                 }
 
+                int shelterId = user.getShelterId();
+
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
                 } else if (count > (selected.getVacancyInd()) && bedType == BedType.INDIVIDUAL) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
                 } else if (count > (selected.getVacancyFam()) && bedType == BedType.FAMILY){
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if (userManager.getShelterId(userName) != selectedShelterId && userManager.getShelterId(userName) != -1){
-                    String currentName = shelterManager.getShelter(userManager.getShelterId(userName)).getName();
+                } else if (shelterId != selectedShelterId && shelterId != -1){
+                    String currentName = shelterManager.getShelter(shelterId).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
-                    shelterManager.updateVacancy(selected.getId(), bedType, -count);
-                    vacancies.setText(shelterManager.getShelter(selectedShelterId).getVacancy());
-                    userManager.checkIn(userName, selectedShelterId, count, bedType);
+                    shelterManager.updateVacancy(selected, bedType, -count);
+                    userManager.checkIn(user, selectedShelterId, count, bedType);
+
+                    vacancies.setText(selected.getVacancy());
                 }
             }
         });
@@ -156,17 +169,18 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > userManager.getNumBeds(userName, BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
+                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out.", Toast.LENGTH_LONG).show();
-                } else if (count > userManager.getNumBeds(userName, BedType.FAMILY) && bedType == BedType.FAMILY) {
+                } else if (count > user.getNumBeds(BedType.FAMILY) && bedType == BedType.FAMILY) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
-                } else if (userManager.getShelterId(userName) != selectedShelterId){
-                    String currentName = shelterManager.getShelter(userManager.getShelterId(userName)).getName();
+                } else if (user.getShelterId() != selectedShelterId){
+                    String currentName = shelterManager.getShelter(user.getShelterId()).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
-                    shelterManager.updateVacancy(selectedShelterId, bedType, count);
-                    vacancies.setText(shelterManager.getShelter(selectedShelterId).getVacancy());
-                    userManager.checkOut(userName, count, bedType);
+                    shelterManager.updateVacancy(selected, bedType, count);
+                    userManager.checkOut(user, count, bedType);
+
+                    vacancies.setText(selected.getVacancy());
                 }
             }
         });
@@ -176,7 +190,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (previous.equals("full list")) {
-                    startActivity(new Intent(view.getContext(), ShelterListActivity.class).putExtra("Username", userName));
+                    startActivity(new Intent(view.getContext(), ShelterListActivity.class));
                 } else {
                     startActivity(filteredList);
                 }

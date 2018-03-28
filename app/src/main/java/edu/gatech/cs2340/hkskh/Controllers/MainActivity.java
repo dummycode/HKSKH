@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Arrays;
 
+import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
@@ -20,7 +21,8 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppDatabase mdb;
+    private AppDatabase adb;
+    private Application state;
 
     // The widgets that form the search function and the button that goes to the full list
     private Button searchButton;
@@ -35,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
-        final UserManager userManager = new UserManager(this.mdb);
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        this.state = (Application) getApplication();
 
-        final String username = this.getIntent().getStringExtra("Username");
+        UserManager userManager = new UserManager(adb);
+
+        final int userId = state.getCurrentUserId();
+        final User user = userManager.findById(userId);
+
 
         // Search button, button to shelter, and spinner
         searchButton = findViewById(R.id.button2);
@@ -47,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         nameText = findViewById(R.id.main_text_name);
         statusText = findViewById(R.id.main_status_text);
-        User user = userManager.findByUsername(username);
 
-        nameText.setText("Signed in as: " + username);
+        nameText.setText("Signed in as: " + user.getUsername());
+
         if (user.isCheckedIn()) {
             statusText.setText("Currently checked in to shelter with ID " + user.getShelterId()
                     + "\n\nFamily spaces reserved: " + user.getNumFamily()
@@ -69,9 +75,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
+                state.setCurrentUserId(-1);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
         });
+
         // When search button is clicked, it goes to search
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 //passes on the type of search into the search activity
                 Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
                         .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
-                myIntent.putExtra("Username", username);
                 startActivity(myIntent);
             }
         });
@@ -89,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,
-                        ShelterListActivity.class).putExtra("Username", username));
+                        ShelterListActivity.class));
             }
         });
         }

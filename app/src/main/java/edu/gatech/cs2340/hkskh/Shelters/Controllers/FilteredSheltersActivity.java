@@ -26,8 +26,7 @@ import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 
 public class FilteredSheltersActivity extends AppCompatActivity {
 
-    private String userName;
-    private AppDatabase mdb;
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +35,8 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
 
-        userName = this.getIntent().getStringExtra("Username");
         RecyclerView filteredList = (RecyclerView) findViewById(R.id.filtered_recycler);
         setupRecyclerView(filteredList);
 
@@ -50,13 +48,13 @@ public class FilteredSheltersActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        SearchService search = new SearchService(this.mdb);
+        SearchService search = new SearchService(this.adb);
 
         // Get the desired search type and filter
         String searchRequested = this.getIntent().getStringExtra("Search Type");
@@ -138,7 +136,6 @@ public class FilteredSheltersActivity extends AppCompatActivity {
                     // Pass along necessary data
                     intent.putExtra("shelterId", holder.shelter.getId());
                     intent.putExtra("Previous Screen", "filtered list");
-                    intent.putExtra("Username", userName);
                     intent.putExtra("Search Type", searchType);
                     intent.putExtra("Filter", filter);
 

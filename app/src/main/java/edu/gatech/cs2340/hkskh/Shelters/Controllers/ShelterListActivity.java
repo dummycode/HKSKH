@@ -25,16 +25,15 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class ShelterListActivity extends AppCompatActivity {
-    private String userName;
-    private AppDatabase mdb;
+
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
 
-        userName = this.getIntent().getStringExtra("Username");
         setContentView(R.layout.activity_shelter_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,13 +49,13 @@ public class ShelterListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        ShelterManager shelterManager = new ShelterManager(this.mdb);
+        ShelterManager shelterManager = new ShelterManager(this.adb);
         Collection<Shelter> values = shelterManager.getAll();
         ArrayList<Shelter> shelterList = new ArrayList<>(values);
         recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelterList));
@@ -121,7 +120,6 @@ public class ShelterListActivity extends AppCompatActivity {
                         // Pass along data
                         intent.putExtra("shelterId", holder.shelter.getId());
                         intent.putExtra("Previous Screen", "full list");
-                        intent.putExtra("Username", userName);
 
                         // Now just display the new window
                         context.startActivity(intent);

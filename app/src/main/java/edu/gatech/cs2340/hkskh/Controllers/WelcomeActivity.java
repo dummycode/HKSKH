@@ -14,14 +14,14 @@ import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private AppDatabase mdb;
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        this.mdb = AppDatabase.getDatabase(getApplicationContext());
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
 
         Button b1, b2;
         b1 = findViewById(R.id.logButton);
@@ -39,7 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        ShelterServiceProvider.load(getBaseContext(), mdb);
+        ShelterServiceProvider.load(getBaseContext(), adb);
     }
 
     @Override
