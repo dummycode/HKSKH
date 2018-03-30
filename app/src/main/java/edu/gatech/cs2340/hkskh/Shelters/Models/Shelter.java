@@ -4,12 +4,14 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by baohd on 2/26/2018.
  */
 @Entity(tableName = "shelters")
-public class Shelter {
+public class Shelter implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -85,6 +87,22 @@ public class Shelter {
 
         this.vacancyInd = capacityInd;
         this.vacancyFam = capacityFam;
+    }
+
+    public Shelter(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        capacityString = in.readString();
+        capacityInd = in.readInt();
+        capacityFam = in.readInt();
+        restrictions = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+        address = in.readString();
+        notes = in.readString();
+        phoneNumber = in.readString();
+        vacancyInd = in.readInt();
+        vacancyFam = in.readInt();
     }
 
 
@@ -203,5 +221,37 @@ public class Shelter {
     @Override
     public String toString() {
         return this.id + " : " + this.name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
+        public Shelter createFromParcel(Parcel in) {
+            return new Shelter(in);
+        }
+
+        public Shelter[] newArray(int size) {
+            return new Shelter[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(capacityString);
+        dest.writeInt(capacityInd);
+        dest.writeInt(capacityFam);
+        dest.writeString(restrictions);
+        dest.writeDouble(longitude);
+        dest.writeDouble(latitude);
+        dest.writeString(address);
+        dest.writeString(notes);
+        dest.writeString(phoneNumber);
+        dest.writeInt(vacancyInd);
+        dest.writeInt(vacancyFam);
     }
 }

@@ -1,8 +1,5 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,11 +10,10 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 /**
  * Created by baohd on 3/5/2018.
  */
-
 public class SearchService {
 
     /**
-     * list of shelters
+     * List of shelters
      */
     private List<Shelter> shelters;
 
