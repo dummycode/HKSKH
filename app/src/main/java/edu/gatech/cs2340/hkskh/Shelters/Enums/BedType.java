@@ -6,13 +6,26 @@ package edu.gatech.cs2340.hkskh.Shelters.Enums;
 public enum BedType {
     INDIVIDUAL(0), FAMILY(1);
 
-    private int code;
+    private final int code;
     private String bedType;
 
     BedType(int code) {
+        switch (code) {
+            case 0:
+                bedType = "individual";
+                break;
+            case 1:
+                bedType = "family";
+                break;
+        }
         this.code = code;
     }
 
+    /**
+     * Get the string of a bed type
+     *
+     * @return the bed type
+     */
     public String getBedType(){
         return bedType;
     }

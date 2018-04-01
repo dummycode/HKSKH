@@ -252,4 +252,8 @@ public class Shelter implements Parcelable {
         dest.writeInt(vacancyInd);
         dest.writeInt(vacancyFam);
     }
+
+    public String getMapTitle() {
+        return name + " - " + phoneNumber;
+    }
 }

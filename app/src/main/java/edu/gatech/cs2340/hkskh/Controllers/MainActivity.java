@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Sets up the search options spinner and loads the options in.
-        // Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
+        // Note: reminder to switch out the arrays.asList for something that is more flexible later like enum reference
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arrays.asList("name", "age", "gender"));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         searchSpinner.setAdapter(adapter);

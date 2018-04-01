@@ -9,7 +9,7 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
  * Created by Kirby on 2/16/2018.
  */
 public class UserManager {
-    private AppDatabase adb;
+    private final AppDatabase adb;
 
     /**
      * Constructor for the user manager
@@ -23,14 +23,9 @@ public class UserManager {
     /**
      * Use to validate the login credentials
      *
-     * Will return false if there is no user key, hashmap is empty, or the passed in password is incorrect
-     * Will return true if the user-pass mapping matches what is passed in
-     *
      * @param username a username, String
      * @param pass a password, String
-     * @return false if any parameter is null, user is not a valid key, or pass does not equal
-     *         the stored password of the user. True if pass matches the stored password for the user
-     *         with user as the key
+     * @return true or false based on validation of credentials
      */
     public boolean login(String username, String pass) {
         if (username == null || pass == null) {
@@ -47,8 +42,8 @@ public class UserManager {
      * @param name the name of the person trying to register
      * @param type a UserType selected by user. Either user or admin
      * @param pass a password
-     * @return false if any parameter is null, the two passwords are not equal, or a user with the
-     *         same username already exists. true if a new user is successfully added in the hashmap
+     *
+     * @return a success status
      */
     public boolean register(String username, String name, UserType type, String pass) {
         // No arguments can be null

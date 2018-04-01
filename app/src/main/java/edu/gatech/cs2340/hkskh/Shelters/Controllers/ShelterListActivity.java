@@ -49,17 +49,17 @@ public class ShelterListActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_shelter_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView shelterRecycler = (RecyclerView) findViewById(R.id.course_list_recycler);
+        RecyclerView shelterRecycler = findViewById(R.id.course_list_recycler);
         setupRecyclerView(shelterRecycler);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shelterRecycler.setLayoutManager(layoutManager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +119,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
-              textview and the string rep of a course in the other.
+              TextView and the string rep of a course in the other.
              */
             holder.nameView.setText(shelters.get(position).getName());
             holder.idView.setText("" + shelters.get(position).getId());
@@ -169,8 +169,8 @@ public class ShelterListActivity extends AppCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                nameView = (TextView) view.findViewById(R.id.shelter_list_item);
-                idView = (TextView) view.findViewById(R.id.shelter_list_id);
+                nameView = view.findViewById(R.id.shelter_list_item);
+                idView = view.findViewById(R.id.shelter_list_id);
             }
 
             @Override

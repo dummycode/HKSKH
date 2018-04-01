@@ -31,7 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         this.adb = AppDatabase.getDatabase(getApplicationContext());
@@ -40,24 +40,24 @@ public class SearchActivity extends AppCompatActivity {
         final String searchEntered = this.getIntent().getStringExtra("<Parameters>");
 
         // Set the text at top to display the previously selected search type
-        TextView searchType = (TextView) findViewById(R.id.search_type_text);
+        TextView searchType = findViewById(R.id.search_type_text);
         searchType.setText("Search Selected: " + searchEntered);
 
-        final EditText name = (EditText) findViewById(R.id.search_name_edit);
+        final EditText name = findViewById(R.id.search_name_edit);
 
         // Set up the male/female buttons
-        final RadioButton female = (RadioButton) findViewById(R.id.search_female_radio);
+        final RadioButton female = findViewById(R.id.search_female_radio);
         female.setChecked(true);
-        final RadioButton male = (RadioButton) findViewById(R.id.search_male_radio);
+        final RadioButton male = findViewById(R.id.search_male_radio);
 
-        final Spinner age = (Spinner) findViewById(R.id.search_age_spinner);
+        final Spinner age = findViewById(R.id.search_age_spinner);
 
         // Make adapter for the spinner
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 Arrays.asList("Families", "Children", "Young Adults", "Anyone"));
         age.setAdapter(ageAdapter);
 
-        Button search = (Button) findViewById(R.id.search_button_search);
+        Button search = findViewById(R.id.search_button_search);
 
         final Intent toFilteredList = new Intent(SearchActivity.this, ShelterListActivity.class);
         // Pass the search type as an extra to the next screen so we can make the list to display
@@ -68,18 +68,20 @@ public class SearchActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     ArrayList<Shelter> shelters;
                     String filter = "";
-                    if (searchEntered.equals("name")) {
-                        filter =  name.getText().toString();
-                    } else if (searchEntered.equals("gender")) {
-                        if (female.isChecked()) {
-                            filter =  "women";
-                        } else if (male.isChecked()) {
-                            filter = "men";
-                        }
-                    } else {
-                        filter = age.getSelectedItem().toString();
+                    switch (searchEntered) {
+                        case "name":
+                            filter = name.getText().toString();
+                            break;
+                        case "gender":
+                            filter = male.isChecked() ? "men" : "women";
+                            break;
+                        case "age":
+                            filter = age.getSelectedItem().toString();
+                            break;
+                        default:
+                            filter = name.getText().toString();
+                            break;
                     }
-
 
                     SearchService searchService = new SearchService(adb);
 
@@ -99,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -43,11 +43,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Instantiate a UserManager and manage the check in and check out
         final UserManager userManager = new UserManager(this.adb);
-        // Instantiate a ShelterManager to gain access to the correct schelter
+        // Instantiate a ShelterManager to gain access to the correct shelter
         final ShelterManager shelterManager = new ShelterManager(this.adb);
 
         setContentView(R.layout.activity_shelter_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final EditText amount = findViewById(R.id.editText2);
@@ -65,15 +65,15 @@ public class ShelterDetailActivity extends AppCompatActivity {
         final User user = userManager.findById(userId);
 
         // Initialize spinner
-        final Spinner vacanSpinner = findViewById(R.id.spinner);
+        final Spinner vacancySpinner = findViewById(R.id.spinner);
 
         // Sets up the search options spinner and loads the options in.
-        // Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
+        // Note: reminder to switch out the arrays.asList for something that is more flexible later like enum reference
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arrays.asList("family", "individuals"));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vacanSpinner.setAdapter(adapter);
+        vacancySpinner.setAdapter(adapter);
 
-        // Instantiate textviews to display the info
+        // Instantiate TextViews to display the info
         TextView name = findViewById(R.id.shelter_detail_name);
         TextView capacity = findViewById(R.id.shelter_detail_capacity);
         TextView gender = findViewById(R.id.shelter_detail_gender);
@@ -83,7 +83,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.shelter_detail_phone);
         final TextView vacancies = findViewById(R.id.Shelter_Detail_Vacancies);
 
-        // Set the textviews to show the specific info for the selected shelter
+        // Set the TextViews to show the specific info for the selected shelter
         name.setText(selected.getName());
         capacity.setText("Capacity: " + selected.getCapacityFam() + " family rooms, " + selected.getCapacityInd()
             + " individual rooms");
@@ -101,7 +101,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         checkIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 int selectedShelterId = selected.getId();
-                String roomChoice = vacanSpinner.getSelectedItem().toString();
+                String roomChoice = vacancySpinner.getSelectedItem().toString();
 
                 BedType bedType;
                 if (roomChoice.equals("family")) {
@@ -136,7 +136,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                     vacancies.setText(selected.getVacancy());
 
-                    Toast.makeText(getApplicationContext(), "Checked into " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Checked into " + count + " " + bedType.getBedType() + " bed(s)", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -145,7 +145,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         checkOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 int selectedShelterId = selected.getId();
-                String roomChoice = vacanSpinner.getSelectedItem().toString();
+                String roomChoice = vacancySpinner.getSelectedItem().toString();
 
                 BedType bedType;
                 if (roomChoice.equals("family")) {
@@ -178,12 +178,12 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                     vacancies.setText(selected.getVacancy());
 
-                    Toast.makeText(getApplicationContext(), "Checked out of " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Checked out of " + count + " " + bedType.getBedType() + " bed(s)", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

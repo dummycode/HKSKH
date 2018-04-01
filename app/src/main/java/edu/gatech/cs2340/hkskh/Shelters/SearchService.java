@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
@@ -14,7 +15,7 @@ public class SearchService {
     /**
      * List of shelters
      */
-    private ArrayList<Shelter> shelters;
+    private final ArrayList<Shelter> shelters;
 
     public SearchService(AppDatabase adb) {
         ShelterManager sheltersList = new ShelterManager(adb);
@@ -22,7 +23,8 @@ public class SearchService {
     }
 
     /**
-     * conducts a search based on what type of search it is, age name or gender
+     * Conducts a search based on what type of search it is, age name or gender
+     *
      * @param param the type of search to conduct
      * @param find the characteristic of the shelter user is looking for
      * @return list of shelters that fits the parameters
@@ -48,21 +50,22 @@ public class SearchService {
 
     /**
      * Looks for the shelters that fit the parameters and deletes the others which are not
+     *
      * @param name the shelter's name you are looking for
      * @return List of the shelters
      */
-    public ArrayList<Shelter> getByName(String name) {
-        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+    private ArrayList<Shelter> getByName(String name) {
+        List<Shelter> shelterList = new ArrayList<>(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
         int i = 0;
-        //if the name is the same, add it
+        // If the name is the same, add it
         while (i < shelterList.size()) {
             if (shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
                 toReturn.add(shelterList.get(i));
             }
             i++;
         }
-        // if everything was removed, the shelter doesn't exist
+        // If everything was removed, the shelter doesn't exist
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
         } else {
@@ -72,21 +75,23 @@ public class SearchService {
 
     /**
      * Search for appropriate shelter using age or gender as a parameter and return list of appropriate shelters
-     * @param restrictions the age or gender. We are searching for exact matches for the criteria of age or gender.
+     *
+     * @param restrictions the age or gender
      * @return the list of appropriate shelters
      */
-    public ArrayList<Shelter> getByAge(String restrictions) {
-        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+    private ArrayList<Shelter> getByAge(String restrictions) {
+        List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
+
         int i = 0;
-        //adds the shelter if it fits our requirements
+        // Adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
             if (shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
                 toReturn.add(shelterList.get(i));
             }
             i++;
         }
-        //if it doesn't have any shelters left then it doesn't exist
+        // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
@@ -95,14 +100,16 @@ public class SearchService {
     }
 
     /**
+     * Get a list of men shelters
      *
-     * @return a list of shelters that cater to men
+     * @return the list
      */
-    public ArrayList<Shelter> getMen() {
-        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+    private ArrayList<Shelter> getMen() {
+        List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
+
         int i = 0;
-        //adds the shelter if it fits our requirements
+        // Adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
             if (shelterList.get(i).getRestrictions().toLowerCase().contains("men")
                     && !(shelterList.get(i).getRestrictions().toLowerCase().contains("women"))) {
@@ -110,7 +117,7 @@ public class SearchService {
             }
             i++;
         }
-        //if it doesn't have any shelters left then it doesn't exist
+        // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
@@ -119,28 +126,27 @@ public class SearchService {
     }
 
     /**
+     * Get list of women shelters
      *
-     * @return a list of shelters that cater to women
+     * @return the list
      */
-    public ArrayList<Shelter> getWomen() {
-        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+    private ArrayList<Shelter> getWomen() {
+        List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
+
         int i = 0;
-        //adds the shelter if it fits our requirements
+        // Adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
             if (shelterList.get(i).getRestrictions().toLowerCase().contains("women")) {
                 toReturn.add(shelterList.get(i));
             }
             i++;
         }
-        //if it doesn't have any shelters left then it doesn't exist
+        // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.size() == 0) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
             return toReturn;
         }
     }
-
-
-
 }
