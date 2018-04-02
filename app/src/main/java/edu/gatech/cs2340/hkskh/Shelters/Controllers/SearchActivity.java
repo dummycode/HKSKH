@@ -47,6 +47,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Set up the male/female buttons
         final RadioButton female = (RadioButton) findViewById(R.id.search_female_radio);
+        female.setChecked(true);
         final RadioButton male = (RadioButton) findViewById(R.id.search_male_radio);
 
         final Spinner age = (Spinner) findViewById(R.id.search_age_spinner);
