@@ -7,7 +7,7 @@ package edu.gatech.cs2340.hkskh;
 public class Application extends android.app.Application {
 
     private int currentUserId;
-
+    
     /**
      * Get the current logged in user id
      *
