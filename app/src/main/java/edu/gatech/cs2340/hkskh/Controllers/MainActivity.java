@@ -14,6 +14,7 @@ import java.util.Arrays;
 import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Shelters.Controllers.MapsActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     // The widgets that form the search function and the button that goes to the full list
     private Button searchButton;
     private Button fullList;
+    private Button mapButton;
     private Spinner searchSpinner;
     private TextView nameText;
     private TextView statusText;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.button2);
         fullList = findViewById(R.id.button3);
         searchSpinner = findViewById(R.id.spinner1);
+        mapButton = findViewById(R.id.main_map_button);
 
         nameText = findViewById(R.id.main_text_name);
         statusText = findViewById(R.id.main_status_text);
@@ -103,5 +106,14 @@ public class MainActivity extends AppCompatActivity {
                         ShelterListActivity.class));
             }
         });
-        }
+
+        //Will send you to the maps page when ready
+        mapButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,
+                        MapsActivity.class));
+            }
+        });
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.gatech.cs2340.hkskh.Application;
@@ -95,13 +96,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Get info about what screen came before this
         final String previous = getIntent().getStringExtra("Previous Screen");
-        final Intent filteredList = new Intent(this, FilteredSheltersActivity.class);
-
-        // If the details page is to return to the filtered list, it needs the filter and type to generate the recyclerview
-        if (getIntent().getStringExtra("Previous Screen").equals("filtered list")) {
-            filteredList.putExtra("Search Type", getIntent().getStringExtra("Search Type"));
-            filteredList.putExtra("Filter", getIntent().getStringExtra("Filter"));
-        }
 
         // checkIn button updates
         checkIn.setOnClickListener(new View.OnClickListener() {
@@ -193,11 +187,13 @@ public class ShelterDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (previous.equals("full list")) {
-                    startActivity(new Intent(view.getContext(), ShelterListActivity.class));
-                } else {
-                    startActivity(filteredList);
-                }
+                Intent back = new Intent(view.getContext(), ShelterListActivity.class);
+
+                // Put the full list back into the intent
+                ArrayList<Shelter> shelters = getIntent().getParcelableArrayListExtra("shelters");
+                back.putParcelableArrayListExtra("shelters", shelters);
+
+                startActivity(back);
             }
         });
 

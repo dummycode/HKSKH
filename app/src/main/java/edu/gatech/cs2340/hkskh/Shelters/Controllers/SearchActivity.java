@@ -13,12 +13,19 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
+import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 
 public class SearchActivity extends AppCompatActivity {
+
+    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,8 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
 
         // Get the search type that the user chose on the last screen
         final String searchEntered = this.getIntent().getStringExtra("<Parameters>");
@@ -49,28 +58,43 @@ public class SearchActivity extends AppCompatActivity {
 
         Button search = (Button) findViewById(R.id.search_button_search);
 
-        final Intent toFilteredList = new Intent(SearchActivity.this, FilteredSheltersActivity.class);
+        final Intent toFilteredList = new Intent(SearchActivity.this, ShelterListActivity.class);
         // Pass the search type as an extra to the next screen so we can make the list to display
         toFilteredList.putExtra("Search Type", searchEntered);
 
         // Make sure to pass the filter to the next screen as an extra because we need it to generate the list
         search.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
+                    ArrayList<Shelter> shelters;
+                    String filter = "";
                     if (searchEntered.equals("name")) {
-                        toFilteredList.putExtra("Filter", name.getText().toString());
-                        startActivity(toFilteredList);
+                        filter =  name.getText().toString();
                     } else if (searchEntered.equals("gender")) {
                         if (female.isChecked()) {
-                            toFilteredList.putExtra("Filter", "women");
-                            startActivity(toFilteredList);
+                            filter =  "women";
                         } else if (male.isChecked()) {
-                            toFilteredList.putExtra("Filter", "men");
-                            startActivity(toFilteredList);
+                            filter = "men";
                         }
                     } else {
-                        toFilteredList.putExtra("Filter", age.getSelectedItem().toString());
-                        startActivity(toFilteredList);
+                        filter = age.getSelectedItem().toString();
                     }
+
+
+                    SearchService searchService = new SearchService(adb);
+
+                    // Put in try-catch because the search methods throw exceptions
+                    try {
+                        shelters = searchService.searchChoices(searchEntered, filter);
+                    } catch (IllegalArgumentException exception){
+                        shelters = new ArrayList<>();
+                    } catch (NoSuchElementException exception) {
+                        shelters = new ArrayList<>();
+                    }
+
+                    // Pass the search type as an extra to the next screen so we can make the list to display
+                    toFilteredList.putParcelableArrayListExtra("shelters", shelters);
+
+                    startActivity(toFilteredList);
                 }
         });
 
