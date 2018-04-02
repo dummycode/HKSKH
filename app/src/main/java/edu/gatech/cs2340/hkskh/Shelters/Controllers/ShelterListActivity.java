@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,17 +20,34 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
-import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class ShelterListActivity extends AppCompatActivity {
-    private String userName;
+
+    private AppDatabase adb;
+    private ArrayList<Shelter> shelters;
+
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userName = this.getIntent().getStringExtra("Username");
+
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
+
+        // Retrieve the database
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
+        ShelterManager shelterManager = new ShelterManager(adb);
+
+        // Get shelters from intent
+        if (getIntent().hasExtra("shelters")) {
+            this.shelters = getIntent().getParcelableArrayListExtra("shelters");
+        } else {
+            this.shelters = new ArrayList(shelterManager.getAll());
+        }
+
         setContentView(R.layout.activity_shelter_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,32 +63,36 @@ public class ShelterListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MainActivity.class).putExtra("Username", userName));
+                startActivity(new Intent(view.getContext(), MainActivity.class));
+            }
+        });
+
+        AppCompatButton map = findViewById(R.id.map);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent toFilteredList = new Intent(ShelterListActivity.this, MapsActivity.class);
+                // Pass the search type as an extra to the next screen so we can make the list to display
+                toFilteredList.putParcelableArrayListExtra("shelters", shelters);
+
+                startActivity(toFilteredList);
             }
         });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        ShelterManager shelters = new ShelterManager();
-        Collection<Shelter> values = shelters.getAll();
-        ArrayList<Shelter> shelterList = new ArrayList<>(values);
-        recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelterList));
+        recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelters));
     }
 
     public class SimpleShelterRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleShelterRecyclerViewAdapter.ViewHolder> {
 
         /**
-         * Collection of the items to be shown in this list.
-         */
-        private final List<Shelter> shelterList;
-
-        /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleShelterRecyclerViewAdapter(List<Shelter> items) {
-            shelterList = items;
+        public SimpleShelterRecyclerViewAdapter(ArrayList<Shelter> items) {
+            shelters = items;
         }
 
         @Override
@@ -93,14 +114,15 @@ public class ShelterListActivity extends AppCompatActivity {
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
              */
-            //start by getting the element at the correct position
-            holder.shelter = shelterList.get(position);
+            // Start by getting the element at the correct position
+            holder.shelter = shelters.get(position);
+
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.nameView.setText("" + ((Shelter)(shelterList.get(position))).getName());
-            holder.idView.setText("" + ((Shelter)shelterList.get(position)).getKey());
+            holder.nameView.setText(shelters.get(position).getName());
+            holder.idView.setText("" + shelters.get(position).getId());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -108,19 +130,19 @@ public class ShelterListActivity extends AppCompatActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        //on a phone, we need to change windows to the detail view
+                        // On a phone, we need to change windows to the detail view
                         Context context = v.getContext();
-                        //create our new intent with the new screen (activity)
+                        // Create our new intent with the new screen (activity)
                         Intent intent = new Intent(context, ShelterDetailActivity.class);
-                        /*
-                            pass along the id of the course so we can retrieve the correct data in
-                            the next window
-                         */
-                        intent.putExtra("shelter hash key", ((Shelter) holder.shelter).hashCode());
-                        intent.putExtra("Previous Screen", "full list");
-                        intent.putExtra("Username", userName);
 
-                        //now just display the new window
+                        // Pass along data
+                        intent.putExtra("shelterId", holder.shelter.getId());
+                        intent.putExtra("Previous Screen", "full list");
+
+                        // Pass the search type as an extra to the next screen so we pass it back
+                        intent.putParcelableArrayListExtra("shelters", shelters);
+
+                        // Now just display the new window
                         context.startActivity(intent);
 
                 }
@@ -129,7 +151,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return shelterList.size();
+            return shelters.size();
         }
 
         /**
@@ -140,8 +162,8 @@ public class ShelterListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView idView;
             public final TextView nameView;
+            public final TextView idView;
             public Shelter shelter;
 
             public ViewHolder(View view) {

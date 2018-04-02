@@ -1,27 +1,23 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by baohd on 3/5/2018.
  */
-
 public class SearchService {
 
     /**
-     * list of shelters
+     * List of shelters
      */
-    private List<Shelter> shelters;
+    private ArrayList<Shelter> shelters;
 
-    public SearchService() {
-        ShelterManager sheltersList = new ShelterManager();
+    public SearchService(AppDatabase adb) {
+        ShelterManager sheltersList = new ShelterManager(adb);
         shelters = new ArrayList(sheltersList.getAll());
     }
 
@@ -31,7 +27,7 @@ public class SearchService {
      * @param find the characteristic of the shelter user is looking for
      * @return list of shelters that fits the parameters
      */
-    public List<Shelter> searchChoices(String param, String find) {
+    public ArrayList<Shelter> searchChoices(String param, String find) {
         if (param.toLowerCase().equals("name")) {
             return this.getByName(find);
         } else if (param.toLowerCase().equals("age")) {
@@ -55,9 +51,9 @@ public class SearchService {
      * @param name the shelter's name you are looking for
      * @return List of the shelters
      */
-    public List<Shelter> getByName(String name) {
-        List<Shelter> shelterList = new ArrayList(shelters);
-        List<Shelter> toReturn = new ArrayList<>();
+    public ArrayList<Shelter> getByName(String name) {
+        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+        ArrayList<Shelter> toReturn = new ArrayList<>();
         int i = 0;
         //if the name is the same, add it
         while (i < shelterList.size()) {
@@ -79,9 +75,9 @@ public class SearchService {
      * @param restrictions the age or gender. We are searching for exact matches for the criteria of age or gender.
      * @return the list of appropriate shelters
      */
-    public List<Shelter> getByAge(String restrictions) {
-        List<Shelter> shelterList = new ArrayList(shelters);
-        List<Shelter> toReturn = new ArrayList<>();
+    public ArrayList<Shelter> getByAge(String restrictions) {
+        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+        ArrayList<Shelter> toReturn = new ArrayList<>();
         int i = 0;
         //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
@@ -102,9 +98,9 @@ public class SearchService {
      *
      * @return a list of shelters that cater to men
      */
-    public List<Shelter> getMen() {
-        List<Shelter> shelterList = new ArrayList(shelters);
-        List<Shelter> toReturn = new ArrayList<>();
+    public ArrayList<Shelter> getMen() {
+        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+        ArrayList<Shelter> toReturn = new ArrayList<>();
         int i = 0;
         //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {
@@ -126,9 +122,9 @@ public class SearchService {
      *
      * @return a list of shelters that cater to women
      */
-    public List<Shelter> getWomen() {
-        List<Shelter> shelterList = new ArrayList(shelters);
-        List<Shelter> toReturn = new ArrayList<>();
+    public ArrayList<Shelter> getWomen() {
+        ArrayList<Shelter> shelterList = new ArrayList(shelters);
+        ArrayList<Shelter> toReturn = new ArrayList<>();
         int i = 0;
         //adds the shelter if it fits our requirements
         while (i < shelterList.size()) {

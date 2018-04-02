@@ -1,32 +1,62 @@
 package edu.gatech.cs2340.hkskh.Shelters.Models;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by baohd on 2/26/2018.
  */
-public class Shelter {
-    private int key;
+@Entity(tableName = "shelters")
+public class Shelter implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
-    private String capacityString;
+
+    @ColumnInfo(name = "capacityInd")
     private int capacityInd;
+
+    @ColumnInfo(name = "capacityFam")
     private int capacityFam;
+
+    @ColumnInfo(name = "restrictions")
     private String restrictions;
+
+    @ColumnInfo(name = "longitude")
     private double longitude;
+
+    @ColumnInfo(name = "latitude")
     private double latitude;
+
+    @ColumnInfo(name = "address")
     private String address;
+
+    @ColumnInfo(name = "notes")
     private String notes;
+
+    @ColumnInfo(name = "phoneNumber")
     private String phoneNumber;
-    private int vacanInd;
-    private int vacanFam;
+
+    @ColumnInfo(name = "vacancyInd")
+    private int vacancyInd;
+
+    @ColumnInfo(name = "vacancyFam")
+    private int vacancyFam;
+
+    @Ignore
+    private final int DEFAULT_CAPACITY = 0;
 
     /**
      *  Constructor that initiates all the data.
      *
-     *  @param key the unique id for the shelter
      *  @param name the name of the shelter
-     *  @param capacityString the string of capacity to break down
+     *  @param capacityInd the individual capacity of the shelter
+     *  @param capacityFam the family capacity of the shelter
      *  @param restrictions the restrictions of the shelter
      *  @param longitude the longitude of the shelter
      *  @param latitude the latitude of the shelter
@@ -34,201 +64,154 @@ public class Shelter {
      *  @param notes special considerations and such
      *  @param phoneNumber the contact info of the shelter
      */
-    public Shelter(int key, String name, String capacityString, String restrictions,
-                   double longitude, double latitude, String address, String notes, String phoneNumber) {
-        this.key = key;
+    public Shelter(
+            String name,
+            int capacityInd,
+            int capacityFam,
+            String restrictions,
+            double longitude,
+            double latitude,
+            String address,
+            String notes,
+            String phoneNumber
+    ) {
         this.name = name;
-        this.capacityString = capacityString;
-        this.translateCapacity();
+        this.capacityInd = capacityInd;
+        this.capacityFam = capacityFam;
         this.restrictions = restrictions;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phoneNumber;
-        this.vacanFam = capacityFam;
-        this.vacanInd = capacityInd;
+
+        this.vacancyInd = capacityInd;
+        this.vacancyFam = capacityFam;
     }
 
-    /**
-     * @return the id of the shelter. Should never be returned to the user.
-     */
-    public int getKey() {
-        return this.key;
+    public Shelter(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        capacityString = in.readString();
+        capacityInd = in.readInt();
+        capacityFam = in.readInt();
+        restrictions = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+        address = in.readString();
+        notes = in.readString();
+        phoneNumber = in.readString();
+        vacancyInd = in.readInt();
+        vacancyFam = in.readInt();
     }
 
-    /**
-     * @return the name of shelter
-     */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return this.name;
     }
 
-    /**
-     * @return the capacity of the shelter as a string
-     */
-    public String getCapacityString() {
-        return this.capacityString;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * translate the capacity string into family capacity and individual capacity
-     */
-    private void translateCapacity() {
-        String cap1 = "";
-        String cap2 = "";
-        String capString = this.capacityString.toLowerCase();
-        int fam = capString.lastIndexOf("famil");
-        int a = 0;
-        int first = -1;
-        int second = -1;
-        for (int i = 0; i < capString.length(); i++) {
-            //the first variable will be concatenated if the number exists
-            if (Character.isDigit(capString.charAt(i)) && a == 0) {
-                if (first == -1) {
-                    first = i;
-                }
-                cap1 = cap1 + capString.charAt(i);
-                //if the thing is no longer a digit stop adding and sign that there is a break
-            } else if (!Character.isDigit(capString.charAt(i)) && a == 0) {
-                a++;
-                //if this isn't the first number then this must be a separate number
-            } else if (Character.isDigit(capString.charAt(i)) && a != 0) {
-                if (second == -1) {
-                    second = i;
-                }
-                cap2 = cap2 + capString.charAt(i);
-            }
-        }
-        if (first == -1) {
-            //no number at all, does not specify the capacity at all
-            capacityInd = 0;
-            capacityFam = 0;
-        } else if (second != -1) {
-            //if there are two variables and the substring famil is between them, then the first number must be family
-            //else the first is individual
-            if (fam < second) {
-                capacityFam = Integer.parseInt(cap1);
-                capacityInd = Integer.parseInt(cap2);
-            } else {
-                capacityFam = Integer.parseInt(cap2);
-                capacityInd = Integer.parseInt(cap1);
-            }
-
-        } else {
-            //there's only one number
-            //if family exists then it's family else it's individual
-            if (fam != -1) {
-                capacityFam = Integer.parseInt(cap1);
-                capacityInd = 0;
-            } else {
-                capacityFam = 0;
-                capacityInd = Integer.parseInt(cap1);
-            }
-        }
-        vacanFam = capacityFam;
-        vacanInd = capacityInd;
-    }
-    /**
-     * @return the family room capacity
-     */
-    public int getCapacityFam() {
-        return this.capacityFam;
-    }
-
-    /**
-     * @return the individual room capacity
-     */
     public int getCapacityInd() {
         return this.capacityInd;
     }
 
-    /**
-     * @return the restrictions
-     */
+    public void setCapacityInd(int capacityInd) {
+        this.capacityInd = capacityInd;
+    }
+
+    public int getCapacityFam() {
+        return this.capacityFam;
+    }
+
+    public void setCapacityFam(int capacityFam) {
+        this.capacityFam = capacityFam;
+    }
+
     public String getRestrictions() {
         return this.restrictions;
     }
 
-    /**
-     * @return the longitude of the shelter
-     */
+    public void setRestrictions(String restrictions) {
+        this.restrictions = restrictions;
+    }
+
     public double getLongitude() {
         return this.longitude;
     }
 
-    /**
-     * @return the latitude of the shelter
-     */
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public double getLatitude() {
         return this.latitude;
     }
 
-    /**
-     * @return the address of the shelter
-     */
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
     public String getAddress() {
         return this.address;
     }
 
-    /**
-     * @return notes associated with shelter
-     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getNotes() {
         return this.notes;
     }
 
-    /**
-     * @return phone number of shelter
-     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
-    /**
-     * returns family vacancies
-     * @return number of vacancies
-     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int getVacancyInd() {
+        return this.vacancyInd;
+    }
+
+    public void setVacancyInd(int vacancyInd) {
+        this.vacancyInd = vacancyInd;
+    }
+
     public int getVacancyFam() {
-        return this.vacanFam;
+        return this.vacancyFam;
     }
 
-    /**
-     * returns individual vacancies
-     * @return individual vacancies
-     */
-    public int getVacancyInd() { return this.vacanInd; }
-
-    /**
-     * updates the vacancies by removing number of beds that are checked out
-     * @param taken the amount of beds that are checked in.
-     * @param in_Out the check to see if it's going to be checking in or checking out
-     * @param family the check if it's family or individual
-     */
-    public void updateVacancy(int taken, boolean in_Out, boolean family) {
-        if (in_Out) {
-            if (taken <= this.vacanFam && family) {
-                this.vacanFam = this.vacanFam - taken;
-            } else if (taken <= this.vacanInd && !family) {
-                //takes individual spots
-                this.vacanInd = this.vacanInd - taken;
-            }
-        } else {
-            //checking out, if the amount will be greater than capacity then stop
-            if (this.vacanFam + taken <= this.capacityFam && family) {
-                this.vacanFam += taken;
-            } else if (this.vacanInd + taken <= this.capacityInd && !family) {
-                this.vacanInd += taken;
-            }
-        }
+    public void setVacancyFam(int vacancyFam) {
+        this.vacancyFam = vacancyFam;
     }
 
+
     /**
-     * return the vacancies a digestible string
+     * Return the vacancies a digestible string
+     *
      * @return the vacancy string
      */
-    public String getVacancy() { return "Spots remaining: " +this.getVacancyFam() + " family beds, "
-            +this.getVacancyInd() + " individual beds.";}
+    public String getVacancy() {
+        return "Spots remaining: " + vacancyFam + " family beds, "
+            + vacancyInd + " individual beds.";
+    }
 
     /**
      * String representation of a shelter
@@ -237,6 +220,38 @@ public class Shelter {
      */
     @Override
     public String toString() {
-        return this.key + " : " + this.name;
+        return this.id + " : " + this.name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
+        public Shelter createFromParcel(Parcel in) {
+            return new Shelter(in);
+        }
+
+        public Shelter[] newArray(int size) {
+            return new Shelter[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(capacityString);
+        dest.writeInt(capacityInd);
+        dest.writeInt(capacityFam);
+        dest.writeString(restrictions);
+        dest.writeDouble(longitude);
+        dest.writeDouble(latitude);
+        dest.writeString(address);
+        dest.writeString(notes);
+        dest.writeString(phoneNumber);
+        dest.writeInt(vacancyInd);
+        dest.writeInt(vacancyFam);
     }
 }

@@ -23,13 +23,10 @@
         android:layout_width="87dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Search"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner1"
         app:layout_constraintVertical_bias="1.0" />
@@ -39,13 +36,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="8dp"
         android:text="Shelters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@+id/main_map_button"
+        app:layout_constraintTop_toTopOf="@+id/main_map_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
         android:id="@+id/spinner1"
@@ -111,4 +110,20 @@
         app:layout_constraintStart_toStartOf="@+id/main_text_name"
         app:layout_constraintTop_toBottomOf="@+id/main_text_name"
         app:layout_constraintVertical_bias="0.024" />
+
+    <Button
+        android:id="@+id/main_map_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

@@ -2,9 +2,7 @@ package edu.gatech.cs2340.hkskh.Shelters.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,49 +13,67 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
+import edu.gatech.cs2340.hkskh.Application;
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
+import edu.gatech.cs2340.hkskh.Users.UserManager;
 
-
+/**
+ * Created by henry on 3/26/18.
+ */
 public class ShelterDetailActivity extends AppCompatActivity {
+
+    private AppDatabase adb;
+    private Application state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        this.state = (Application) getApplication();
+
+
+        // Instantiate a UserManager and manage the check in and check out
+        final UserManager userManager = new UserManager(this.adb);
+        // Instantiate a ShelterManager to gain access to the correct schelter
+        final ShelterManager shelterManager = new ShelterManager(this.adb);
+
         setContentView(R.layout.activity_shelter_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final EditText amount = findViewById(R.id.editText2);
-        //set up the checkout button
-        Button checkin = findViewById(R.id.button4);
+
+        // Set up the check in/out buttons
+        Button checkIn = findViewById(R.id.button4);
         Button checkOut = findViewById(R.id.button5);
-        //Instantiate a ShelterManager to gain access to the correct schelter
-        ShelterManager shelters = new ShelterManager();
-        final Shelter selected;
-        //Use passed hashcode from intent to gain access to correct shelter
-        int shelterKey = getIntent().getIntExtra("shelter hash key", 0 );
-        selected = (Shelter) (shelters.getShelter(shelterKey));
 
-        //final String userName = this.getIntent().getStringExtra("Username");
-        //Instantiate a UserManager and manage the check in and check out
-        final edu.gatech.cs2340.hkskh.Users.UserManager users = new edu.gatech.cs2340.hkskh.Users.UserManager();
-        final String userName = users.getCurrUserName();
+        // Use passed id from intent to select correct shelter
+        final int shelterKey = getIntent().getIntExtra("shelterId", 0 );
+        final Shelter selected = shelterManager.findById(shelterKey);
 
-        //initialize spinner
+        // Get user from state
+        final int userId = state.getCurrentUserId();
+        final User user = userManager.findById(userId);
+
+        // Initialize spinner
         final Spinner vacanSpinner = findViewById(R.id.spinner);
 
-        //Sets up the search options spinner and loads the options in.
-        //Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
+        // Sets up the search options spinner and loads the options in.
+        // Note: reminder to switch out the arrays.aslist for something that is more flexible later like enum reference
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arrays.asList("family", "individuals"));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vacanSpinner.setAdapter(adapter);
 
-        //Instantiate textviews to display the info
+        // Instantiate textviews to display the info
         TextView name = findViewById(R.id.shelter_detail_name);
         TextView capacity = findViewById(R.id.shelter_detail_capacity);
         TextView gender = findViewById(R.id.shelter_detail_gender);
@@ -67,10 +83,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.shelter_detail_phone);
         final TextView vacancies = findViewById(R.id.Shelter_Detail_Vacancies);
 
-        //Set the textviews to show the specific info for the selected shelter
+        // Set the textviews to show the specific info for the selected shelter
         name.setText(selected.getName());
-        capacity.setText("Capacity: " + selected.getCapacityFam() + " Family rooms, " + selected.getCapacityInd()
-            + " Individual rooms");
+        capacity.setText("Capacity: " + selected.getCapacityFam() + " family rooms, " + selected.getCapacityInd()
+            + " individual rooms");
         gender.setText("Genders/Restrictions: " + selected.getRestrictions());
         longitude.setText("Longitude: " + selected.getLongitude());
         latitude.setText("Latitude: " + selected.getLatitude());
@@ -78,90 +94,109 @@ public class ShelterDetailActivity extends AppCompatActivity {
         phone.setText("Phone Number: " + selected.getPhoneNumber());
         vacancies.setText(selected.getVacancy());
 
-        //get info about what screen came before this
+        // Get info about what screen came before this
         final String previous = getIntent().getStringExtra("Previous Screen");
-        final Intent filteredList = new Intent(this, FilteredSheltersActivity.class);
-        //If the details page is to return to the filtered list, it needs the filter and type to generate the recyclerview
-        if (getIntent().getStringExtra("Previous Screen").equals("filtered list")) {
-            filteredList.putExtra("Search Type", getIntent().getStringExtra("Search Type"));
-            filteredList.putExtra("Filter", getIntent().getStringExtra("Filter"));
-        }
 
-        //checkin button updates
-        checkin.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        String roomChoice = vacanSpinner.getSelectedItem().toString();
-                        if (amount.getText().toString().isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "Please enter a " +
-                                    "number for how many beds you wish to check in", Toast.LENGTH_LONG).show();
-                        } else if (Integer.parseInt(amount.getText().toString()) <= 0) {
-                            Toast.makeText(getApplicationContext(), "Warning: Cannot enter negative or zero beds. " +
-                                    "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                        } else if (Integer.parseInt(amount.getText().toString()) > (selected.getVacancyInd()) &&
-                                roomChoice.equals("individuals")) {
-                            Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist. " +
-                                    "Please choose number less than the vacancies", Toast.LENGTH_LONG).show();
-                        } else if (Integer.parseInt(amount.getText().toString()) > (selected.getVacancyFam()) &&
-                                roomChoice.equals("family")){
-                            Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist. " +
-                                    "Please choose number less than the vacancies", Toast.LENGTH_LONG).show();
-                        } else if (users.getShelterId(userName) != selected.getKey() && users.getShelterId(userName) != -1){
-                            Toast.makeText(getApplicationContext(), "You cannot select this shelter " +
-                                    "because you are already checked in at another shelter. Please choose the shelter you are checked into.", Toast.LENGTH_LONG).show();
-                        } else {
-                            selected.updateVacancy(Integer.parseInt(amount.getText().toString()),
-                                    true, roomChoice.equals("family"));
-                            vacancies.setText(selected.getVacancy());
-                            users.checkIn(userName, selected.getKey(), Integer.parseInt(amount.getText().toString()),
-                                    roomChoice.equals("family"));
-                        }
-                    }
-                }
-        );
-        //checkout button updates vacancies
-        checkOut.setOnClickListener(new View.OnClickListener() {
+        // checkIn button updates
+        checkIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                int selectedShelterId = selected.getId();
                 String roomChoice = vacanSpinner.getSelectedItem().toString();
-                if (amount.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please enter a " +
-                            "number for how many beds you wish to check out", Toast.LENGTH_LONG).show();
-                } else if (Integer.parseInt(amount.getText().toString()) <= 0) {
-                    Toast.makeText(getApplicationContext(), "Warning: Cannot enter negative or zero beds. " +
-                            "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (Integer.parseInt(amount.getText().toString()) > users.getNumBeds(userName, false) &&
-                        roomChoice.equals("individuals")) {
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out. " +
-                            "Please choose number less than the vacancies", Toast.LENGTH_LONG).show();
-                } else if (Integer.parseInt(amount.getText().toString()) > users.getNumBeds(userName, true) &&
-                        roomChoice.equals("family")){
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out. " +
-                            "Please choose number less than the vacancies", Toast.LENGTH_LONG).show();
-                } else if (users.getShelterId(userName) != selected.getKey()){
-                    Toast.makeText(getApplicationContext(), "You cannot select this shelter " +
-                            "because you are already checked in at another shelter. Please choose the shelter you are checked into.", Toast.LENGTH_LONG).show();
+
+                BedType bedType;
+                if (roomChoice.equals("family")) {
+                    bedType = BedType.FAMILY;
                 } else {
-                    selected.updateVacancy(Integer.parseInt(amount.getText().toString()),
-                                false, roomChoice.equals("family"));
+                    bedType = BedType.INDIVIDUAL;
+                }
+
+                int count;
+
+                try {
+                    count = Integer.parseInt(amount.getText().toString());
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(getApplicationContext(), "Please enter a number", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                int shelterId = user.getShelterId();
+
+                if (count <= 0) {
+                    Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
+                } else if (count > (selected.getVacancyInd()) && bedType == BedType.INDIVIDUAL) {
+                    Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
+                } else if (count > (selected.getVacancyFam()) && bedType == BedType.FAMILY){
+                    Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
+                } else if (shelterId != selectedShelterId && shelterId != -1){
+                    String currentName = shelterManager.findById(shelterId).getName();
+                    Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
+                } else {
+                    shelterManager.updateVacancy(selected, bedType, -count);
+                    userManager.checkIn(user, selectedShelterId, count, bedType);
+
                     vacancies.setText(selected.getVacancy());
-                    users.checkOut(userName, Integer.parseInt(amount.getText().toString()),
-                            roomChoice.equals("family"));
+
+                    Toast.makeText(getApplicationContext(), "Checked into " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
                 }
             }
-        }
-        );
+        });
+
+        // checkOut button updates vacancies
+        checkOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                int selectedShelterId = selected.getId();
+                String roomChoice = vacanSpinner.getSelectedItem().toString();
+
+                BedType bedType;
+                if (roomChoice.equals("family")) {
+                    bedType = BedType.FAMILY;
+                } else {
+                    bedType = BedType.INDIVIDUAL;
+                }
+
+                int count;
+
+                try {
+                    count = Integer.parseInt(amount.getText().toString());
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(getApplicationContext(), "Please enter a number", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (count <= 0) {
+                    Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
+                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
+                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out.", Toast.LENGTH_LONG).show();
+                } else if (count > user.getNumBeds(BedType.FAMILY) && bedType == BedType.FAMILY) {
+                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
+                } else if (user.getShelterId() != selectedShelterId){
+                    String currentName = shelterManager.findById(user.getShelterId()).getName();
+                    Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
+                } else {
+                    shelterManager.updateVacancy(selected, bedType, count);
+                    userManager.checkOut(user, count, bedType);
+
+                    vacancies.setText(selected.getVacancy());
+
+                    Toast.makeText(getApplicationContext(), "Checked out of " + count + " " + bedType + " beds", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (previous.equals("full list")) {
-                    startActivity(new Intent(view.getContext(), ShelterListActivity.class).putExtra("Username", userName));
-                } else {
-                    startActivity(filteredList);
-                }
+                Intent back = new Intent(view.getContext(), ShelterListActivity.class);
+
+                // Put the full list back into the intent
+                ArrayList<Shelter> shelters = getIntent().getParcelableArrayListExtra("shelters");
+                back.putParcelableArrayListExtra("shelters", shelters);
+
+                startActivity(back);
             }
         });
 
 
     }
-
 }

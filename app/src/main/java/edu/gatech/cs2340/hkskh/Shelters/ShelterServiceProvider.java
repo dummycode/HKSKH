@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
@@ -20,8 +21,10 @@ public class ShelterServiceProvider {
     /**
      * Load data from CSV file
      */
-    public static void load(Context context) {
-        if (!ShelterManager.isLoaded) {// Load from CSV
+    public static void load(Context context, AppDatabase adb) {
+        ShelterManager shelterManager = new ShelterManager(adb);
+        if (adb.shelterDao().count() == 0) { // Load from CSV
+            System.out.println("Loading");
             try {
                 InputStream is = context.getResources().openRawResource(R.raw.shelters);
                 CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
@@ -29,19 +32,19 @@ public class ShelterServiceProvider {
                 reader.readNext(); // Dump header
                 while ((row = reader.readNext()) != null) {
                     try {
-                        int key = Integer.parseInt(row[0]);
                         String name = row[1];
-                        String capacityInd = row[2]; // TODO parse out individual and family
-                        String restrictions = row[3];
-                        double longitude = Double.parseDouble(row[4]);
-                        double latitude = Double.parseDouble(row[5]);
-                        String address = row[6];
-                        String notes = row[7];
-                        String phone = row[8];
-                        ShelterManager.addShelter(new Shelter(
-                                key,
+                        int capacityInd = Integer.parseInt(row[2]);
+                        int capacityFamily = Integer.parseInt(row[3]);
+                        String restrictions = row[4];
+                        double longitude = Double.parseDouble(row[5]);
+                        double latitude = Double.parseDouble(row[6]);
+                        String address = row[7];
+                        String notes = row[8];
+                        String phone = row[9];
+                        shelterManager.addShelter(new Shelter(
                                 name,
-                                setCapacity(capacityInd),
+                                capacityInd,
+                                capacityFamily,
                                 restrictions,
                                 longitude,
                                 latitude,
@@ -60,27 +63,15 @@ public class ShelterServiceProvider {
                 // TODO handle errors better
                 System.out.println("Dang");
             }
-            ShelterManager.isLoaded = true;
         }
     }
 
     /**
      * Clear current data and load
      */
-    public static void reload(Context context) {
-        ShelterManager.clear();
-        load(context);
-    }
-
-    /**
-     * @params capacity string
-     * @return the adjusted capacity string, sets it to "unspecified" if it is empty
-     */
-    public static String setCapacity(String capacity) {
-        if (capacity.equals("")) {
-            return "unspecified";
-        } else {
-            return capacity;
-        }
+    public static void reload(Context context, AppDatabase adb) {
+        ShelterManager shelterManager = new ShelterManager(adb);
+        shelterManager.clear();
+        load(context, adb);
     }
 }
