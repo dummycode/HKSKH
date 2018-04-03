@@ -92,7 +92,7 @@ public class Shelter implements Parcelable {
     public Shelter(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        capacityString = in.readString();
+        //capacityString = in.readString();
         capacityInd = in.readInt();
         capacityFam = in.readInt();
         restrictions = in.readString();
@@ -242,7 +242,7 @@ public class Shelter implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(capacityString);
+        //dest.writeString(capacityString);
         dest.writeInt(capacityInd);
         dest.writeInt(capacityFam);
         dest.writeString(restrictions);
