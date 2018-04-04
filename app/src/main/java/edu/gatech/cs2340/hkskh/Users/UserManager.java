@@ -27,7 +27,7 @@ public class UserManager {
      * @param pass a password, String
      * @return true or false based on validation of credentials
      */
-    public boolean login(String username, String pass) {
+    public boolean validateCredentials(String username, String pass) {
         if (username == null || pass == null) {
             return false;
         }
@@ -90,13 +90,13 @@ public class UserManager {
      * Check into rooms
      *
      * @param user the user to be updated
-     * @param key the key of the shelter
+     * @param shelterId the key of the shelter
      * @param count number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkIn(User user, int key, int count, BedType bedType) {
+    public void checkIn(User user, int shelterId, int count, BedType bedType) {
         if (user != null) {
-            user.setShelterId(key);
+            user.setShelterId(shelterId);
             user.updateBeds(bedType, count);
             adb.userDao().insert(user);
         }
@@ -106,12 +106,12 @@ public class UserManager {
      * Check out of rooms
      *
      * @param user the user to be updated
-     * @param count number of spots they want to reserve
+     * @param bedNumber number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkOut(User user, int count, BedType bedType) {
+    public void checkOut(User user, int bedNumber, BedType bedType) {
         if (user != null) {
-            user.updateBeds(bedType, -count);
+            user.updateBeds(bedType, -bedNumber);
             if (user.getNumFamily() == 0 && user.getNumInd() == 0) {
                 user.setShelterId(-1);
             }

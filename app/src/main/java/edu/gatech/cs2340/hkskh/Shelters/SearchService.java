@@ -1,5 +1,10 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Spinner;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,20 +31,22 @@ public class SearchService {
     /**
      * Conducts a search based on what type of search it is, age name or gender
      *
-     * @param param the type of search to conduct
-     * @param find the characteristic of the shelter user is looking for
+     * @param searchType the type of search to conduct
+     * @param request the characteristic of the shelter user is looking for
      * @return list of shelters that fits the parameters
      */
-    public ArrayList<Shelter> searchChoices(String param, String find) {
-        if (param.toLowerCase().equals("name")) {
-            return this.getByName(find);
-        } else if (param.toLowerCase().equals("age")) {
-            return this.getByAge(find);
-        } else if (param.toLowerCase().equals("gender")) {
-            if (find.toLowerCase().equals("men")) {
-                return this.getMen();
-            } else if (find.toLowerCase().equals("women")) {
-                return this.getWomen();
+    public ArrayList<Shelter> searchChoices(String searchType, String request) {
+        searchType = searchType.toLowerCase();
+        request = request.toLowerCase();
+        if (searchType.equals("name")) {
+            return this.getByName(request);
+        } else if (searchType.equals("age")) {
+            return this.getByAge(request);
+        } else if (searchType.equals("gender")) {
+            if (request.equals("men")) {
+                return this.getByMen();
+            } else if (request.equals("women")) {
+                return this.getByWomen();
             } else {
                 throw new IllegalArgumentException("Invalid parameter");
             }
@@ -57,20 +64,19 @@ public class SearchService {
      */
     private ArrayList<Shelter> getByName(String name) {
         List<Shelter> shelterList = new ArrayList<>(shelters);
-        ArrayList<Shelter> toReturn = new ArrayList<>();
-        int i = 0;
+        ArrayList<Shelter> results = new ArrayList<>();
+
         // If the name is the same, add it
-        while (i < shelterList.size()) {
-            if (shelterList.get(i).getName().toLowerCase().equals(name.toLowerCase())) {
-                toReturn.add(shelterList.get(i));
+        for (Shelter shelter: shelterList) {
+            if (shelter.getName().toLowerCase().equals(name.toLowerCase())) {
+                results.add(shelter);
             }
-            i++;
         }
         // If everything was removed, the shelter doesn't exist
         if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
         } else {
-            return toReturn;
+            return results;
         }
     }
 
@@ -83,21 +89,20 @@ public class SearchService {
     @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getByAge(String restrictions) {
         List<Shelter> shelterList = new ArrayList(shelters);
-        ArrayList<Shelter> toReturn = new ArrayList<>();
+        ArrayList<Shelter> results = new ArrayList<>();
 
-        int i = 0;
         // Adds the shelter if it fits our requirements
-        while (i < shelterList.size()) {
-            if (shelterList.get(i).getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
-                toReturn.add(shelterList.get(i));
+        for (Shelter shelter: shelterList) {
+            if (shelter.getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
+                results.add(shelter);
             }
-            i++;
         }
+
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
-            return toReturn;
+            return results;
         }
     }
 
@@ -107,24 +112,21 @@ public class SearchService {
      * @return the list
      */
     @SuppressWarnings("unchecked")
-    private ArrayList<Shelter> getMen() {
+    private ArrayList<Shelter> getByMen() {
         List<Shelter> shelterList = new ArrayList(shelters);
-        ArrayList<Shelter> toReturn = new ArrayList<>();
+        ArrayList<Shelter> results = new ArrayList<>();
 
-        int i = 0;
         // Adds the shelter if it fits our requirements
-        while (i < shelterList.size()) {
-            if (shelterList.get(i).getRestrictions().toLowerCase().contains("men")
-                    && !(shelterList.get(i).getRestrictions().toLowerCase().contains("women"))) {
-                toReturn.add(shelterList.get(i));
+        for (Shelter shelter: shelterList) {
+            if (shelter.getRestrictions().contains("men") && !(shelter.getRestrictions().toLowerCase().contains("women"))) {
+                results.add(shelter);
             }
-            i++;
         }
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
         } else {
-            return toReturn;
+            return results;
         }
     }
 
@@ -134,7 +136,7 @@ public class SearchService {
      * @return the list
      */
     @SuppressWarnings("unchecked")
-    private ArrayList<Shelter> getWomen() {
+    private ArrayList<Shelter> getByWomen() {
         List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> results = new ArrayList<>();
 
@@ -150,6 +152,28 @@ public class SearchService {
             throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
         } else {
             return results;
+        }
+    }
+
+    /**
+     * Sets the filter for a search given the searchType requested and the View components. Serves to
+     * move business logic out of the SearchActivity
+     *
+     * @param components an array of View objects of length 3. components[0] is an EditText, components[1] is a RadioButton
+     *                   and components[2] is a Spinner
+     * @param searchType is the type of search requested, a String
+     * @return the filter calculated based on the search requested and gathering the info from the correct UI component
+     */
+    public String setSearchFilter(View[] components, String searchType) {
+        switch (searchType) {
+            case "name":
+                return ((EditText)components[0]).getText().toString();
+            case "gender":
+                return ((RadioButton)components[1]).isChecked() ? "men" : "women";
+            case "age":
+                return ((Spinner)components[2]).getSelectedItem().toString();
+            default:
+                return ((EditText)components[0]).getText().toString();
         }
     }
 }

@@ -46,44 +46,32 @@ public class SearchActivity extends AppCompatActivity {
         final EditText name = findViewById(R.id.search_name_edit);
 
         // Set up the male/female buttons
-        final RadioButton female = findViewById(R.id.search_female_radio);
-        female.setChecked(true);
-        final RadioButton male = findViewById(R.id.search_male_radio);
+        final RadioButton femaleButton = findViewById(R.id.search_female_radio);
+        femaleButton.setChecked(true);
+        final RadioButton maleButton = findViewById(R.id.search_male_radio);
 
-        final Spinner age = findViewById(R.id.search_age_spinner);
+        final Spinner ageSpinner = findViewById(R.id.search_age_spinner);
 
         // Make adapter for the spinner
         ArrayAdapter<String> ageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 Arrays.asList("Families", "Children", "Young Adults", "Anyone"));
-        age.setAdapter(ageAdapter);
+        ageSpinner.setAdapter(ageAdapter);
 
-        Button search = findViewById(R.id.search_button_search);
+        Button searchButton = findViewById(R.id.search_button_search);
 
         final Intent toFilteredList = new Intent(SearchActivity.this, ShelterListActivity.class);
         // Pass the search type as an extra to the next screen so we can make the list to display
         toFilteredList.putExtra("Search Type", searchEntered);
 
         // Make sure to pass the filter to the next screen as an extra because we need it to generate the list
-        search.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     ArrayList<Shelter> shelters;
+                    View[] components = {name, maleButton, ageSpinner};
                     String filter;
-                    switch (searchEntered) {
-                        case "name":
-                            filter = name.getText().toString();
-                            break;
-                        case "gender":
-                            filter = male.isChecked() ? "men" : "women";
-                            break;
-                        case "age":
-                            filter = age.getSelectedItem().toString();
-                            break;
-                        default:
-                            filter = name.getText().toString();
-                            break;
-                    }
-
                     SearchService searchService = new SearchService(adb);
+
+                    filter = searchService.setSearchFilter(components, searchEntered);
 
                     // Put in try-catch because the search methods throw exceptions
                     try {

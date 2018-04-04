@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = ed1.getText().toString();
                 String password = ed2.getText().toString();
-                if (userManager.login(username, password)) {
+                if (userManager.validateCredentials(username, password)) {
                     Application state = (Application) getApplicationContext();
                     state.setCurrentUserId(userManager.findByUsername(username).getId());
                     startActivity(toMain);
