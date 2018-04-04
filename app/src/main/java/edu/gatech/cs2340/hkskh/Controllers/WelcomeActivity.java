@@ -14,16 +14,15 @@ import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
 
-        Button b1, b2;
+        Button b1;
+        Button b2;
         b1 = findViewById(R.id.logButton);
         b2 = findViewById(R.id.regButton);
         b1.setOnClickListener(new View.OnClickListener() {

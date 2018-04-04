@@ -159,7 +159,7 @@ public class User {
      * @return true if both numFamily and numInd is 0
      */
     public boolean isCheckedIn(){
-        return !(numFamily == 0 && numInd == 0);
+        return !(numFamily == 0 && (numInd == 0));
     }
 
     @Override

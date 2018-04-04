@@ -24,16 +24,9 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
     private Application state;
 
-    // The widgets that form the search function and the button that goes to the full list
-    private Button searchButton;
-    private Button fullList;
-    private Button mapButton;
-    private Spinner searchSpinner;
-    private TextView nameText;
-    private TextView statusText;
+
 
     @Override
     @SuppressWarnings("unchecked")
@@ -42,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button b1 = findViewById(R.id.outButton);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
         this.state = (Application) getApplication();
 
         UserManager userManager = new UserManager(adb);
@@ -53,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Search button, button to shelter, and spinner
-        searchButton = findViewById(R.id.button2);
-        fullList = findViewById(R.id.button3);
-        searchSpinner = findViewById(R.id.spinner1);
-        mapButton = findViewById(R.id.main_map_button);
+        Button searchButton = findViewById(R.id.button2);
+        Button fullList = findViewById(R.id.button3);
+        final Spinner searchSpinner = findViewById(R.id.spinner1);
+        Button mapButton = findViewById(R.id.main_map_button);
 
-        nameText = findViewById(R.id.main_text_name);
-        statusText = findViewById(R.id.main_status_text);
+        TextView nameText = findViewById(R.id.main_text_name);
+        TextView statusText = findViewById(R.id.main_status_text);
 
         nameText.setText("Signed in as: " + user.getUsername());
 

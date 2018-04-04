@@ -18,19 +18,22 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
 
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
-        final UserManager userManager = new UserManager(this.adb);
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
+        final UserManager userManager = new UserManager(adb);
 
         setContentView(R.layout.activity_register);
-        final EditText ed1, ed2, ed3, ed4;
-        Button b1, b2;
+        final EditText ed1;
+        final EditText ed2;
+        final EditText ed3;
+        final EditText ed4;
+        Button b1;
+        Button b2;
         final Spinner sp1;
         ed1 = findViewById(R.id.userText);
         ed2 = findViewById(R.id.passText1);

@@ -20,7 +20,6 @@ import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     private List<Shelter> shelters;
 
     @Override
@@ -58,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         final int ZOOM = 12;
 
-        mMap = googleMap;
+        GoogleMap mMap = googleMap;
 
         LatLng location;
 

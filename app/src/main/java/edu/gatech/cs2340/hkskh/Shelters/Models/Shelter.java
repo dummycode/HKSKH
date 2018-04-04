@@ -207,7 +207,7 @@ public class Shelter implements Parcelable {
      *
      * @return the vacancy string
      */
-    public String getVacancy() {
+    public CharSequence getVacancy() {
         return "Spots remaining: " + vacancyFam + " family beds, "
             + vacancyInd + " individual beds.";
     }

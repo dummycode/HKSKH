@@ -28,11 +28,11 @@ public class UserManager {
      * @return true or false based on validation of credentials
      */
     public boolean validateCredentials(String username, String pass) {
-        if (username == null || pass == null) {
+        if (username == null || (pass == null)) {
             return false;
         }
         User user = adb.userDao().findUserByUsername(username);
-        return user != null && user.getPass().equals(pass);
+        return (user != null) && (user.getPass().equals(pass));
     }
 
     /**
@@ -47,7 +47,7 @@ public class UserManager {
      */
     public boolean register(String username, String name, UserType type, String pass) {
         // No arguments can be null
-        if (username == null || name == null || type == null || pass == null) {
+        if (username == null || (name == null) || (type == null) || (pass == null)) {
             return false;
         }
         if (username.length() < 3) {
@@ -71,8 +71,7 @@ public class UserManager {
      * @return the user from the id
      */
     public User findById(int userId) {
-        User user = adb.userDao().findUserById(userId);
-        return user;
+        return adb.userDao().findUserById(userId);
     }
 
     /**
@@ -82,8 +81,7 @@ public class UserManager {
      * @return the user from the username
      */
     public User findByUsername(String username) {
-        User user = adb.userDao().findUserByUsername(username);
-        return user;
+        return adb.userDao().findUserByUsername(username);
     }
 
     /**
@@ -112,7 +110,7 @@ public class UserManager {
     public void checkOut(User user, int bedNumber, BedType bedType) {
         if (user != null) {
             user.updateBeds(bedType, -bedNumber);
-            if (user.getNumFamily() == 0 && user.getNumInd() == 0) {
+            if ((user.getNumFamily() == 0) && (user.getNumInd() == 0)) {
                 user.setShelterId(-1);
             }
             adb.userDao().insert(user);

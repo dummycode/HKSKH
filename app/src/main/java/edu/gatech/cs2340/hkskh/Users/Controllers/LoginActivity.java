@@ -13,23 +13,28 @@ import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
+/**
+ *  Handles the UI for the login screen
+ */
 public class LoginActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        adb = AppDatabase.getDatabase(getApplicationContext());
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
 
         final UserManager userManager = new UserManager(adb);
 
-        Button b1, b2;
-        final EditText ed1, ed2;
+        Button b1;
+        Button b2;
+        final EditText ed1;
+        final EditText ed2;
         ed1 = findViewById(R.id.userText);
         ed2 = findViewById(R.id.passText);
         b1 = findViewById(R.id.logButton);
@@ -46,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                 String password = ed2.getText().toString();
                 if (userManager.validateCredentials(username, password)) {
                     Application state = (Application) getApplicationContext();
-                    state.setCurrentUserId(userManager.findByUsername(username).getId());
+                    User user = userManager.findByUsername(username);
+                    state.setCurrentUserId(user.getId());
                     startActivity(toMain);
                 } else {
                     // Failed login

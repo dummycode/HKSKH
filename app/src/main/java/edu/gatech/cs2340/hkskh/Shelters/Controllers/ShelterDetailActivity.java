@@ -30,22 +30,20 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
  */
 public class ShelterDetailActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
-    private Application state;
 
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
-        this.state = (Application) getApplication();
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
+        Application state = (Application) getApplication();
 
 
         // Instantiate a UserManager and manage the check in and check out
-        final UserManager userManager = new UserManager(this.adb);
+        final UserManager userManager = new UserManager(adb);
         // Instantiate a ShelterManager to gain access to the correct shelter
-        final ShelterManager shelterManager = new ShelterManager(this.adb);
+        final ShelterManager shelterManager = new ShelterManager(adb);
 
         setContentView(R.layout.activity_shelter_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -105,7 +103,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 String roomChoice = vacancySpinner.getSelectedItem().toString();
 
                 BedType bedType;
-                if (roomChoice.equals("family")) {
+                if ("family".equals(roomChoice)) {
                     bedType = BedType.FAMILY;
                 } else {
                     bedType = BedType.INDIVIDUAL;
@@ -124,11 +122,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if ((count > (selected.getVacancyInd())) && bedType == BedType.INDIVIDUAL) {
+                } else if ((count > (selected.getVacancyInd())) && (bedType == BedType.INDIVIDUAL)) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if ((count > (selected.getVacancyFam())) && bedType == BedType.FAMILY){
+                } else if ((count > (selected.getVacancyFam())) && (bedType == BedType.FAMILY)){
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if ((shelterId != selectedShelterId) && shelterId != -1){
+                } else if ((shelterId != selectedShelterId) && (shelterId != -1)){
                     String currentName = shelterManager.findById(shelterId).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {
@@ -149,7 +147,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 String roomChoice = vacancySpinner.getSelectedItem().toString();
 
                 BedType bedType;
-                if (roomChoice.equals("family")) {
+                if ("family".equals(roomChoice)) {
                     bedType = BedType.FAMILY;
                 } else {
                     bedType = BedType.INDIVIDUAL;
@@ -166,9 +164,9 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && bedType == BedType.INDIVIDUAL) {
+                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && (bedType == BedType.INDIVIDUAL)) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out.", Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.FAMILY) && bedType == BedType.FAMILY) {
+                } else if (count > user.getNumBeds(BedType.FAMILY) && (bedType == BedType.FAMILY)) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
                 } else if (user.getShelterId() != selectedShelterId){
                     String currentName = shelterManager.findById(user.getShelterId()).getName();

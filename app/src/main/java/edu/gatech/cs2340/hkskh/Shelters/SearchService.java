@@ -6,6 +6,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,14 +39,14 @@ public class SearchService {
     public ArrayList<Shelter> searchChoices(String searchType, String request) {
         searchType = searchType.toLowerCase();
         request = request.toLowerCase();
-        if (searchType.equals("name")) {
+        if ("name".equals(searchType)) {
             return this.getByName(request);
-        } else if (searchType.equals("age")) {
+        } else if ("age".equals(searchType)) {
             return this.getByAge(request);
-        } else if (searchType.equals("gender")) {
-            if (request.equals("men")) {
+        } else if ("gender".equals(searchType)) {
+            if ("men".equals(request)) {
                 return this.getByMen();
-            } else if (request.equals("women")) {
+            } else if ("women".equals(request)) {
                 return this.getByWomen();
             } else {
                 throw new IllegalArgumentException("Invalid parameter");
@@ -63,7 +64,7 @@ public class SearchService {
      * @return List of the shelters
      */
     private ArrayList<Shelter> getByName(String name) {
-        List<Shelter> shelterList = new ArrayList<>(shelters);
+        Collection<Shelter> shelterList = new ArrayList<>(shelters);
         ArrayList<Shelter> results = new ArrayList<>();
 
         // If the name is the same, add it
@@ -88,7 +89,7 @@ public class SearchService {
      */
     @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getByAge(String restrictions) {
-        List<Shelter> shelterList = new ArrayList(shelters);
+        Collection<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> results = new ArrayList<>();
 
         // Adds the shelter if it fits our requirements
@@ -113,7 +114,7 @@ public class SearchService {
      */
     @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getByMen() {
-        List<Shelter> shelterList = new ArrayList(shelters);
+        Collection<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> results = new ArrayList<>();
 
         // Adds the shelter if it fits our requirements
@@ -137,7 +138,7 @@ public class SearchService {
      */
     @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getByWomen() {
-        List<Shelter> shelterList = new ArrayList(shelters);
+        Collection<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> results = new ArrayList<>();
 
         // Adds the shelter if it fits our requirements

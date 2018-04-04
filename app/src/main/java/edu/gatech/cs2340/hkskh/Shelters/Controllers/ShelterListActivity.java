@@ -27,15 +27,12 @@ import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
 public class ShelterListActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
     private ArrayList<Shelter> shelters;
 
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
 
         // Retrieve the database
         AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());

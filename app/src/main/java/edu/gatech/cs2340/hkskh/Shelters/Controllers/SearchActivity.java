@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class SearchActivity extends AppCompatActivity {
         final Spinner ageSpinner = findViewById(R.id.search_age_spinner);
 
         // Make adapter for the spinner
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+        SpinnerAdapter ageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 Arrays.asList("Families", "Children", "Young Adults", "Anyone"));
         ageSpinner.setAdapter(ageAdapter);
 
