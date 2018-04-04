@@ -67,7 +67,7 @@ public class SearchActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     ArrayList<Shelter> shelters;
-                    String filter = "";
+                    String filter;
                     switch (searchEntered) {
                         case "name":
                             filter = name.getText().toString();
