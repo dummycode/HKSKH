@@ -122,7 +122,7 @@ public class SearchService {
         }
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
+            throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
         } else {
             return toReturn;
         }
@@ -136,21 +136,20 @@ public class SearchService {
     @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getWomen() {
         List<Shelter> shelterList = new ArrayList(shelters);
-        ArrayList<Shelter> toReturn = new ArrayList<>();
+        ArrayList<Shelter> results = new ArrayList<>();
 
-        int i = 0;
         // Adds the shelter if it fits our requirements
-        while (i < shelterList.size()) {
-            if (shelterList.get(i).getRestrictions().toLowerCase().contains("women")) {
-                toReturn.add(shelterList.get(i));
+        for (Shelter shelter: shelterList) {
+            if (shelter.getRestrictions().toLowerCase().contains("women")) {
+                results.add(shelter);
             }
-            i++;
         }
+
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
+            throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
         } else {
-            return toReturn;
+            return results;
         }
     }
 }
