@@ -21,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AppDatabase adb;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

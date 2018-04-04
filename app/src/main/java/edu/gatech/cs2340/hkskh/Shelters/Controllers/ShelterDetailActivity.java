@@ -34,6 +34,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
     private Application state;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -123,11 +124,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > (selected.getVacancyInd()) && bedType == BedType.INDIVIDUAL) {
+                } else if ((count > (selected.getVacancyInd())) && bedType == BedType.INDIVIDUAL) {
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if (count > (selected.getVacancyFam()) && bedType == BedType.FAMILY){
+                } else if ((count > (selected.getVacancyFam())) && bedType == BedType.FAMILY){
                     Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if (shelterId != selectedShelterId && shelterId != -1){
+                } else if ((shelterId != selectedShelterId) && shelterId != -1){
                     String currentName = shelterManager.findById(shelterId).getName();
                     Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
                 } else {

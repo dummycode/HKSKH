@@ -17,6 +17,7 @@ public class SearchService {
      */
     private final ArrayList<Shelter> shelters;
 
+    @SuppressWarnings("unchecked")
     public SearchService(AppDatabase adb) {
         ShelterManager sheltersList = new ShelterManager(adb);
         shelters = new ArrayList(sheltersList.getAll());
@@ -66,7 +67,7 @@ public class SearchService {
             i++;
         }
         // If everything was removed, the shelter doesn't exist
-        if (shelterList.size() == 0) {
+        if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
         } else {
             return toReturn;
@@ -79,6 +80,7 @@ public class SearchService {
      * @param restrictions the age or gender
      * @return the list of appropriate shelters
      */
+    @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getByAge(String restrictions) {
         List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
@@ -92,7 +94,7 @@ public class SearchService {
             i++;
         }
         // If it doesn't have any shelters left then it doesn't exist
-        if (shelterList.size() == 0) {
+        if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
             return toReturn;
@@ -104,6 +106,7 @@ public class SearchService {
      *
      * @return the list
      */
+    @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getMen() {
         List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
@@ -118,7 +121,7 @@ public class SearchService {
             i++;
         }
         // If it doesn't have any shelters left then it doesn't exist
-        if (shelterList.size() == 0) {
+        if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
             return toReturn;
@@ -130,6 +133,7 @@ public class SearchService {
      *
      * @return the list
      */
+    @SuppressWarnings("unchecked")
     private ArrayList<Shelter> getWomen() {
         List<Shelter> shelterList = new ArrayList(shelters);
         ArrayList<Shelter> toReturn = new ArrayList<>();
@@ -143,7 +147,7 @@ public class SearchService {
             i++;
         }
         // If it doesn't have any shelters left then it doesn't exist
-        if (shelterList.size() == 0) {
+        if (shelterList.isEmpty()) {
             throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
         } else {
             return toReturn;

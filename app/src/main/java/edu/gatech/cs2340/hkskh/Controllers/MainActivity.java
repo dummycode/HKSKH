@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView statusText;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
+
                 state.setCurrentUserId(-1);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
@@ -91,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //passes on the type of search into the search activity
-                Intent myIntent = new Intent(MainActivity.this, SearchActivity.class)
-                        .putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
+                // passes on the type of search into the search activity
+                Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
+                myIntent.putExtra("<Parameters>", (String) searchSpinner.getSelectedItem());
                 startActivity(myIntent);
             }
         });
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Will send you to the maps page when ready
+        // Will send you to the maps page when ready
         mapButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {

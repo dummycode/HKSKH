@@ -76,8 +76,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // If the list is not empty, set the view to the location of the first shelter
         if (!shelters.isEmpty()) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(shelters.get(0).getLatitude(),
-                    shelters.get(0).getLongitude())));
+            Shelter firstShelter = shelters.get(0);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(
+                    new LatLng(firstShelter.getLatitude(), firstShelter.getLongitude())
+            ));
         }
 
         mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
