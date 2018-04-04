@@ -22,6 +22,9 @@ public class UserTest {
         //checks family beds are updated
         homeless1.updateBeds(bedFam, 6);
         assertEquals(6, homeless1.getNumBeds(bedFam));
+        //checks family beds are updated
+        homeless1.updateBeds(null, 1);
+        assertEquals(12, homeless1.getNumBeds(bedInd));
     }
 
 }
