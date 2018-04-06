@@ -11,7 +11,7 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  */
 public class ShelterManager {
     
-    private AppDatabase adb;
+    private final AppDatabase adb;
 
     public ShelterManager(AppDatabase adb) {
         this.adb = adb;

@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.raw;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
@@ -24,9 +25,8 @@ public class ShelterServiceProvider {
     public static void load(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
         if (adb.shelterDao().count() == 0) { // Load from CSV
-            System.out.println("Loading");
             try {
-                InputStream is = context.getResources().openRawResource(R.raw.shelters);
+                InputStream is = context.getResources().openRawResource(raw.shelters);
                 CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
                 String[] row;
                 reader.readNext(); // Dump header
@@ -53,15 +53,14 @@ public class ShelterServiceProvider {
                                 phone
                         ));
                     } catch (NumberFormatException nfe) {
-                        // TODO handle errors better
-                        System.out.println("Invalid CSV");
-                        System.out.println(nfe.getMessage());
+                        //Clears the shelters that have been added so far
+                        shelterManager.clear();
                     }
                 }
                 reader.close();
             } catch (IOException e) {
-                // TODO handle errors better
-                System.out.println("Dang");
+                //Clears the shelter list if not able to completely scan the file
+                shelterManager.clear();
             }
         }
     }
@@ -72,6 +71,6 @@ public class ShelterServiceProvider {
     public static void reload(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();
-        load(context, adb);
+        ShelterServiceProvider.load(context, adb);
     }
 }

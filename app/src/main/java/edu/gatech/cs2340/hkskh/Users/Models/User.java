@@ -33,10 +33,10 @@ public class User {
     private int shelterId = -1;
 
     @ColumnInfo(name = "numFamily")
-    private int numFamily = 0;
+    private int numFamily;
 
     @ColumnInfo(name = "numInd")
-    private int numInd = 0;
+    private int numInd;
 
 
     /**
@@ -93,11 +93,11 @@ public class User {
     }
 
     public int getShelterId() {
-        return this.shelterId;
+        return shelterId;
     }
 
     public void setShelterId(int key) {
-        this.shelterId = key;
+        shelterId = key;
     }
 
     public int getNumFamily() {
@@ -159,7 +159,7 @@ public class User {
      * @return true if both numFamily and numInd is 0
      */
     public boolean isCheckedIn(){
-        return !(numFamily == 0 && numInd == 0);
+        return !(numFamily == 0 && (numInd == 0));
     }
 
     @Override

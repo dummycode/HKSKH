@@ -9,7 +9,7 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
  * Created by Kirby on 2/16/2018.
  */
 public class UserManager {
-    private AppDatabase adb;
+    private final AppDatabase adb;
 
     /**
      * Constructor for the user manager
@@ -23,21 +23,16 @@ public class UserManager {
     /**
      * Use to validate the login credentials
      *
-     * Will return false if there is no user key, hashmap is empty, or the passed in password is incorrect
-     * Will return true if the user-pass mapping matches what is passed in
-     *
      * @param username a username, String
      * @param pass a password, String
-     * @return false if any parameter is null, user is not a valid key, or pass does not equal
-     *         the stored password of the user. True if pass matches the stored password for the user
-     *         with user as the key
+     * @return true or false based on validation of credentials
      */
-    public boolean login(String username, String pass) {
-        if (username == null || pass == null) {
+    public boolean validateCredentials(String username, String pass) {
+        if (username == null || (pass == null)) {
             return false;
         }
         User user = adb.userDao().findUserByUsername(username);
-        return user != null && user.getPass().equals(pass);
+        return (user != null) && (user.getPass().equals(pass));
     }
 
     /**
@@ -47,12 +42,12 @@ public class UserManager {
      * @param name the name of the person trying to register
      * @param type a UserType selected by user. Either user or admin
      * @param pass a password
-     * @return false if any parameter is null, the two passwords are not equal, or a user with the
-     *         same username already exists. true if a new user is successfully added in the hashmap
+     *
+     * @return a success status
      */
     public boolean register(String username, String name, UserType type, String pass) {
         // No arguments can be null
-        if (username == null || name == null || type == null || pass == null) {
+        if (username == null || (name == null) || (type == null) || (pass == null)) {
             return false;
         }
         if (username.length() < 3) {
@@ -76,8 +71,7 @@ public class UserManager {
      * @return the user from the id
      */
     public User findById(int userId) {
-        User user = adb.userDao().findUserById(userId);
-        return user;
+        return adb.userDao().findUserById(userId);
     }
 
     /**
@@ -87,21 +81,20 @@ public class UserManager {
      * @return the user from the username
      */
     public User findByUsername(String username) {
-        User user = adb.userDao().findUserByUsername(username);
-        return user;
+        return adb.userDao().findUserByUsername(username);
     }
 
     /**
      * Check into rooms
      *
      * @param user the user to be updated
-     * @param key the key of the shelter
+     * @param shelterId the key of the shelter
      * @param count number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkIn(User user, int key, int count, BedType bedType) {
+    public void checkIn(User user, int shelterId, int count, BedType bedType) {
         if (user != null) {
-            user.setShelterId(key);
+            user.setShelterId(shelterId);
             user.updateBeds(bedType, count);
             adb.userDao().insert(user);
         }
@@ -111,13 +104,13 @@ public class UserManager {
      * Check out of rooms
      *
      * @param user the user to be updated
-     * @param count number of spots they want to reserve
+     * @param bedNumber number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
-    public void checkOut(User user, int count, BedType bedType) {
+    public void checkOut(User user, int bedNumber, BedType bedType) {
         if (user != null) {
-            user.updateBeds(bedType, -count);
-            if (user.getNumFamily() == 0 && user.getNumInd() == 0) {
+            user.updateBeds(bedType, -bedNumber);
+            if ((user.getNumFamily() == 0) && (user.getNumInd() == 0)) {
                 user.setShelterId(-1);
             }
             adb.userDao().insert(user);

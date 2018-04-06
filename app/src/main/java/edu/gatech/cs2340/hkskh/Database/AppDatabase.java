@@ -19,25 +19,37 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
 
+    /**
+     * @return user data access object
+     */
     public abstract UserDao userDao();
 
+    /**
+     * @return shelter data access object
+     */
     public abstract ShelterDao shelterDao();
 
+    /**
+     * Get the current database
+     *
+     * @param context context
+     * @return the database object
+     */
     public static AppDatabase getDatabase(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE =
+        if (AppDatabase.INSTANCE == null) {
+            AppDatabase.INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "hkskh")
-                            // To simplify the codelab, allow queries on the main thread.
-                            // Don't do this on a real app! See PersistenceBasicSample for an example.
                             .allowMainThreadQueries()
                             .build();
-                    INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
-            // TODO get this off the main thread, it may be slowing it down
+            AppDatabase.INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
         }
-        return INSTANCE;
+        return AppDatabase.INSTANCE;
     }
 
+    /**
+     * Destroy the database instance
+     */
     public static void destroyInstance() {
-        INSTANCE = null;
+        AppDatabase.INSTANCE = null;
     }
 }
