@@ -38,7 +38,8 @@ public class SearchActivity extends AppCompatActivity {
         this.adb = AppDatabase.getDatabase(getApplicationContext());
 
         // Get the search type that the user chose on the last screen
-        final String searchEntered = this.getIntent().getStringExtra("<Parameters>");
+        Intent currentIntent = getIntent();
+        final String searchEntered = currentIntent.getStringExtra("<Parameters>");
 
         // Set the text at top to display the previously selected search type
         TextView searchType = findViewById(R.id.search_type_text);

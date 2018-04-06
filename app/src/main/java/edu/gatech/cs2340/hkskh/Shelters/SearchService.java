@@ -69,7 +69,9 @@ public class SearchService {
 
         // If the name is the same, add it
         for (Shelter shelter: shelterList) {
-            if (shelter.getName().toLowerCase().equals(name.toLowerCase())) {
+            String shelterName = shelter.getName();
+            shelterName = shelterName.toLowerCase();
+            if (shelterName.equals(name.toLowerCase())) {
                 results.add(shelter);
             }
         }
@@ -94,7 +96,9 @@ public class SearchService {
 
         // Adds the shelter if it fits our requirements
         for (Shelter shelter: shelterList) {
-            if (shelter.getRestrictions().toLowerCase().contains(restrictions.toLowerCase())) {
+            String shelterRestrictions = shelter.getRestrictions();
+            shelterRestrictions = shelterRestrictions.toLowerCase();
+            if (shelterRestrictions.contains(restrictions.toLowerCase())) {
                 results.add(shelter);
             }
         }
@@ -119,7 +123,9 @@ public class SearchService {
 
         // Adds the shelter if it fits our requirements
         for (Shelter shelter: shelterList) {
-            if (shelter.getRestrictions().contains("men") && !(shelter.getRestrictions().toLowerCase().contains("women"))) {
+            String shelterRestrictions = shelter.getRestrictions();
+            shelterRestrictions = shelterRestrictions.toLowerCase();
+            if (shelterRestrictions.contains("men") && !(shelterRestrictions.contains("women"))) {
                 results.add(shelter);
             }
         }
@@ -143,7 +149,9 @@ public class SearchService {
 
         // Adds the shelter if it fits our requirements
         for (Shelter shelter: shelterList) {
-            if (shelter.getRestrictions().toLowerCase().contains("women")) {
+            String shelterRestrictions = shelter.getRestrictions();
+            shelterRestrictions = shelterRestrictions.toLowerCase();
+            if (shelterRestrictions.contains("women")) {
                 results.add(shelter);
             }
         }

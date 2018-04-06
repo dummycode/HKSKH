@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.hkskh.Shelters.Controllers;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -35,9 +36,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
         ShelterManager shelterManager = new ShelterManager(adb);
 
+        Intent currentIntent = getIntent();
+
         // Get shelters from intent
-        if (getIntent().hasExtra("shelters")) {
-            this.shelters = getIntent().getParcelableArrayListExtra("shelters");
+        if (currentIntent.hasExtra("shelters")) {
+            this.shelters = currentIntent.getParcelableArrayListExtra("shelters");
         } else {
             this.shelters = new ArrayList(shelterManager.getAll());
         }
@@ -66,11 +69,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (Shelter shelter : this.shelters) {
             String title = shelter.getMapTitle();
             location = new LatLng(shelter.getLatitude(), shelter.getLongitude());
-            mMap.addMarker(
-                    new MarkerOptions().position(location)
-                            .title(title)
-                            .snippet(shelter.getAddress())
-            );
+            MarkerOptions marker = new MarkerOptions();
+            marker.position(location);
+            marker.title(title);
+            marker.snippet(shelter.getAddress());
+            mMap.addMarker(marker);
         }
 
         // If the list is not empty, set the view to the location of the first shelter

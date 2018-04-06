@@ -61,10 +61,16 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
                 } else {
                     if (userManager.register(username, name, (UserType) sp1.getSelectedItem(), pass1)) {
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        Toast passwordSuccessToast = new Toast(getApplicationContext());
+                        passwordSuccessToast.setText("Success");
+                        passwordSuccessToast.setDuration(Toast.LENGTH_SHORT);
+                        passwordSuccessToast.show();
                         startActivity(toWelcome);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Try Again. Username is taken or is shorter than 3 characters.", Toast.LENGTH_LONG).show();
+                        Toast passwordRetryToast = new Toast(getApplicationContext());
+                        passwordRetryToast.setText("Try Again. Username is taken or is shorter than 3 characters.");
+                        passwordRetryToast.setDuration(Toast.LENGTH_LONG);
+                        passwordRetryToast.show();
                     }
                 }
             }

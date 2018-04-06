@@ -75,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT).show();
+                Toast logOutToast = new Toast(getApplicationContext());
+                logOutToast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT);
+                logOutToast.show();
 
                 state.setCurrentUserId(-1);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));

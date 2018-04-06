@@ -6,7 +6,6 @@ package edu.gatech.cs2340.hkskh.Shelters.Enums;
 public enum BedType {
     INDIVIDUAL(0), FAMILY(1);
 
-    private final int code;
     private String bedType;
 
     BedType(int code) {
@@ -18,7 +17,6 @@ public enum BedType {
                 bedType = "family";
                 break;
         }
-        this.code = code;
     }
 
     /**

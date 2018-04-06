@@ -50,7 +50,7 @@ public class ShelterListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         RecyclerView shelterRecycler = findViewById(R.id.course_list_recycler);
-        setupRecyclerView(shelterRecycler);
+        shelterRecycler.setAdapter(new SimpleShelterRecyclerViewAdapter());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shelterRecycler.setLayoutManager(layoutManager);
@@ -78,22 +78,16 @@ public class ShelterListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelters));
+
     }
 
     public class SimpleShelterRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleShelterRecyclerViewAdapter.ViewHolder> {
 
-        /**
-         * set the items to be used by the adapter
-         * @param items the list of items to be displayed in the recycler view
-         */
-        public SimpleShelterRecyclerViewAdapter(ArrayList<Shelter> items) {
-            shelters = items;
-        }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -106,7 +100,7 @@ public class ShelterListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
@@ -158,12 +152,12 @@ public class ShelterListActivity extends AppCompatActivity {
          */
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView nameView;
-            public final TextView idView;
+            final View mView;
+            final TextView nameView;
+            final TextView idView;
             public Shelter shelter;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 mView = view;
                 nameView = view.findViewById(R.id.shelter_list_item);
