@@ -16,6 +16,8 @@ import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
+import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
@@ -27,10 +29,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(id.map);
 
         // Retrieve the database
         AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
@@ -40,9 +42,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Get shelters from intent
         if (currentIntent.hasExtra("shelters")) {
-            this.shelters = currentIntent.getParcelableArrayListExtra("shelters");
+            shelters = currentIntent.getParcelableArrayListExtra("shelters");
         } else {
-            this.shelters = new ArrayList(shelterManager.getAll());
+            shelters = new ArrayList(shelterManager.getAll());
         }
 
         mapFragment.getMapAsync(this);
@@ -58,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        final int ZOOM = 12;
+        int ZOOM = 12;
 
         GoogleMap mMap = googleMap;
 
@@ -66,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Go through each shelter, adding a marker to the lat/long of the shelter, adding the name as a title,
         // and the address as the snippet
-        for (Shelter shelter : this.shelters) {
+        for (Shelter shelter : shelters) {
             String title = shelter.getMapTitle();
             location = new LatLng(shelter.getLatitude(), shelter.getLongitude());
             MarkerOptions marker = new MarkerOptions();

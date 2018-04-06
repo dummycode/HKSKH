@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ import java.util.List;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
+import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
@@ -40,17 +43,17 @@ public class ShelterListActivity extends AppCompatActivity {
 
         // Get shelters from intent
         if (getIntent().hasExtra("shelters")) {
-            this.shelters = getIntent().getParcelableArrayListExtra("shelters");
+            shelters = getIntent().getParcelableArrayListExtra("shelters");
         } else {
-            this.shelters = new ArrayList(shelterManager.getAll());
+            shelters = new ArrayList(shelterManager.getAll());
         }
 
-        setContentView(R.layout.activity_shelter_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        setContentView(layout.activity_shelter_list);
+        Toolbar toolbar = findViewById(id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView shelterRecycler = findViewById(R.id.course_list_recycler);
-        shelterRecycler.setAdapter(new SimpleShelterRecyclerViewAdapter());
+        RecyclerView shelterRecycler = findViewById(id.course_list_recycler);
+        shelterRecycler.setAdapter(new ShelterListActivity.SimpleShelterRecyclerViewAdapter());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shelterRecycler.setLayoutManager(layoutManager);
@@ -82,12 +85,12 @@ public class ShelterListActivity extends AppCompatActivity {
     }
 
     public class SimpleShelterRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleShelterRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder> {
 
 
         @Override
         @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -96,11 +99,11 @@ public class ShelterListActivity extends AppCompatActivity {
              */
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.content_shelter_list, parent, false);
-            return new ViewHolder(view);
+            return new ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder holder, int position) {
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
@@ -118,7 +121,7 @@ public class ShelterListActivity extends AppCompatActivity {
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.mView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                         // On a phone, we need to change windows to the detail view
@@ -160,8 +163,8 @@ public class ShelterListActivity extends AppCompatActivity {
             ViewHolder(View view) {
                 super(view);
                 mView = view;
-                nameView = view.findViewById(R.id.shelter_list_item);
-                idView = view.findViewById(R.id.shelter_list_id);
+                nameView = view.findViewById(id.shelter_list_item);
+                idView = view.findViewById(id.shelter_list_id);
             }
 
             @Override

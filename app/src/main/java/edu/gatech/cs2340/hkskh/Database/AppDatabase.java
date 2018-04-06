@@ -36,20 +36,20 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the database object
      */
     public static AppDatabase getDatabase(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE =
+        if (AppDatabase.INSTANCE == null) {
+            AppDatabase.INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "hkskh")
                             .allowMainThreadQueries()
                             .build();
-                    INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
+            AppDatabase.INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
         }
-        return INSTANCE;
+        return AppDatabase.INSTANCE;
     }
 
     /**
      * Destroy the database instance
      */
     public static void destroyInstance() {
-        INSTANCE = null;
+        AppDatabase.INSTANCE = null;
     }
 }

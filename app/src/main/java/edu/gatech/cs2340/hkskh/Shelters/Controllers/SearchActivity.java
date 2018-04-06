@@ -1,11 +1,13 @@
 package edu.gatech.cs2340.hkskh.Shelters.Controllers;
 
+import android.R.layout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import java.util.NoSuchElementException;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 
@@ -32,41 +35,42 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        adb = AppDatabase.getDatabase(getApplicationContext());
 
         // Get the search type that the user chose on the last screen
         Intent currentIntent = getIntent();
         final String searchEntered = currentIntent.getStringExtra("<Parameters>");
 
         // Set the text at top to display the previously selected search type
-        TextView searchType = findViewById(R.id.search_type_text);
+        TextView searchType = findViewById(id.search_type_text);
         searchType.setText("Search Selected: " + searchEntered);
 
-        final EditText name = findViewById(R.id.search_name_edit);
+        final EditText name = findViewById(id.search_name_edit);
 
         // Set up the male/female buttons
-        final RadioButton femaleButton = findViewById(R.id.search_female_radio);
+        RadioButton femaleButton = findViewById(id.search_female_radio);
         femaleButton.setChecked(true);
-        final RadioButton maleButton = findViewById(R.id.search_male_radio);
+        final RadioButton maleButton = findViewById(id.search_male_radio);
 
-        final Spinner ageSpinner = findViewById(R.id.search_age_spinner);
+        final Spinner ageSpinner = findViewById(id.search_age_spinner);
 
         // Make adapter for the spinner
-        SpinnerAdapter ageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+        SpinnerAdapter ageAdapter = new ArrayAdapter<>(this, layout.simple_spinner_item,
                 Arrays.asList("Families", "Children", "Young Adults", "Anyone"));
         ageSpinner.setAdapter(ageAdapter);
 
-        Button searchButton = findViewById(R.id.search_button_search);
+        Button searchButton = findViewById(id.search_button_search);
 
-        final Intent toFilteredList = new Intent(SearchActivity.this, ShelterListActivity.class);
+        final Intent toFilteredList = new Intent(this, ShelterListActivity.class);
         // Pass the search type as an extra to the next screen so we can make the list to display
         toFilteredList.putExtra("Search Type", searchEntered);
 
         // Make sure to pass the filter to the next screen as an extra because we need it to generate the list
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new OnClickListener() {
+                @Override
                 public void onClick(View view) {
                     ArrayList<Shelter> shelters;
                     View[] components = {name, maleButton, ageSpinner};
@@ -91,8 +95,8 @@ public class SearchActivity extends AppCompatActivity {
                 }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = findViewById(id.fab);
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(view.getContext(), MainActivity.class));

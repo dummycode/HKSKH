@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
 /**
  * Created by baohd on 2/26/2018.
@@ -85,8 +86,8 @@ public class Shelter implements Parcelable {
         this.notes = notes;
         this.phoneNumber = phoneNumber;
 
-        this.vacancyInd = capacityInd;
-        this.vacancyFam = capacityFam;
+        vacancyInd = capacityInd;
+        vacancyFam = capacityFam;
     }
 
     public Shelter(Parcel in) {
@@ -114,7 +115,7 @@ public class Shelter implements Parcelable {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -122,7 +123,7 @@ public class Shelter implements Parcelable {
     }
 
     public int getCapacityInd() {
-        return this.capacityInd;
+        return capacityInd;
     }
 
     public void setCapacityInd(int capacityInd) {
@@ -130,7 +131,7 @@ public class Shelter implements Parcelable {
     }
 
     public int getCapacityFam() {
-        return this.capacityFam;
+        return capacityFam;
     }
 
     public void setCapacityFam(int capacityFam) {
@@ -138,7 +139,7 @@ public class Shelter implements Parcelable {
     }
 
     public String getRestrictions() {
-        return this.restrictions;
+        return restrictions;
     }
 
     public void setRestrictions(String restrictions) {
@@ -146,7 +147,7 @@ public class Shelter implements Parcelable {
     }
 
     public double getLongitude() {
-        return this.longitude;
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
@@ -154,7 +155,7 @@ public class Shelter implements Parcelable {
     }
 
     public double getLatitude() {
-        return this.latitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
@@ -162,7 +163,7 @@ public class Shelter implements Parcelable {
     }
 
     public String getAddress() {
-        return this.address;
+        return address;
     }
 
     public void setAddress(String address) {
@@ -170,7 +171,7 @@ public class Shelter implements Parcelable {
     }
 
     public String getNotes() {
-        return this.notes;
+        return notes;
     }
 
     public void setNotes(String notes) {
@@ -178,7 +179,7 @@ public class Shelter implements Parcelable {
     }
 
     public String getPhoneNumber() {
-        return this.phoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -186,7 +187,7 @@ public class Shelter implements Parcelable {
     }
 
     public int getVacancyInd() {
-        return this.vacancyInd;
+        return vacancyInd;
     }
 
     public void setVacancyInd(int vacancyInd) {
@@ -194,7 +195,7 @@ public class Shelter implements Parcelable {
     }
 
     public int getVacancyFam() {
-        return this.vacancyFam;
+        return vacancyFam;
     }
 
     public void setVacancyFam(int vacancyFam) {
@@ -219,7 +220,7 @@ public class Shelter implements Parcelable {
      */
     @Override
     public String toString() {
-        return this.id + " : " + this.name;
+        return id + " : " + name;
     }
 
     @Override
@@ -227,11 +228,13 @@ public class Shelter implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
+    public static final Creator<Shelter> CREATOR = new Creator<Shelter>() {
+        @Override
         public Shelter createFromParcel(Parcel in) {
             return new Shelter(in);
         }
 
+        @Override
         public Shelter[] newArray(int size) {
             return new Shelter[size];
         }

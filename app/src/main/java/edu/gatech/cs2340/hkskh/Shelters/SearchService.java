@@ -40,14 +40,14 @@ public class SearchService {
         searchType = searchType.toLowerCase();
         request = request.toLowerCase();
         if ("name".equals(searchType)) {
-            return this.getByName(request);
+            return getByName(request);
         } else if ("age".equals(searchType)) {
-            return this.getByAge(request);
+            return getByAge(request);
         } else if ("gender".equals(searchType)) {
             if ("men".equals(request)) {
-                return this.getByMen();
+                return getByMen();
             } else if ("women".equals(request)) {
-                return this.getByWomen();
+                return getByWomen();
             } else {
                 throw new IllegalArgumentException("Invalid parameter");
             }

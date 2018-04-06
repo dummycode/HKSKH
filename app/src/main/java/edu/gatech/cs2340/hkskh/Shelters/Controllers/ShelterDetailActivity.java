@@ -1,11 +1,13 @@
 package edu.gatech.cs2340.hkskh.Shelters.Controllers;
 
+import android.R.layout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
@@ -46,41 +49,41 @@ public class ShelterDetailActivity extends AppCompatActivity {
         final ShelterManager shelterManager = new ShelterManager(adb);
 
         setContentView(R.layout.activity_shelter_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(id.toolbar);
         setSupportActionBar(toolbar);
 
-        final EditText amount = findViewById(R.id.editText2);
+        final EditText amount = findViewById(id.editText2);
 
         // Set up the check in/out buttons
-        Button checkIn = findViewById(R.id.button4);
-        Button checkOut = findViewById(R.id.button5);
+        Button checkIn = findViewById(id.button4);
+        Button checkOut = findViewById(id.button5);
 
         // Use passed id from intent to select correct shelter
-        final int shelterKey = getIntent().getIntExtra("shelterId", 0 );
+        int shelterKey = getIntent().getIntExtra("shelterId", 0 );
         final Shelter selected = shelterManager.findById(shelterKey);
 
         // Get user from state
-        final int userId = state.getCurrentUserId();
+        int userId = state.getCurrentUserId();
         final User user = userManager.findById(userId);
 
         // Initialize spinner
-        final Spinner vacancySpinner = findViewById(R.id.spinner);
+        final Spinner vacancySpinner = findViewById(id.spinner);
 
         // Sets up the search options spinner and loads the options in.
         // Note: reminder to switch out the arrays.asList for something that is more flexible later like enum reference
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arrays.asList("family", "individuals"));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, layout.simple_spinner_item, Arrays.asList("family", "individuals"));
+        adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         vacancySpinner.setAdapter(adapter);
 
         // Instantiate TextViews to display the info
-        TextView name = findViewById(R.id.shelter_detail_name);
-        TextView capacity = findViewById(R.id.shelter_detail_capacity);
-        TextView gender = findViewById(R.id.shelter_detail_gender);
-        TextView longitude = findViewById(R.id.shelter_detail_longitude);
-        TextView latitude = findViewById(R.id.shelter_detail_latitude);
-        TextView address = findViewById(R.id.shelter_detail_address);
-        TextView phone = findViewById(R.id.shelter_detail_phone);
-        final TextView vacancies = findViewById(R.id.Shelter_Detail_Vacancies);
+        TextView name = findViewById(id.shelter_detail_name);
+        TextView capacity = findViewById(id.shelter_detail_capacity);
+        TextView gender = findViewById(id.shelter_detail_gender);
+        TextView longitude = findViewById(id.shelter_detail_longitude);
+        TextView latitude = findViewById(id.shelter_detail_latitude);
+        TextView address = findViewById(id.shelter_detail_address);
+        TextView phone = findViewById(id.shelter_detail_phone);
+        final TextView vacancies = findViewById(id.Shelter_Detail_Vacancies);
 
         // Set the TextViews to show the specific info for the selected shelter
         name.setText(selected.getName());
@@ -94,10 +97,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
         vacancies.setText(selected.getVacancy());
 
         // Get info about what screen came before this
-        final String previous = getIntent().getStringExtra("Previous Screen");
+        String previous = getIntent().getStringExtra("Previous Screen");
 
         // checkIn button updates
-        checkIn.setOnClickListener(new View.OnClickListener() {
+        checkIn.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View view) {
                 int selectedShelterId = selected.getId();
                 String roomChoice = vacancySpinner.getSelectedItem().toString();
@@ -141,7 +145,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
         });
 
         // checkOut button updates vacancies
-        checkOut.setOnClickListener(new View.OnClickListener() {
+        checkOut.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View view) {
                 int selectedShelterId = selected.getId();
                 String roomChoice = vacancySpinner.getSelectedItem().toString();
@@ -182,8 +187,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = findViewById(id.fab);
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent back = new Intent(view.getContext(), ShelterListActivity.class);

@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.raw;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
@@ -25,7 +26,7 @@ public class ShelterServiceProvider {
         ShelterManager shelterManager = new ShelterManager(adb);
         if (adb.shelterDao().count() == 0) { // Load from CSV
             try {
-                InputStream is = context.getResources().openRawResource(R.raw.shelters);
+                InputStream is = context.getResources().openRawResource(raw.shelters);
                 CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
                 String[] row;
                 reader.readNext(); // Dump header
@@ -70,6 +71,6 @@ public class ShelterServiceProvider {
     public static void reload(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();
-        load(context, adb);
+        ShelterServiceProvider.load(context, adb);
     }
 }
