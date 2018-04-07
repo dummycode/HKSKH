@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
@@ -66,7 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng location;
 
-        // Go through each shelter, adding a marker to the lat/long of the shelter, adding the name as a title,
+        // Go through each shelter, adding a marker
+        // to the lat/long of the shelter, adding the name as a title,
         // and the address as the snippet
         for (Shelter shelter : shelters) {
             String title = shelter.getMapTitle();

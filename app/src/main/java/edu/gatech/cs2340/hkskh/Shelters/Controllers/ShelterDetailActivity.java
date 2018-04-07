@@ -30,6 +30,8 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
 
 /**
  * Created by henry on 3/26/18.
+ * Activity that shows the details
+ * of a selected shelter and allows check in/check out
  */
 public class ShelterDetailActivity extends AppCompatActivity {
 
@@ -70,8 +72,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
         final Spinner vacancySpinner = findViewById(id.spinner);
 
         // Sets up the search options spinner and loads the options in.
-        // Note: reminder to switch out the arrays.asList for something that is more flexible later like enum reference
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, layout.simple_spinner_item, Arrays.asList("family", "individuals"));
+        // Note: reminder to switch out the arrays.asList for something
+        // that is more flexible later like enum reference
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                layout.simple_spinner_item, Arrays.asList("family", "individuals"));
         adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         vacancySpinner.setAdapter(adapter);
 
@@ -87,7 +91,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // Set the TextViews to show the specific info for the selected shelter
         name.setText(selected.getName());
-        capacity.setText("Capacity: " + selected.getCapacityFam() + " family rooms, " + selected.getCapacityInd()
+        capacity.setText("Capacity: " + selected.getCapacityFam()
+                + " family rooms, " + selected.getCapacityInd()
             + " individual rooms");
         gender.setText("Genders/Restrictions: " + selected.getRestrictions());
         longitude.setText("Longitude: " + selected.getLongitude());
@@ -118,28 +123,43 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 try {
                     count = Integer.parseInt(amount.getText().toString());
                 } catch (NumberFormatException nfe) {
-                    Toast.makeText(getApplicationContext(), "Please enter a number", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter a number", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 int shelterId = user.getShelterId();
 
                 if (count <= 0) {
-                    Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if ((count > (selected.getVacancyInd())) && (bedType == BedType.INDIVIDUAL)) {
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if ((count > (selected.getVacancyFam())) && (bedType == BedType.FAMILY)){
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than there exist.", Toast.LENGTH_LONG).show();
-                } else if ((shelterId != selectedShelterId) && (shelterId != -1)){
+                    Toast.makeText(getApplicationContext(),
+                            "Please select a minimum of one bed.",
+                            Toast.LENGTH_LONG).show();
+                } else if ((count > (selected.getVacancyInd()))
+                        && (bedType == BedType.INDIVIDUAL)) {
+                    Toast.makeText(getApplicationContext(),
+                            "You cannot select more beds than there exist.",
+                            Toast.LENGTH_LONG).show();
+                } else if ((count > (selected.getVacancyFam()))
+                        && (bedType == BedType.FAMILY)){
+                    Toast.makeText(getApplicationContext(),
+                            "You cannot select more beds than there exist.",
+                            Toast.LENGTH_LONG).show();
+                } else if ((shelterId != selectedShelterId)
+                        && (shelterId != -1)){
                     String currentName = shelterManager.findById(shelterId).getName();
-                    Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "You are already checked into "
+                                    + currentName, Toast.LENGTH_LONG).show();
                 } else {
                     shelterManager.updateVacancy(selected, bedType, -count);
                     userManager.checkIn(user, selectedShelterId, count, bedType);
 
                     vacancies.setText(selected.getVacancy());
 
-                    Toast.makeText(getApplicationContext(), "Checked into " + count + " " + bedType.getBedType() + " bed(s)", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Checked into " + count + " "
+                                    + bedType.getBedType()
+                                    + " bed(s)", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -163,26 +183,37 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 try {
                     count = Integer.parseInt(amount.getText().toString());
                 } catch (NumberFormatException nfe) {
-                    Toast.makeText(getApplicationContext(), "Please enter a number", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter a number", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if (count <= 0) {
-                    Toast.makeText(getApplicationContext(), "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.INDIVIDUAL) && (bedType == BedType.INDIVIDUAL)) {
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you checked out.", Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.FAMILY) && (bedType == BedType.FAMILY)) {
-                    Toast.makeText(getApplicationContext(), "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
+                } else if (count > user.getNumBeds(BedType.INDIVIDUAL)
+                        && (bedType == BedType.INDIVIDUAL)) {
+                    Toast.makeText(getApplicationContext(),
+                            "You cannot select more beds than you checked out.",
+                            Toast.LENGTH_LONG).show();
+                } else if (count > user.getNumBeds(BedType.FAMILY)
+                        && (bedType == BedType.FAMILY)) {
+                    Toast.makeText(getApplicationContext(),
+                            "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
                 } else if (user.getShelterId() != selectedShelterId){
                     String currentName = shelterManager.findById(user.getShelterId()).getName();
-                    Toast.makeText(getApplicationContext(), "You are already checked into " + currentName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "You are already checked into "
+                                    + currentName, Toast.LENGTH_LONG).show();
                 } else {
                     shelterManager.updateVacancy(selected, bedType, count);
                     userManager.checkOut(user, count, bedType);
 
                     vacancies.setText(selected.getVacancy());
 
-                    Toast.makeText(getApplicationContext(), "Checked out of " + count + " " + bedType.getBedType() + " bed(s)", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Checked out of " + count + " " + bedType.getBedType()
+                                    + " bed(s)", Toast.LENGTH_LONG).show();
                 }
             }
         });

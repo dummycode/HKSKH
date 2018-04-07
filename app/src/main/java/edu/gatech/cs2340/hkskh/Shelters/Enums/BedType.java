@@ -2,6 +2,7 @@ package edu.gatech.cs2340.hkskh.Shelters.Enums;
 
 /**
  * Created by henry on 2/24/2018.
+ * Enum class what kind of spots the user is taking. Individual or family
  */
 public enum BedType {
     INDIVIDUAL(0), FAMILY(1);

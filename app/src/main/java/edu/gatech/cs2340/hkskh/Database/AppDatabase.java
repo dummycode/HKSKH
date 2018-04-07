@@ -13,6 +13,7 @@ import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 /**
  * Created by henry on 3/14/18.
+ * The database class for implementing persistence
  */
 @Database(entities = {User.class, Shelter.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -38,7 +39,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabase(Context context) {
         if (AppDatabase.INSTANCE == null) {
             AppDatabase.INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "hkskh")
+                    Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "hkskh")
                             .allowMainThreadQueries()
                             .build();
             AppDatabase.INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));

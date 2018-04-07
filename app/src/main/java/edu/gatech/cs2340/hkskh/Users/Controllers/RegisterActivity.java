@@ -48,7 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         final Intent toWelcome = new Intent(this, WelcomeActivity.class);
 
-        ArrayAdapter<UserType> userAdapter = new ArrayAdapter(this, layout.simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> userAdapter = new ArrayAdapter(this,
+                layout.simple_spinner_item, UserType.values());
         userAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         sp1.setAdapter(userAdapter);
 
@@ -61,9 +62,11 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = ed4.getText().toString();
 
                 if (!pass1.equals(pass2)) {
-                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Passwords do not match", Toast.LENGTH_LONG).show();
                 } else {
-                    if (userManager.register(username, name, (UserType) sp1.getSelectedItem(), pass1)) {
+                    if (userManager.register(username,
+                            name, (UserType) sp1.getSelectedItem(), pass1)) {
                         Toast passwordSuccessToast = new Toast(getApplicationContext());
                         passwordSuccessToast.setText("Success");
                         passwordSuccessToast.setDuration(Toast.LENGTH_SHORT);
@@ -71,7 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(toWelcome);
                     } else {
                         Toast passwordRetryToast = new Toast(getApplicationContext());
-                        passwordRetryToast.setText("Try Again. Username is taken or is shorter than 3 characters.");
+                        passwordRetryToast.setText("Try Again. " +
+                                "Username is taken or is shorter than 3 characters.");
                         passwordRetryToast.setDuration(Toast.LENGTH_LONG);
                         passwordRetryToast.show();
                     }

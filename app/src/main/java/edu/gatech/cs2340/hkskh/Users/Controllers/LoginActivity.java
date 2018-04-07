@@ -13,7 +13,6 @@ import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
