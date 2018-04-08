@@ -1,0 +1,73 @@
+package edu.gatech.cs2340.hkskh;
+import android.arch.persistence.db.SupportSQLiteOpenHelper;
+import android.arch.persistence.room.DatabaseConfiguration;
+import android.arch.persistence.room.InvalidationTracker;
+import android.content.Context;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import static org.junit.Assert.*;
+
+import edu.gatech.cs2340.hkskh.Database.AppDatabase;
+import edu.gatech.cs2340.hkskh.Shelters.DAOs.ShelterDao;
+import edu.gatech.cs2340.hkskh.Users.DAOs.UserDao;
+import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
+import edu.gatech.cs2340.hkskh.Users.Models.User;
+import edu.gatech.cs2340.hkskh.Users.UserManager;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+@RunWith(MockitoJUnitRunner.class)
+/**
+ * created by Kevin on 4/8/2018
+ */
+public class LoginUserTest {
+
+    @Mock
+    private AppDatabase mockDB;
+    private UserManager userManager;
+
+    @Before
+    public void initUserManager() {
+        userManager = new UserManager(this.mockDB);
+    }
+    @Before
+    public void initMocks() {
+        this.mockDB = mock(AppDatabase.class, Mockito.RETURNS_DEEP_STUBS);
+    }
+//    @Before
+//    public void createUsers() {
+//        userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
+//    }
+
+
+
+    @Test
+    public void loginCorrectUser() {
+        //when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(getDefaultUser());
+        this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
+        boolean result = this.userManager.login("kjin42", "qwerty");
+        assertEquals(true, result);
+    }
+
+    public void loginWrongUser() {
+        //when(this.mockDB.userDao().findUserByUsername("kjin42")).
+    }
+
+    private User getDefaultUser() {
+        return new User("kjin42", UserType.USER, "qwerty");
+
+    }
+}
