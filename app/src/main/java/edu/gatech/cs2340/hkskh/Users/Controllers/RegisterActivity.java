@@ -19,6 +19,11 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
+/**
+ * register activity
+ * registers a user by taking in their name,
+ * username, and password
+ */
 public class RegisterActivity extends AppCompatActivity {
 
 
@@ -48,7 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         final Intent toWelcome = new Intent(this, WelcomeActivity.class);
 
-        ArrayAdapter<UserType> userAdapter = new ArrayAdapter(this, layout.simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> userAdapter = new ArrayAdapter(this,
+                layout.simple_spinner_item, UserType.values());
         userAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         sp1.setAdapter(userAdapter);
 
@@ -61,11 +67,13 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = ed4.getText().toString();
 
                 if (!pass1.equals(pass2)) {
-                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Passwords do not match", Toast.LENGTH_LONG).show();
                 } else {
-                    if (userManager.register(username, name, (UserType) sp1.getSelectedItem(), pass1)) {
-                        Toast userRegistered = Toast.makeText(getApplicationContext(), "Success",
-                                Toast.LENGTH_SHORT);
+                    if (userManager.register(username,
+                            name, (UserType) sp1.getSelectedItem(), pass1)) {
+                        Toast userRegistered = Toast.makeText(getApplicationContext(),
+                                "Success", Toast.LENGTH_SHORT);
                         userRegistered.show();
                         startActivity(toWelcome);
                     } else {

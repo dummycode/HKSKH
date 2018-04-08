@@ -50,71 +50,116 @@ public class User {
      * @param pass the password that is needed to give this user access
      */
     public User(String username, UserType type, String pass){
-        this.setUsername(username);
-        this.setType(type);
-        this.setPass(pass);
+        this.username = username;
+        this.type = type;
+        this.pass = pass;
     }
 
+    /**
+     *
+     * @return user if
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id the int to set as user id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return username of user
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
+
+    /**
+     *
+     * @return password
+     */
     public String getPass() {
         return pass;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
 
+    /**
+     * name of user
+     * @return name of user
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets name
+     * @param name the actual name of user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return the type of user
+     */
     public UserType getType() {
         return type;
     }
 
-    public void setType(UserType type) {
-        this.type = type;
-    }
 
+
+    /**
+     *
+     * @return the shelter user is staying at
+     */
     public int getShelterId() {
         return shelterId;
     }
 
+    /**
+     *
+     * @param key the id of the shelter the user checked into
+     */
     public void setShelterId(int key) {
         shelterId = key;
     }
 
+    /**
+     *
+     * @return how many family spots user is checked into
+     */
     public int getNumFamily() {
         return numFamily;
     }
 
+    /**
+     *
+     * @param numFamily amount of family spots claimed
+     */
     public void setNumFamily(int numFamily) {
         this.numFamily = numFamily;
     }
 
+    /**
+     *
+     * @return amount of individual spots checked into
+     */
     public int getNumInd() {
         return numInd;
     }
 
+    /**
+     *
+     * @param numInd sets individual spots checked into
+     */
     public void setNumInd(int numInd) {
         this.numInd = numInd;
     }

@@ -20,6 +20,10 @@ import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
+/**
+ * shows the shelters on
+ * google map activity
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private List<Shelter> shelters;

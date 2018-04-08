@@ -25,6 +25,10 @@ import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
+/**
+ * This is the main page to begin search from.
+ * Shows activity allowing for search select
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Application state;

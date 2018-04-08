@@ -25,6 +25,10 @@ public class SearchService {
      */
     private final ArrayList<Shelter> shelters;
 
+    /**
+     * this search service allows for searching in a safe manner
+     * @param adb the database to pull shelter list from
+     */
     @SuppressWarnings("unchecked")
     public SearchService(AppDatabase adb) {
         ShelterManager sheltersList = new ShelterManager(adb);

@@ -27,6 +27,11 @@ import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.SearchService;
 
+/**
+ * SearchActivity allows the user to enter
+ * search parameters based on the type
+ * of search they conducted
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private AppDatabase adb;

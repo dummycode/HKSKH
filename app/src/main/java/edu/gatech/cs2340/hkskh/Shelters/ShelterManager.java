@@ -16,6 +16,10 @@ public class ShelterManager {
     
     private final AppDatabase adb;
 
+    /**
+     * constructor initializes database
+     * @param adb database
+     */
     public ShelterManager(AppDatabase adb) {
         this.adb = adb;
     }

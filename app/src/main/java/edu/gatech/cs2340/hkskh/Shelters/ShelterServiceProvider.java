@@ -22,6 +22,8 @@ public class ShelterServiceProvider {
 
     /**
      * Load data from CSV file
+     * @param context the context of the shelter
+     * @param adb the database to load
      */
     public static void load(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
@@ -69,6 +71,8 @@ public class ShelterServiceProvider {
 
     /**
      * Clear current data and load
+     * @param context the context to load
+     * @param adb the database to reload
      */
     public static void reload(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);

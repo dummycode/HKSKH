@@ -147,7 +147,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 } else if ((shelterId != selectedShelterId)
                         && (shelterId != -1)){
-                    String currentName = shelterManager.findById(shelterId).getName();
+                    Shelter selectedShelter = shelterManager.findById(shelterId);
+                    String currentName = selectedShelter.getName();
                     Toast.makeText(getApplicationContext(),
                             "You are already checked into "
                                     + currentName, Toast.LENGTH_LONG).show();
@@ -200,9 +201,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 } else if (count > user.getNumBeds(BedType.FAMILY)
                         && (bedType == BedType.FAMILY)) {
                     Toast.makeText(getApplicationContext(),
-                            "You cannot select more beds than you've checked out.", Toast.LENGTH_LONG).show();
+                            "You cannot select more beds than you've checked out.",
+                            Toast.LENGTH_LONG).show();
                 } else if (user.getShelterId() != selectedShelterId){
-                    String currentName = shelterManager.findById(user.getShelterId()).getName();
+                    Shelter selectedShelter = shelterManager.findById(user.getShelterId());
+                    String currentName = selectedShelter.getName();
                     Toast.makeText(getApplicationContext(),
                             "You are already checked into "
                                     + currentName, Toast.LENGTH_LONG).show();

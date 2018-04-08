@@ -14,6 +14,9 @@ import edu.gatech.cs2340.hkskh.Shelters.ShelterServiceProvider;
 import edu.gatech.cs2340.hkskh.Users.Controllers.LoginActivity;
 import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
+/**
+ * welcomes user into the app once logged in
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override
