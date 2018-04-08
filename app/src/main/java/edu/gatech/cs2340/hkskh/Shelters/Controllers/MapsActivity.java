@@ -61,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         int ZOOM = 12;
 
-        GoogleMap mMap = googleMap;
 
         LatLng location;
 
@@ -75,17 +74,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker.position(location);
             marker.title(title);
             marker.snippet(shelter.getAddress());
-            mMap.addMarker(marker);
+            googleMap.addMarker(marker);
         }
 
         // If the list is not empty, set the view to the location of the first shelter
         if (!shelters.isEmpty()) {
             Shelter firstShelter = shelters.get(0);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
                     new LatLng(firstShelter.getLatitude(), firstShelter.getLongitude())
             ));
         }
 
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
     }
 }

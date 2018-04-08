@@ -11,6 +11,9 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
+ * User class that stores
+ * all information needed for the user
+ * password, username, and name
  */
 @Entity(tableName = "users")
 public class User {
@@ -47,9 +50,9 @@ public class User {
      * @param pass the password that is needed to give this user access
      */
     public User(String username, UserType type, String pass){
-        this.username = username;
-        this.type = type;
-        this.pass = pass;
+        this.setUsername(username);
+        this.setType(type);
+        this.setPass(pass);
     }
 
     public int getId() {

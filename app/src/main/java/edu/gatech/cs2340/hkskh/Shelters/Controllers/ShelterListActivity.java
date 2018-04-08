@@ -80,10 +80,6 @@ public class ShelterListActivity extends AppCompatActivity {
         });
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-    }
-
     public class SimpleShelterRecyclerViewAdapter
             extends
             RecyclerView.Adapter<ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder> {

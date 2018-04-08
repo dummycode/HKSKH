@@ -102,7 +102,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
         vacancies.setText(selected.getVacancy());
 
         // Get info about what screen came before this
-        String previous = getIntent().getStringExtra("Previous Screen");
+        //this is never used
+        //String previous = getIntent().getStringExtra("Previous Screen");
 
         // checkIn button updates
         checkIn.setOnClickListener(new OnClickListener() {

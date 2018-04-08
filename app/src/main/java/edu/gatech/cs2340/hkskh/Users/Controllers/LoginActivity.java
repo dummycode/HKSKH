@@ -58,8 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(toMain);
                 } else {
                     // Failed login
-                    Toast credentialError = new Toast(getApplicationContext());
-                    Toast.makeText(getApplicationContext(),
+                    Toast credentialError = Toast.makeText(getApplicationContext(),
                             "Wrong credentials", Toast.LENGTH_SHORT);
                     credentialError.show();
 
