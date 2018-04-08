@@ -30,7 +30,7 @@ public class UserManager {
      * @return true or false based on validation of credentials
      */
     public boolean validateCredentials(String username, String pass) {
-        if (username == null || (pass == null)) {
+        if ((username == null) || (pass == null)) {
             return false;
         }
         User user = adb.userDao().findUserByUsername(username);
@@ -53,7 +53,7 @@ public class UserManager {
      */
     public boolean register(String username, String name, UserType type, String pass) {
         // No arguments can be null
-        if (username == null || (name == null) || (type == null) || (pass == null)) {
+        if ((username == null) || (name == null) || (type == null) || (pass == null)) {
             return false;
         }
         if (username.length() < 3) {

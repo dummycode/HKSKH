@@ -16,6 +16,7 @@ public class UserTypeConverter {
     /**
      *
      * @param userType converts the userType
+     * @return the type of user
      */
     @TypeConverter
     @SuppressWarnings("unused")
@@ -29,13 +30,13 @@ public class UserTypeConverter {
         }
     }
 
-    @TypeConverter
-    @SuppressWarnings("unused")
     /**
      * converts userType to integer code
      * @param userType the user type
      * @return the code of the user type
      */
+    @TypeConverter
+    @SuppressWarnings("unused")
     public static int toInteger(UserType userType) {
         return userType.getCode();
     }

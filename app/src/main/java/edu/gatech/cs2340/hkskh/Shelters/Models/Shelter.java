@@ -19,7 +19,7 @@ public class Shelter implements Parcelable {
     private int id;
 
     @ColumnInfo(name = "name")
-    private String name;
+    private final String name;
 
     @ColumnInfo(name = "capacityInd")
     private final int capacityInd;
@@ -40,7 +40,7 @@ public class Shelter implements Parcelable {
     private final String address;
 
     @ColumnInfo(name = "notes")
-    private String notes;
+    private final String notes;
 
     @ColumnInfo(name = "phoneNumber")
     private final String phoneNumber;

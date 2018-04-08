@@ -193,12 +193,12 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 if (count <= 0) {
                     Toast.makeText(getApplicationContext(),
                             "Please select a minimum of one bed.", Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.INDIVIDUAL)
+                } else if ((count > user.getNumBeds(BedType.INDIVIDUAL))
                         && (bedType == BedType.INDIVIDUAL)) {
                     Toast.makeText(getApplicationContext(),
                             "You cannot select more beds than you checked out.",
                             Toast.LENGTH_LONG).show();
-                } else if (count > user.getNumBeds(BedType.FAMILY)
+                } else if ((count > user.getNumBeds(BedType.FAMILY))
                         && (bedType == BedType.FAMILY)) {
                     Toast.makeText(getApplicationContext(),
                             "You cannot select more beds than you've checked out.",

@@ -21,16 +21,16 @@ public class User {
     private int id;
 
     @ColumnInfo(name = "username")
-    private String username;
+    private final String username;
 
     @ColumnInfo(name = "password")
-    private String pass;
+    private final String pass;
 
     @ColumnInfo(name = "name")
     private String name;
 
     @TypeConverters(UserTypeConverter.class)
-    private UserType type;
+    private final UserType type;
 
     @ColumnInfo(name = "shelterId")
     private int shelterId = -1;
@@ -207,7 +207,7 @@ public class User {
      * @return true if both numFamily and numInd is 0
      */
     public boolean isCheckedIn(){
-        return !(numFamily == 0 && (numInd == 0));
+        return !((numFamily == 0) && (numInd == 0));
     }
 
     @Override
