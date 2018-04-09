@@ -50,10 +50,7 @@ public class LoginUserTest {
     public void initMocks() {
         this.mockDB = mock(AppDatabase.class, Mockito.RETURNS_DEEP_STUBS);
     }
-//    @Before
-//    public void createUsers() {
-//        userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
-//    }
+
 
 
 
@@ -66,6 +63,7 @@ public class LoginUserTest {
         boolean result = this.userManager.login("kjin42", "qwerty");
         assertEquals(true, result);
     }
+
     @Test
     public void loginWrongPass() {
         when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
@@ -75,6 +73,34 @@ public class LoginUserTest {
         boolean result = this.userManager.login("kjin42", "wrongPass");
         assertEquals(false, result);
     }
+
+    @Test
+    public void loginNullUser() {
+        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
+        //when(this.mockUser.getPass()).thenReturn("qwerty");
+        boolean result = this.userManager.login(null, "qwerty");
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void loginNullPass() {
+        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
+        //when(this.mockUser.getPass()).thenReturn("qwerty");
+        boolean result = this.userManager.login("kjin42", null);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void loginNoUser() {
+        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
+        when(this.mockDB.userDao().findUserByUsername("kjin")).thenReturn(null);
+        //when(this.mockUser.getPass()).thenReturn("qwerty");
+        boolean result = this.userManager.login("kjin", "qwerty");
+        assertEquals(false, result);
+    }
+
+
+
 
 
 
