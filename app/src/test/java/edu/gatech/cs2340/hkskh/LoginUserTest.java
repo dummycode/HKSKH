@@ -39,6 +39,9 @@ public class LoginUserTest {
     private AppDatabase mockDB;
     private UserManager userManager;
 
+    @Mock
+    private User mockUser;
+
     @Before
     public void initUserManager() {
         userManager = new UserManager(this.mockDB);
@@ -56,15 +59,24 @@ public class LoginUserTest {
 
     @Test
     public void loginCorrectUser() {
-        //when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(getDefaultUser());
-        this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
+        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
+        when(this.mockUser.getPass()).thenReturn("qwerty");
+
+        //this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
         boolean result = this.userManager.login("kjin42", "qwerty");
         assertEquals(true, result);
     }
+    @Test
+    public void loginWrongPass() {
+        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
+        when(this.mockUser.getPass()).thenReturn("qwerty");
 
-    public void loginWrongUser() {
-        //when(this.mockDB.userDao().findUserByUsername("kjin42")).
+        //this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
+        boolean result = this.userManager.login("kjin42", "wrongPass");
+        assertEquals(false, result);
     }
+
+
 
     private User getDefaultUser() {
         return new User("kjin42", UserType.USER, "qwerty");
