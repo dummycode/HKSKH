@@ -12,15 +12,7 @@ import static org.junit.Assert.*;
  * tests user
  */
 public class UserTest {
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentException() throws Exception {
-        BedType bedFam = BedType.FAMILY;
-        BedType bedInd = BedType.INDIVIDUAL;
-        User homeless1 = new User("hbao31", UserType.USER, "123");
-        //This should test that it updates the individual beds
-        homeless1.updateBeds(bedInd, -12);
-    }
+    
     @Test
     public void testIndividualUpdate() throws Exception {
         BedType bedFam = BedType.FAMILY;
