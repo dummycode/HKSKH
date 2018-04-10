@@ -15,12 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
+/**
+ * shows the shelters on
+ * google map activity
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private List<Shelter> shelters;
@@ -62,11 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         int ZOOM = 12;
 
-        GoogleMap mMap = googleMap;
 
         LatLng location;
 
-        // Go through each shelter, adding a marker to the lat/long of the shelter, adding the name as a title,
+        // Go through each shelter, adding a marker
+        // to the lat/long of the shelter, adding the name as a title,
         // and the address as the snippet
         for (Shelter shelter : shelters) {
             String title = shelter.getMapTitle();
@@ -75,17 +78,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker.position(location);
             marker.title(title);
             marker.snippet(shelter.getAddress());
-            mMap.addMarker(marker);
+            googleMap.addMarker(marker);
         }
 
         // If the list is not empty, set the view to the location of the first shelter
         if (!shelters.isEmpty()) {
             Shelter firstShelter = shelters.get(0);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
                     new LatLng(firstShelter.getLatitude(), firstShelter.getLongitude())
             ));
         }
 
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
     }
 }

@@ -11,6 +11,7 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by henry on 3/15/18.
+ * stores the database for shelters?
  */
 @Dao
 public interface ShelterDao {

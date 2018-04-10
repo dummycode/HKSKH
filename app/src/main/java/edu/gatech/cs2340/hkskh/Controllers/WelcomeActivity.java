@@ -8,13 +8,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterServiceProvider;
 import edu.gatech.cs2340.hkskh.Users.Controllers.LoginActivity;
 import edu.gatech.cs2340.hkskh.Users.Controllers.RegisterActivity;
 
+/**
+ * welcomes user into the app once logged in
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override

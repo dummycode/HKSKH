@@ -10,24 +10,28 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.raw;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by henry on 2/27/18.
+ * Loads in the shelters from csv sheet
+ * and stores it in shelter list
  */
 public class ShelterServiceProvider {
 
     /**
      * Load data from CSV file
+     * @param context the context of the shelter
+     * @param adb the database to load
      */
     public static void load(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);
         if (adb.shelterDao().count() == 0) { // Load from CSV
             try {
                 InputStream is = context.getResources().openRawResource(raw.shelters);
-                CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(is, "UTF-8")));
+                CSVReader reader = new CSVReader(
+                        new BufferedReader(new InputStreamReader(is, "UTF-8")));
                 String[] row;
                 reader.readNext(); // Dump header
                 while ((row = reader.readNext()) != null) {
@@ -67,6 +71,8 @@ public class ShelterServiceProvider {
 
     /**
      * Clear current data and load
+     * @param context the context to load
+     * @param adb the database to reload
      */
     public static void reload(Context context, AppDatabase adb) {
         ShelterManager shelterManager = new ShelterManager(adb);

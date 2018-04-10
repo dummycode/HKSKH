@@ -13,7 +13,6 @@ import edu.gatech.cs2340.hkskh.Application;
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Controllers.WelcomeActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
 import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
@@ -59,8 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(toMain);
                 } else {
                     // Failed login
-                    Toast credentialError = new Toast(getApplicationContext());
-                    Toast.makeText(getApplicationContext(),
+                    Toast credentialError = Toast.makeText(getApplicationContext(),
                             "Wrong credentials", Toast.LENGTH_SHORT);
                     credentialError.show();
 

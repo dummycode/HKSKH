@@ -7,6 +7,8 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
+ * Manages the user class, what data is entered
+ * and what is pulled out
  */
 public class UserManager {
     private final AppDatabase adb;
@@ -28,11 +30,15 @@ public class UserManager {
      * @return true or false based on validation of credentials
      */
     public boolean validateCredentials(String username, String pass) {
-        if (username == null || (pass == null)) {
+        if ((username == null) || (pass == null)) {
             return false;
         }
         User user = adb.userDao().findUserByUsername(username);
-        return (user != null) && (user.getPass().equals(pass));
+        String userPass = "";
+        if (user != null) {
+            userPass = user.getPass();
+        }
+        return (user != null) && (userPass.equals(pass));
     }
 
     /**
@@ -47,7 +53,7 @@ public class UserManager {
      */
     public boolean register(String username, String name, UserType type, String pass) {
         // No arguments can be null
-        if (username == null || (name == null) || (type == null) || (pass == null)) {
+        if ((username == null) || (name == null) || (type == null) || (pass == null)) {
             return false;
         }
         if (username.length() < 3) {

@@ -7,7 +7,6 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
@@ -15,6 +14,9 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by baohd on 3/5/2018.
+ * Managers and accesses the shelter list
+ * returns list of shelters and passes in what search parameters
+ * the user chose
  */
 public class SearchService {
 
@@ -23,6 +25,10 @@ public class SearchService {
      */
     private final ArrayList<Shelter> shelters;
 
+    /**
+     * this search service allows for searching in a safe manner
+     * @param adb the database to pull shelter list from
+     */
     @SuppressWarnings("unchecked")
     public SearchService(AppDatabase adb) {
         ShelterManager sheltersList = new ShelterManager(adb);
@@ -52,7 +58,8 @@ public class SearchService {
                 throw new IllegalArgumentException("Invalid parameter");
             }
         } else {
-            throw new IllegalArgumentException("This is not a valid type of search. Please choose a valid type of search.");
+            throw new IllegalArgumentException("This is not a valid type " +
+                    "of search. Please choose a valid type of search.");
         }
 
     }
@@ -77,14 +84,16 @@ public class SearchService {
         }
         // If everything was removed, the shelter doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There is no shelter with this name. Are you sure it exists?");
+            throw new NoSuchElementException("There is no shelter with " +
+                    "this name. Are you sure it exists?");
         } else {
             return results;
         }
     }
 
     /**
-     * Search for appropriate shelter using age or gender as a parameter and return list of appropriate shelters
+     * Search for appropriate shelter using age
+     * or gender as a parameter and return list of appropriate shelters
      *
      * @param restrictions the age or gender
      * @return the list of appropriate shelters
@@ -105,7 +114,8 @@ public class SearchService {
 
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There are no shelters that fits these parameters. Please broaden your search.");
+            throw new NoSuchElementException("There are no shelters " +
+                    "that fits these parameters. Please broaden your search.");
         } else {
             return results;
         }
@@ -131,7 +141,8 @@ public class SearchService {
         }
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
+            throw new NoSuchElementException("There are no shelters " +
+                    "that fit these parameters. Please broaden your search.");
         } else {
             return results;
         }
@@ -158,20 +169,24 @@ public class SearchService {
 
         // If it doesn't have any shelters left then it doesn't exist
         if (shelterList.isEmpty()) {
-            throw new NoSuchElementException("There are no shelters that fit these parameters. Please broaden your search.");
+            throw new NoSuchElementException("There are no " +
+                    "shelters that fit these parameters. Please broaden your search.");
         } else {
             return results;
         }
     }
 
     /**
-     * Sets the filter for a search given the searchType requested and the View components. Serves to
+     * Sets the filter for a search given
+     * the searchType requested and the View components. Serves to
      * move business logic out of the SearchActivity
      *
-     * @param components an array of View objects of length 3. components[0] is an EditText, components[1] is a RadioButton
+     * @param components an array of View objects of length
+     *                   3. components[0] is an EditText, components[1] is a RadioButton
      *                   and components[2] is a Spinner
      * @param searchType is the type of search requested, a String
-     * @return the filter calculated based on the search requested and gathering the info from the correct UI component
+     * @return the filter calculated based on the search requested
+     * and gathering the info from the correct UI component
      */
     public String setSearchFilter(View[] components, String searchType) {
         switch (searchType) {

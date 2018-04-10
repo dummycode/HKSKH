@@ -8,11 +8,18 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by baohd on 2/26/2018.
+ * manages shelters into a list
+ * adds and controls what info is
+ * entered into shelters
  */
 public class ShelterManager {
     
     private final AppDatabase adb;
 
+    /**
+     * constructor initializes database
+     * @param adb database
+     */
     public ShelterManager(AppDatabase adb) {
         this.adb = adb;
     }
@@ -33,8 +40,7 @@ public class ShelterManager {
      * @return the shelter they request, or if it doesn't exist return null
      */
     public Shelter findById(int key) {
-        Shelter shelter = adb.shelterDao().findShelterById(key);
-        return shelter;
+        return adb.shelterDao().findShelterById(key);
     }
 
 

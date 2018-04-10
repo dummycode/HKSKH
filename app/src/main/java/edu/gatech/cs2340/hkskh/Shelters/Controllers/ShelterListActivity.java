@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
@@ -28,6 +26,9 @@ import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
+/**
+ * shelter list displays a list of shelters that fit the search criteria
+ */
 public class ShelterListActivity extends AppCompatActivity {
 
     private ArrayList<Shelter> shelters;
@@ -71,8 +72,10 @@ public class ShelterListActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent toFilteredList = new Intent(ShelterListActivity.this, MapsActivity.class);
-                // Pass the search type as an extra to the next screen so we can make the list to display
+                final Intent toFilteredList =
+                        new Intent(ShelterListActivity.this, MapsActivity.class);
+                // Pass the search type as an extra
+                // to the next screen so we can make the list to display
                 toFilteredList.putParcelableArrayListExtra("shelters", shelters);
 
                 startActivity(toFilteredList);
@@ -80,17 +83,15 @@ public class ShelterListActivity extends AppCompatActivity {
         });
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-    }
-
     public class SimpleShelterRecyclerViewAdapter
-            extends RecyclerView.Adapter<ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder> {
+            extends
+            RecyclerView.Adapter<ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder> {
 
 
         @Override
         @NonNull
-        public ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder
+        onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -103,9 +104,12 @@ public class ShelterListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(
+                @NonNull final ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder
+                        holder, int position) {
             /*
-            This is where we have to bind each data element in the list (given by position parameter)
+            This is where we have to bind each data element
+            in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
              */
             // Start by getting the element at the correct position

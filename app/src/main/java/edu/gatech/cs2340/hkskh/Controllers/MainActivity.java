@@ -25,6 +25,10 @@ import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
 
+/**
+ * This is the main page to begin search from.
+ * Shows activity allowing for search select
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Application state;
@@ -61,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (user.isCheckedIn()) {
             Shelter shelter = shelterManager.findById(user.getShelterId());
-            statusText.setText("Currently checked in to shelter " + shelter.getName() + " (" + shelter.getId() + ") "
+            statusText.setText("Currently checked in to shelter "
+                    + shelter.getName() + " (" + shelter.getId() + ") "
                     + "\n\nFamily spaces reserved: " + user.getNumFamily()
                     + "\n\nIndividual spaces reserved: " + user.getNumInd());
         } else {
@@ -70,17 +75,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Sets up the search options spinner and loads the options in.
-        // Note: reminder to switch out the arrays.asList for something that is more flexible later like enum reference
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, layout.simple_spinner_item, Arrays.asList("name", "age", "gender"));
+        // Note: reminder to switch out the arrays.asList for
+        // something that is more flexible later like enum reference
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                layout.simple_spinner_item,
+                Arrays.asList("name", "age", "gender"));
         adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         searchSpinner.setAdapter(adapter);
 
         b1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast logOutToast = new Toast(getApplicationContext());
-                Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_SHORT);
-                logOutToast.show();
+                Toast logOut = Toast.makeText(getApplicationContext(),
+                        "Logging out", Toast.LENGTH_SHORT);
+                logOut.show();
 
                 state.setCurrentUserId(-1);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));

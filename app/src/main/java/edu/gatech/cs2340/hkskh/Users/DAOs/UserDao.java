@@ -11,6 +11,7 @@ import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 /**
  * Created by henry on 3/14/18.
+ * Stores users in database
  */
 @Dao
 public interface UserDao {

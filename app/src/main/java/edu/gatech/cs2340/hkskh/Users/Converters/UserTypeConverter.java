@@ -9,9 +9,15 @@ import static edu.gatech.cs2340.hkskh.Users.Enums.UserType.USER;
 
 /**
  * Created by henry on 3/14/18.
+ * converts an int into a usertype
  */
 public class UserTypeConverter {
 
+    /**
+     *
+     * @param userType converts the userType
+     * @return the type of user
+     */
     @TypeConverter
     @SuppressWarnings("unused")
     public static UserType toUserType(int userType) {
@@ -24,6 +30,11 @@ public class UserTypeConverter {
         }
     }
 
+    /**
+     * converts userType to integer code
+     * @param userType the user type
+     * @return the code of the user type
+     */
     @TypeConverter
     @SuppressWarnings("unused")
     public static int toInteger(UserType userType) {

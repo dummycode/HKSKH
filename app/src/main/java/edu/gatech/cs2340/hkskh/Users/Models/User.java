@@ -11,6 +11,9 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
 /**
  * Created by Kirby on 2/16/2018.
+ * User class that stores
+ * all information needed for the user
+ * password, username, and name
  */
 @Entity(tableName = "users")
 public class User {
@@ -18,16 +21,16 @@ public class User {
     private int id;
 
     @ColumnInfo(name = "username")
-    private String username;
+    private final String username;
 
     @ColumnInfo(name = "password")
-    private String pass;
+    private final String pass;
 
     @ColumnInfo(name = "name")
     private String name;
 
     @TypeConverters(UserTypeConverter.class)
-    private UserType type;
+    private final UserType type;
 
     @ColumnInfo(name = "shelterId")
     private int shelterId = -1;
@@ -52,66 +55,111 @@ public class User {
         this.pass = pass;
     }
 
+    /**
+     *
+     * @return user if
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id the int to set as user id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return username of user
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
+
+    /**
+     *
+     * @return password
+     */
     public String getPass() {
         return pass;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
 
+    /**
+     * name of user
+     * @return name of user
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets name
+     * @param name the actual name of user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return the type of user
+     */
     public UserType getType() {
         return type;
     }
 
-    public void setType(UserType type) {
-        this.type = type;
-    }
 
+
+    /**
+     *
+     * @return the shelter user is staying at
+     */
     public int getShelterId() {
         return shelterId;
     }
 
+    /**
+     *
+     * @param key the id of the shelter the user checked into
+     */
     public void setShelterId(int key) {
         shelterId = key;
     }
 
+    /**
+     *
+     * @return how many family spots user is checked into
+     */
     public int getNumFamily() {
         return numFamily;
     }
 
+    /**
+     *
+     * @param numFamily amount of family spots claimed
+     */
     public void setNumFamily(int numFamily) {
         this.numFamily = numFamily;
     }
 
+    /**
+     *
+     * @return amount of individual spots checked into
+     */
     public int getNumInd() {
         return numInd;
     }
 
+    /**
+     *
+     * @param numInd sets individual spots checked into
+     */
     public void setNumInd(int numInd) {
         this.numInd = numInd;
     }
@@ -159,7 +207,7 @@ public class User {
      * @return true if both numFamily and numInd is 0
      */
     public boolean isCheckedIn(){
-        return !(numFamily == 0 && (numInd == 0));
+        return !((numFamily == 0) && (numInd == 0));
     }
 
     @Override
