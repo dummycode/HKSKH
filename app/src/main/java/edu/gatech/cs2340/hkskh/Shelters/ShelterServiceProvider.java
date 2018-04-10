@@ -22,8 +22,8 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  */
 public class ShelterServiceProvider {
 
-    Context context;
-    AppDatabase adb;
+    final private Context context;
+    final private AppDatabase adb;
 
     public ShelterServiceProvider(Context context, AppDatabase adb) {
         this.context = context;
@@ -83,6 +83,7 @@ public class ShelterServiceProvider {
     /**
      * Clear current data and load
      */
+    @SuppressWarnings("unused")
     public void reload() {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();

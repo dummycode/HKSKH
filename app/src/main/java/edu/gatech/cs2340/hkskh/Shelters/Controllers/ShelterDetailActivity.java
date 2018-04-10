@@ -35,15 +35,16 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
  */
 public class ShelterDetailActivity extends AppCompatActivity {
 
-    Shelter selected;
-    User user;
-    AppDatabase adb;
-    ShelterManager shelterManager;
-    UserManager userManager;
+    private Shelter selected;
+    private User user;
+    private AppDatabase adb;
+    private ShelterManager shelterManager;
+    private UserManager userManager;
 
-    EditText amount;
-    Spinner vacancySpinner;
-    TextView vacancies;
+    // Components
+    private EditText amount;
+    private Spinner vacancySpinner;
+    private TextView vacancies;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -115,9 +116,23 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
         // checkOut button updates vacancies
         checkOut.setOnClickListener(checkOutListener);
+
+        FloatingActionButton fab = findViewById(id.fab);
+        fab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent back = new Intent(view.getContext(), ShelterListActivity.class);
+
+                // Put the full list back into the intent
+                ArrayList<Shelter> shelters = getIntent().getParcelableArrayListExtra("shelters");
+                back.putParcelableArrayListExtra("shelters", shelters);
+
+                startActivity(back);
+            }
+        });
     }
 
-    OnClickListener checkInListener = new OnClickListener() {
+    final OnClickListener checkInListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             int selectedShelterId = selected.getId();
@@ -177,7 +192,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         }
     };
 
-    OnClickListener checkOutListener = new OnClickListener() {
+    final OnClickListener checkOutListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             int selectedShelterId = selected.getId();

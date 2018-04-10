@@ -45,7 +45,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class, "hkskh")
                             .allowMainThreadQueries()
                             .build();
-            AppDatabase.INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
+            AppDatabase.INSTANCE.defaultUsers();
         }
         return AppDatabase.INSTANCE;
     }
@@ -53,7 +53,15 @@ public abstract class AppDatabase extends RoomDatabase {
     /**
      * Destroy the database instance
      */
+    @SuppressWarnings("unused")
     public static void destroyInstance() {
         AppDatabase.INSTANCE = null;
+    }
+
+    /**
+     * Insert some default users
+     */
+    private void defaultUsers() {
+        userDao().insert(new User("henry", UserType.USER, "pass"));
     }
 }

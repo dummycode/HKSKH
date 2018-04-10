@@ -30,16 +30,13 @@ public class UserManager {
      * @param pass a password, String
      * @return true or false based on validation of credentials
      */
-    public boolean validateCredentials(String username, String pass) {
+    public boolean login(String username, String pass) {
         if ((username == null) || (pass == null)) {
             return false;
         }
         User user = userDao.findUserByUsername(username);
-        String userPass = "";
-        if (user != null) {
-            userPass = user.getPass();
-        }
-        return (user != null) && (userPass.equals(pass));
+
+        return (user != null) && (user.validatePass(pass));
     }
 
     /**

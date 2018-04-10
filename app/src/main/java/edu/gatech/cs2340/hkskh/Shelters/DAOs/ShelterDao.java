@@ -21,14 +21,8 @@ public interface ShelterDao {
     @Query("SELECT * FROM shelters WHERE id = :id")
     Shelter findShelterById(int id);
 
-    @Query("SELECT * FROM shelters WHERE id IN (:shelterIds)")
-    List<Shelter> loadAllByIds(int[] shelterIds);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Shelter shelter);
-
-    @Insert
-    void insertAll(Shelter... shelters);
 
     @Query("DELETE FROM shelters")
     void clear();

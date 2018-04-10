@@ -10,20 +10,8 @@ public enum UserType {
     private int code;
     private String acctType;
 
-    UserType(String type) {
-        acctType = type;
-    }
-
     UserType(int code) {
         this.code = code;
-    }
-
-    /**
-     * gets account type
-     * @return account type
-     */
-    public String getAcctString(){
-        return acctType;
     }
 
     /**
