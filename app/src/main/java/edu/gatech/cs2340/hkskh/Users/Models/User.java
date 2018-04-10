@@ -171,9 +171,6 @@ public class User {
      * @param count count to change by
      */
     public void updateBeds(BedType bedType, int count) {
-        if (count <= 0) {
-            throw new IllegalArgumentException("Not allowed to enter negative numbers for amount of spots.");
-        }
         switch (bedType) {
             case FAMILY:
                 numFamily += count;
