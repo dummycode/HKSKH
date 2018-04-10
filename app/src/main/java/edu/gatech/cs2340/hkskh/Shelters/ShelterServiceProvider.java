@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.opencsv.CSVReader;
 
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R.raw;
+import edu.gatech.cs2340.hkskh.Shelters.DAOs.ShelterDao;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
@@ -20,16 +22,25 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  */
 public class ShelterServiceProvider {
 
+    Context context;
+    AppDatabase adb;
+
+    public ShelterServiceProvider(Context context, AppDatabase adb) {
+        this.context = context;
+        this.adb = adb;
+    }
+
     /**
      * Load data from CSV file
-     * @param context the context of the shelter
-     * @param adb the database to load
      */
-    public static void load(Context context, AppDatabase adb) {
+    public void load() {
         ShelterManager shelterManager = new ShelterManager(adb);
-        if (adb.shelterDao().count() == 0) { // Load from CSV
+        ShelterDao shelterDao = adb.shelterDao();
+
+        if (shelterDao.count() == 0) { // Load from CSV
             try {
-                InputStream is = context.getResources().openRawResource(raw.shelters);
+                Resources resources = context.getResources();
+                InputStream is = resources.openRawResource(raw.shelters);
                 CSVReader reader = new CSVReader(
                         new BufferedReader(new InputStreamReader(is, "UTF-8")));
                 String[] row;
@@ -71,12 +82,10 @@ public class ShelterServiceProvider {
 
     /**
      * Clear current data and load
-     * @param context the context to load
-     * @param adb the database to reload
      */
-    public static void reload(Context context, AppDatabase adb) {
+    public void reload() {
         ShelterManager shelterManager = new ShelterManager(adb);
         shelterManager.clear();
-        ShelterServiceProvider.load(context, adb);
+        load();
     }
 }

@@ -43,16 +43,17 @@ public class SearchService {
      * @return list of shelters that fits the parameters
      */
     public ArrayList<Shelter> searchChoices(String searchType, String request) {
-        searchType = searchType.toLowerCase();
-        request = request.toLowerCase();
-        if ("name".equals(searchType)) {
-            return getByName(request);
-        } else if ("age".equals(searchType)) {
-            return getByAge(request);
-        } else if ("gender".equals(searchType)) {
-            if ("men".equals(request)) {
+        String searchTypeLower = searchType.toLowerCase();
+        String requestLower = request.toLowerCase();
+
+        if ("name".equals(searchTypeLower)) {
+            return getByName(requestLower);
+        } else if ("age".equals(searchTypeLower)) {
+            return getByAge(requestLower);
+        } else if ("gender".equals(searchTypeLower)) {
+            if ("men".equals(requestLower)) {
                 return getByMen();
-            } else if ("women".equals(request)) {
+            } else if ("women".equals(requestLower)) {
                 return getByWomen();
             } else {
                 throw new IllegalArgumentException("Invalid parameter");

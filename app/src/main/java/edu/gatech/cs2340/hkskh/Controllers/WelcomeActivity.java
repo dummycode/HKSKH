@@ -43,7 +43,8 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        ShelterServiceProvider.load(getBaseContext(), adb);
+        ShelterServiceProvider shelterServiceProvider = new ShelterServiceProvider(getBaseContext(), adb);
+        shelterServiceProvider.load();
     }
 
     @Override
