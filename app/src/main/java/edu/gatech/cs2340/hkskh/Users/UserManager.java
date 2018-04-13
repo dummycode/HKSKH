@@ -2,6 +2,7 @@ package edu.gatech.cs2340.hkskh.Users;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
+import edu.gatech.cs2340.hkskh.Users.DAOs.UserDao;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
@@ -11,7 +12,7 @@ import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
  * and what is pulled out
  */
 public class UserManager {
-    private final AppDatabase adb;
+    private final UserDao userDao;
 
     /**
      * Constructor for the user manager
@@ -19,7 +20,7 @@ public class UserManager {
      * @param adb dependency injected database
      */
     public UserManager(AppDatabase adb) {
-        this.adb = adb;
+        this.userDao = adb.userDao();
     }
 
     /**
@@ -29,16 +30,13 @@ public class UserManager {
      * @param pass a password, String
      * @return true or false based on validation of credentials
      */
-    public boolean validateCredentials(String username, String pass) {
+    public boolean login(String username, String pass) {
         if ((username == null) || (pass == null)) {
             return false;
         }
-        User user = adb.userDao().findUserByUsername(username);
-        String userPass = "";
-        if (user != null) {
-            userPass = user.getPass();
-        }
-        return (user != null) && (userPass.equals(pass));
+        User user = userDao.findUserByUsername(username);
+
+        return (user != null) && (user.validatePass(pass));
     }
 
     /**
@@ -59,13 +57,13 @@ public class UserManager {
         if (username.length() < 3) {
             return false;
         }
-        User user = adb.userDao().findUserByUsername(username);
+        User user = userDao.findUserByUsername(username);
         // Username is taken
         if (user != null) {
             return false;
         } else {
             user = new User(username, type, pass);
-            adb.userDao().insertAll(user);
+            userDao.insertAll(user);
             return true;
         }
     }
@@ -77,7 +75,7 @@ public class UserManager {
      * @return the user from the id
      */
     public User findById(int userId) {
-        return adb.userDao().findUserById(userId);
+        return userDao.findUserById(userId);
     }
 
     /**
@@ -87,7 +85,7 @@ public class UserManager {
      * @return the user from the username
      */
     public User findByUsername(String username) {
-        return adb.userDao().findUserByUsername(username);
+        return userDao.findUserByUsername(username);
     }
 
     /**
@@ -102,7 +100,7 @@ public class UserManager {
         if (user != null) {
             user.setShelterId(shelterId);
             user.updateBeds(bedType, count);
-            adb.userDao().insert(user);
+            userDao.insert(user);
         }
     }
 
@@ -119,7 +117,7 @@ public class UserManager {
             if ((user.getNumFamily() == 0) && (user.getNumInd() == 0)) {
                 user.setShelterId(-1);
             }
-            adb.userDao().insert(user);
+            userDao.insert(user);
         }
     }
 }

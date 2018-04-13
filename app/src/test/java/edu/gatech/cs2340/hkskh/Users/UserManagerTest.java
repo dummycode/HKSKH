@@ -15,7 +15,6 @@ import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by henry on 4/9/18.

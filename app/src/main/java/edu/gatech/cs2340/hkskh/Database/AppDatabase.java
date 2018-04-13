@@ -4,6 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import edu.gatech.cs2340.hkskh.Shelters.DAOs.ShelterDao;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
@@ -18,6 +19,7 @@ import edu.gatech.cs2340.hkskh.Users.Models.User;
 @Database(entities = {User.class, Shelter.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
+    @Nullable
     private static AppDatabase INSTANCE;
 
     /**
@@ -43,7 +45,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class, "hkskh")
                             .allowMainThreadQueries()
                             .build();
-            AppDatabase.INSTANCE.userDao().insert(new User("henry", UserType.USER, "pass"));
+            AppDatabase.INSTANCE.defaultUsers();
         }
         return AppDatabase.INSTANCE;
     }
@@ -51,7 +53,15 @@ public abstract class AppDatabase extends RoomDatabase {
     /**
      * Destroy the database instance
      */
+    @SuppressWarnings("unused")
     public static void destroyInstance() {
         AppDatabase.INSTANCE = null;
+    }
+
+    /**
+     * Insert some default users
+     */
+    private void defaultUsers() {
+        userDao().insert(new User("henry", UserType.USER, "pass"));
     }
 }

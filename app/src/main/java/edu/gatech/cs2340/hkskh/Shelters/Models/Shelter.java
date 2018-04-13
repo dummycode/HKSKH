@@ -2,11 +2,9 @@ package edu.gatech.cs2340.hkskh.Shelters.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
 /**
  * Created by baohd on 2/26/2018.
@@ -50,9 +48,6 @@ public class Shelter implements Parcelable {
 
     @ColumnInfo(name = "vacancyFam")
     private int vacancyFam;
-
-    @Ignore
-    private final int DEFAULT_CAPACITY = 0;
 
     /**
      *  Constructor that initiates all the data.

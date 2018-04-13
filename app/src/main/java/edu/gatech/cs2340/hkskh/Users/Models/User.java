@@ -210,6 +210,16 @@ public class User {
         return !((numFamily == 0) && (numInd == 0));
     }
 
+    /**
+     * Validate a password
+     *
+     * @param pass the password
+     * @return true or false
+     */
+    public boolean validatePass(String pass) {
+        return this.pass.equals(pass);
+    }
+
     @Override
     public String toString() {
         return "id: " + id + "\n" +

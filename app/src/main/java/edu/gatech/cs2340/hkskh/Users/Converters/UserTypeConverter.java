@@ -11,6 +11,7 @@ import static edu.gatech.cs2340.hkskh.Users.Enums.UserType.USER;
  * Created by henry on 3/14/18.
  * converts an int into a usertype
  */
+@SuppressWarnings("UtilityClass")
 public class UserTypeConverter {
 
     /**
