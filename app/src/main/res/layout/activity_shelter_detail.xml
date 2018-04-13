@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,7 +24,6 @@
     <include
         android:id="@+id/include"
         layout="@layout/content_shelter_detail"
-        android:layout_height="510dp"
         tools:layout_editor_absoluteY="57dp" />
 
     <android.support.design.widget.FloatingActionButton

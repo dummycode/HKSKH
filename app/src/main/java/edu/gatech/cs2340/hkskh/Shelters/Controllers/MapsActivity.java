@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.hkskh.Shelters.Controllers;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -14,33 +15,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
-import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
+import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
+/**
+ * shows the shelters on
+ * google map activity
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     private List<Shelter> shelters;
 
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(id.map);
 
         // Retrieve the database
         AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
         ShelterManager shelterManager = new ShelterManager(adb);
 
+        Intent currentIntent = getIntent();
+
         // Get shelters from intent
-        if (getIntent().hasExtra("shelters")) {
-            this.shelters = getIntent().getParcelableArrayListExtra("shelters");
+        if (currentIntent.hasExtra("shelters")) {
+            shelters = currentIntent.getParcelableArrayListExtra("shelters");
         } else {
-            this.shelters = new ArrayList(shelterManager.getAll());
+            shelters = new ArrayList(shelterManager.getAll());
         }
 
         mapFragment.getMapAsync(this);
@@ -56,26 +63,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        int ZOOM = 12;
+
 
         LatLng location;
 
-        // Go through each shelter, adding a marker to the lat/long of the shelter, adding the name as a title,
+        // Go through each shelter, adding a marker
+        // to the lat/long of the shelter, adding the name as a title,
         // and the address as the snippet
-        for (Shelter shelter : this.shelters) {
+        for (Shelter shelter : shelters) {
+            String title = shelter.getMapTitle();
             location = new LatLng(shelter.getLatitude(), shelter.getLongitude());
-            mMap.addMarker(
-                    new MarkerOptions().position(location)
-                            .title(shelter.getName() + " - " + shelter.getPhoneNumber())
-                            .snippet(shelter.getAddress())
-            );
+            MarkerOptions marker = new MarkerOptions();
+            marker.position(location);
+            marker.title(title);
+            marker.snippet(shelter.getAddress());
+            googleMap.addMarker(marker);
         }
 
-        // if the list is not empty, set the view to the location of the first shelter
+        // If the list is not empty, set the view to the location of the first shelter
         if (!shelters.isEmpty()) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(shelters.get(0).getLatitude(),
-                    shelters.get(0).getLongitude())));
+            Shelter firstShelter = shelters.get(0);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
+                    new LatLng(firstShelter.getLatitude(), firstShelter.getLongitude())
+            ));
         }
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM));
     }
 }

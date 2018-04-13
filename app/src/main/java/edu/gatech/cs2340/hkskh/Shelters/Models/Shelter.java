@@ -2,13 +2,14 @@ package edu.gatech.cs2340.hkskh.Shelters.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Created by baohd on 2/26/2018.
+ * Shelter is a model storing all the information
+ * needed for shelter
  */
 @Entity(tableName = "shelters")
 public class Shelter implements Parcelable {
@@ -16,40 +17,37 @@ public class Shelter implements Parcelable {
     private int id;
 
     @ColumnInfo(name = "name")
-    private String name;
+    private final String name;
 
     @ColumnInfo(name = "capacityInd")
-    private int capacityInd;
+    private final int capacityInd;
 
     @ColumnInfo(name = "capacityFam")
-    private int capacityFam;
+    private final int capacityFam;
 
     @ColumnInfo(name = "restrictions")
-    private String restrictions;
+    private final String restrictions;
 
     @ColumnInfo(name = "longitude")
-    private double longitude;
+    private final double longitude;
 
     @ColumnInfo(name = "latitude")
-    private double latitude;
+    private final double latitude;
 
     @ColumnInfo(name = "address")
-    private String address;
+    private final String address;
 
     @ColumnInfo(name = "notes")
-    private String notes;
+    private final String notes;
 
     @ColumnInfo(name = "phoneNumber")
-    private String phoneNumber;
+    private final String phoneNumber;
 
     @ColumnInfo(name = "vacancyInd")
     private int vacancyInd;
 
     @ColumnInfo(name = "vacancyFam")
     private int vacancyFam;
-
-    @Ignore
-    private final int DEFAULT_CAPACITY = 0;
 
     /**
      *  Constructor that initiates all the data.
@@ -85,10 +83,14 @@ public class Shelter implements Parcelable {
         this.notes = notes;
         this.phoneNumber = phoneNumber;
 
-        this.vacancyInd = capacityInd;
-        this.vacancyFam = capacityFam;
+        vacancyInd = capacityInd;
+        vacancyFam = capacityFam;
     }
 
+    /**
+     * allows for shelter initialization
+     * @param in the parcel that contains all the info
+     */
     public Shelter(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -104,99 +106,125 @@ public class Shelter implements Parcelable {
         vacancyFam = in.readInt();
     }
 
-
+    /**
+     * returns shelter id
+     * @return id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * sets shelter id
+     * @param id the id of the shelter
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * returns name of shelter
+     * @return shelter name
+     */
     public String getName() {
-        return this.name;
+        return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
+    /**
+     * gets individual capacity
+     * @return individual capacity
+     */
     public int getCapacityInd() {
-        return this.capacityInd;
+        return capacityInd;
     }
 
-    public void setCapacityInd(int capacityInd) {
-        this.capacityInd = capacityInd;
-    }
-
+    /**
+     * gets family capacity
+     * @return family capacity
+     */
     public int getCapacityFam() {
-        return this.capacityFam;
+        return capacityFam;
     }
 
-    public void setCapacityFam(int capacityFam) {
-        this.capacityFam = capacityFam;
-    }
-
+    /**
+     * gets restrictions of shelter
+     * @return restrictions
+     */
     public String getRestrictions() {
-        return this.restrictions;
+        return restrictions;
     }
 
-    public void setRestrictions(String restrictions) {
-        this.restrictions = restrictions;
-    }
-
+    /**
+     *
+     * @return longitude of shelter
+     */
     public double getLongitude() {
-        return this.longitude;
+        return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
+    /**
+     *
+     * @return latitude of shelter
+     */
     public double getLatitude() {
-        return this.latitude;
+        return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
+    /**
+     *
+     * @return address of shelter
+     */
     public String getAddress() {
-        return this.address;
+        return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+    /**
+     *
+     * @return special notes about shelter
+     */
     public String getNotes() {
-        return this.notes;
+        return notes;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
 
+
+    /**
+     *
+     * @return phone number of shelter
+     */
     public String getPhoneNumber() {
-        return this.phoneNumber;
+        return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
+    /**
+     * returns vacancies (individual)
+     * @return individual spots
+     */
     public int getVacancyInd() {
-        return this.vacancyInd;
+        return vacancyInd;
     }
 
+    /**
+     * sets individual vacancies
+     * @param vacancyInd individual vacancies
+     */
     public void setVacancyInd(int vacancyInd) {
         this.vacancyInd = vacancyInd;
     }
 
+    /**
+     * gets vacancy of family spots
+     * @return family spots
+     */
     public int getVacancyFam() {
-        return this.vacancyFam;
+        return vacancyFam;
     }
 
+    /**
+     * sets vacancy of family spots
+     * @param vacancyFam how many family spots remain
+     */
     public void setVacancyFam(int vacancyFam) {
         this.vacancyFam = vacancyFam;
     }
@@ -207,7 +235,7 @@ public class Shelter implements Parcelable {
      *
      * @return the vacancy string
      */
-    public String getVacancy() {
+    public CharSequence getVacancy() {
         return "Spots remaining: " + vacancyFam + " family beds, "
             + vacancyInd + " individual beds.";
     }
@@ -219,7 +247,7 @@ public class Shelter implements Parcelable {
      */
     @Override
     public String toString() {
-        return this.id + " : " + this.name;
+        return id + " : " + name;
     }
 
     @Override
@@ -227,11 +255,13 @@ public class Shelter implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
+    public static final Creator<Shelter> CREATOR = new Creator<Shelter>() {
+        @Override
         public Shelter createFromParcel(Parcel in) {
             return new Shelter(in);
         }
 
+        @Override
         public Shelter[] newArray(int size) {
             return new Shelter[size];
         }
@@ -251,5 +281,13 @@ public class Shelter implements Parcelable {
         dest.writeString(phoneNumber);
         dest.writeInt(vacancyInd);
         dest.writeInt(vacancyFam);
+    }
+
+    /**
+     * returns name + phone number for map info
+     * @return shelter info for map
+     */
+    public String getMapTitle() {
+        return name + " - " + phoneNumber;
     }
 }

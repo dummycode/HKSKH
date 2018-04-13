@@ -51,9 +51,6 @@ public class LoginUserTest {
         this.mockDB = mock(AppDatabase.class, Mockito.RETURNS_DEEP_STUBS);
     }
 
-
-
-
     @Test
     public void loginCorrectUser() {
         when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);

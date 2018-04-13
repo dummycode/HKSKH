@@ -11,6 +11,7 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 
 /**
  * Created by henry on 3/15/18.
+ * stores the database for shelters?
  */
 @Dao
 public interface ShelterDao {
@@ -20,14 +21,8 @@ public interface ShelterDao {
     @Query("SELECT * FROM shelters WHERE id = :id")
     Shelter findShelterById(int id);
 
-    @Query("SELECT * FROM shelters WHERE id IN (:shelterIds)")
-    List<Shelter> loadAllByIds(int[] shelterIds);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Shelter shelter);
-
-    @Insert
-    void insertAll(Shelter... shelters);
 
     @Query("DELETE FROM shelters")
     void clear();

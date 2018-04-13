@@ -12,22 +12,25 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import edu.gatech.cs2340.hkskh.Controllers.MainActivity;
 import edu.gatech.cs2340.hkskh.Database.AppDatabase;
 import edu.gatech.cs2340.hkskh.R;
+import edu.gatech.cs2340.hkskh.R.id;
+import edu.gatech.cs2340.hkskh.R.layout;
 import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 
+/**
+ * shelter list displays a list of shelters that fit the search criteria
+ */
 public class ShelterListActivity extends AppCompatActivity {
 
-    private AppDatabase adb;
     private ArrayList<Shelter> shelters;
 
     @Override
@@ -35,31 +38,29 @@ public class ShelterListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
-
         // Retrieve the database
         AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
         ShelterManager shelterManager = new ShelterManager(adb);
 
         // Get shelters from intent
         if (getIntent().hasExtra("shelters")) {
-            this.shelters = getIntent().getParcelableArrayListExtra("shelters");
+            shelters = getIntent().getParcelableArrayListExtra("shelters");
         } else {
-            this.shelters = new ArrayList(shelterManager.getAll());
+            shelters = new ArrayList(shelterManager.getAll());
         }
 
-        setContentView(R.layout.activity_shelter_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(layout.activity_shelter_list);
+        Toolbar toolbar = findViewById(id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView shelterRecycler = (RecyclerView) findViewById(R.id.course_list_recycler);
-        setupRecyclerView(shelterRecycler);
+        RecyclerView shelterRecycler = findViewById(id.course_list_recycler);
+        shelterRecycler.setAdapter(new ShelterListActivity.SimpleShelterRecyclerViewAdapter());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         shelterRecycler.setLayoutManager(layoutManager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,8 +72,10 @@ public class ShelterListActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent toFilteredList = new Intent(ShelterListActivity.this, MapsActivity.class);
-                // Pass the search type as an extra to the next screen so we can make the list to display
+                final Intent toFilteredList =
+                        new Intent(ShelterListActivity.this, MapsActivity.class);
+                // Pass the search type as an extra
+                // to the next screen so we can make the list to display
                 toFilteredList.putParcelableArrayListExtra("shelters", shelters);
 
                 startActivity(toFilteredList);
@@ -80,23 +83,15 @@ public class ShelterListActivity extends AppCompatActivity {
         });
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleShelterRecyclerViewAdapter(shelters));
-    }
-
     public class SimpleShelterRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleShelterRecyclerViewAdapter.ViewHolder> {
+            extends
+            RecyclerView.Adapter<ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder> {
 
-        /**
-         * set the items to be used by the adapter
-         * @param items the list of items to be displayed in the recycler view
-         */
-        public SimpleShelterRecyclerViewAdapter(ArrayList<Shelter> items) {
-            shelters = items;
-        }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder
+        onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -105,13 +100,16 @@ public class ShelterListActivity extends AppCompatActivity {
              */
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.content_shelter_list, parent, false);
-            return new ViewHolder(view);
+            return new ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(
+                @NonNull final ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder
+                        holder, int position) {
             /*
-            This is where we have to bind each data element in the list (given by position parameter)
+            This is where we have to bind each data element
+            in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
              */
             // Start by getting the element at the correct position
@@ -119,7 +117,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
-              textview and the string rep of a course in the other.
+              TextView and the string rep of a course in the other.
              */
             holder.nameView.setText(shelters.get(position).getName());
             holder.idView.setText("" + shelters.get(position).getId());
@@ -127,7 +125,7 @@ public class ShelterListActivity extends AppCompatActivity {
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.mView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                         // On a phone, we need to change windows to the detail view
@@ -161,16 +159,16 @@ public class ShelterListActivity extends AppCompatActivity {
          */
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView nameView;
-            public final TextView idView;
+            final View mView;
+            final TextView nameView;
+            final TextView idView;
             public Shelter shelter;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 mView = view;
-                nameView = (TextView) view.findViewById(R.id.shelter_list_item);
-                idView = (TextView) view.findViewById(R.id.shelter_list_id);
+                nameView = view.findViewById(id.shelter_list_item);
+                idView = view.findViewById(id.shelter_list_id);
             }
 
             @Override
