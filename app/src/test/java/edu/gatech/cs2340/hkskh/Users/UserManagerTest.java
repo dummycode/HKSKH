@@ -40,7 +40,16 @@ public class UserManagerTest {
     @Test
     public void checkOutNullUser() {
         // Nothing should happen when passed a null user
+        User user = null;
+        User otherUser = new User("henry", UserType.USER, "pass");
+        otherUser.setShelterId(1);
+        otherUser.setNumFamily(5);
+        otherUser.setNumInd(10);
+
         userManager.checkOut(null, 0, BedType.FAMILY);
+
+        assertEquals(7, otherUser.getNumInd());
+        assertEquals(3, otherUser.getNumFamily());
     }
 
     @Test
@@ -49,7 +58,7 @@ public class UserManagerTest {
         user.setShelterId(1);
         user.setNumFamily(5);
         user.setNumInd(10);
-
+        
         userManager.checkOut(user, 2, BedType.FAMILY);
         assertEquals(3, user.getNumFamily());
         userManager.checkOut(user, 3, BedType.INDIVIDUAL);
