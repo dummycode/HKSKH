@@ -22,9 +22,15 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  */
 public class ShelterServiceProvider {
 
-    final private Context context;
-    final private AppDatabase adb;
+    private final Context context;
+    private final AppDatabase adb;
 
+    /**
+     * Constructor for the shelter service provider
+     *
+     * @param context of request
+     * @param adb database we are working with
+     */
     public ShelterServiceProvider(Context context, AppDatabase adb) {
         this.context = context;
         this.adb = adb;
@@ -43,9 +49,9 @@ public class ShelterServiceProvider {
                 InputStream is = resources.openRawResource(raw.shelters);
                 CSVReader reader = new CSVReader(
                         new BufferedReader(new InputStreamReader(is, "UTF-8")));
-                String[] row;
-                reader.readNext(); // Dump header
-                while ((row = reader.readNext()) != null) {
+                String[] row = reader.readNext();
+                while (row != null) {
+                    row = reader.readNext();
                     try {
                         String name = row[1];
                         int capacityInd = Integer.parseInt(row[2]);

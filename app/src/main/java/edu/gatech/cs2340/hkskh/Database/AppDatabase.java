@@ -45,7 +45,9 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class, "hkskh")
                             .allowMainThreadQueries()
                             .build();
-            AppDatabase.INSTANCE.defaultUsers();
+            if (AppDatabase.INSTANCE != null) {
+                AppDatabase.INSTANCE.defaultUsers();
+            }
         }
         return AppDatabase.INSTANCE;
     }

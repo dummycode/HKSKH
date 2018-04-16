@@ -162,7 +162,7 @@ public class ShelterListActivity extends AppCompatActivity {
             final View mView;
             final TextView nameView;
             final TextView idView;
-            public Shelter shelter;
+            private Shelter shelter;
 
             ViewHolder(View view) {
                 super(view);

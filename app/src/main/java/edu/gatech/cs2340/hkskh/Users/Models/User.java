@@ -206,7 +206,7 @@ public class User {
      * compute whether or not this user is checked in
      * @return true if both numFamily and numInd is 0
      */
-    public boolean isCheckedIn(){
+    public boolean isCheckedIn() {
         return !((numFamily == 0) && (numInd == 0));
     }
 

@@ -7,8 +7,7 @@ package edu.gatech.cs2340.hkskh.Users.Enums;
 public enum UserType {
     USER(0), ADMIN(1);
 
-    private int code;
-    private String acctType;
+    private final int code;
 
     UserType(int code) {
         this.code = code;

@@ -54,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (userManager.login(username, password)) {
                     Application state = (Application) getApplicationContext();
                     User user = userManager.findByUsername(username);
-                    state.setCurrentUserId(user.getId());
+                    int userId = user.getId();
+                    state.setCurrentUserId(userId);
                     startActivity(toMain);
                 } else {
                     // Failed login

@@ -37,7 +37,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
     private Shelter selected;
     private User user;
-    private AppDatabase adb;
     private ShelterManager shelterManager;
     private UserManager userManager;
 
@@ -47,11 +46,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
     private TextView vacancies;
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "OverlyLongMethod"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.adb = AppDatabase.getDatabase(getApplicationContext());
+        AppDatabase adb = AppDatabase.getDatabase(getApplicationContext());
         Application state = (Application) getApplication();
 
 
@@ -132,7 +131,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         });
     }
 
-    final OnClickListener checkInListener = new OnClickListener() {
+    private final OnClickListener checkInListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             int selectedShelterId = selected.getId();
@@ -192,7 +191,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         }
     };
 
-    final OnClickListener checkOutListener = new OnClickListener() {
+    private final OnClickListener checkOutListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             int selectedShelterId = selected.getId();

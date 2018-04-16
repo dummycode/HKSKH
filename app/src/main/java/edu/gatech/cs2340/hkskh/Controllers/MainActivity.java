@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         TextView nameText = findViewById(id.main_text_name);
         TextView statusText = findViewById(id.main_status_text);
 
-        nameText.setText("Signed in as: " + user.getUsername());
+        String username = user.getUsername();
+        nameText.setText("Signed in as: " + username);
 
         if (user.isCheckedIn()) {
             Shelter shelter = shelterManager.findById(user.getShelterId());
