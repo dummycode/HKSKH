@@ -39,10 +39,12 @@ public class ShelterServiceProvider {
     /**
      * Load data from CSV file
      */
+    @SuppressWarnings("FeatureEnvy")
     public void load() {
         ShelterManager shelterManager = new ShelterManager(adb);
         ShelterDao shelterDao = adb.shelterDao();
 
+        //noinspection LawOfDemeter
         if (shelterDao.count() == 0) { // Load from CSV
             try {
                 Resources resources = context.getResources();

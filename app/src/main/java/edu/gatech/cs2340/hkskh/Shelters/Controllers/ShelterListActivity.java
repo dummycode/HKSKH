@@ -103,6 +103,7 @@ public class ShelterListActivity extends AppCompatActivity {
             return new ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder(view);
         }
 
+        @SuppressWarnings("FeatureEnvy")
         @Override
         public void onBindViewHolder(
                 @NonNull final ShelterListActivity.SimpleShelterRecyclerViewAdapter.ViewHolder

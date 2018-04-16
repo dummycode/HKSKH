@@ -111,6 +111,7 @@ public class UserManager {
      * @param bedNumber number of spots they want to reserve
      * @param bedType checks if it's family or individuals
      */
+    @SuppressWarnings("FeatureEnvy")
     public void checkOut(User user, int bedNumber, BedType bedType) {
         if (user != null) {
             user.updateBeds(bedType, -bedNumber);

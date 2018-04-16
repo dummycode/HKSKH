@@ -33,6 +33,7 @@ import edu.gatech.cs2340.hkskh.Users.UserManager;
  * Activity that shows the details
  * of a selected shelter and allows check in/check out
  */
+@SuppressWarnings("FeatureEnvy")
 public class ShelterDetailActivity extends AppCompatActivity {
 
     private Shelter selected;
@@ -229,6 +230,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             } else if (user.getShelterId() != selectedShelterId){
                 Shelter selectedShelter = shelterManager.findById(user.getShelterId());
+                @SuppressWarnings("LawOfDemeter")
                 String currentName = selectedShelter.getName();
                 Toast.makeText(getApplicationContext(),
                         "You are already checked into "

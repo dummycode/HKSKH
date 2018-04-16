@@ -20,7 +20,6 @@ import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.MapsActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
-import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
