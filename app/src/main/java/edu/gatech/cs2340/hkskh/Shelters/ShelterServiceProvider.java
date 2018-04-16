@@ -54,7 +54,6 @@ public class ShelterServiceProvider {
                 String[] row;
                 reader.readNext();
                 while ((row = reader.readNext()) != null) {
-                    row = reader.readNext();
                     try {
                         String name = row[1];
                         int capacityInd = Integer.parseInt(row[2]);
