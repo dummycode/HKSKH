@@ -52,6 +52,7 @@ public class ShelterManager {
      * @param bedType type of bed
      * @param count count to be changed by
      */
+    @SuppressWarnings("FeatureEnvy")
     public void updateVacancy(Shelter shelter, BedType bedType, int count) {
         if (shelter != null) {
             switch (bedType) {

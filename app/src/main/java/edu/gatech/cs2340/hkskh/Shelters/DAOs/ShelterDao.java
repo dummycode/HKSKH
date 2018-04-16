@@ -15,18 +15,38 @@ import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
  */
 @Dao
 public interface ShelterDao {
+    /**
+     * Get all shelters
+     * @return list of all shelters
+     */
     @Query("SELECT * FROM shelters")
     List<Shelter> getAll();
 
+    /**
+     * Get a shelter by id
+     * @param id of shelter
+     * @return the shelter
+     */
     @Query("SELECT * FROM shelters WHERE id = :id")
     Shelter findShelterById(int id);
 
+    /**
+     * Insert a shelter into the database
+     * @param shelter to be inserted
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Shelter shelter);
 
+    /**
+     * Delete all shelters
+     */
     @Query("DELETE FROM shelters")
     void clear();
 
+    /**
+     * Get a count of the current shelters in database
+     * @return count
+     */
     @Query("SELECT count(*) FROM shelters")
     int count();
 }

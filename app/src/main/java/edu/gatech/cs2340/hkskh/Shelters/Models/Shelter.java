@@ -62,6 +62,7 @@ public class Shelter implements Parcelable {
      *  @param notes special considerations and such
      *  @param phoneNumber the contact info of the shelter
      */
+    @SuppressWarnings("ConstructorWithTooManyParameters")
     public Shelter(
             String name,
             int capacityInd,

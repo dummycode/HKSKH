@@ -20,7 +20,6 @@ import edu.gatech.cs2340.hkskh.R.id;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.MapsActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.SearchActivity;
 import edu.gatech.cs2340.hkskh.Shelters.Controllers.ShelterListActivity;
-import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
 import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 import edu.gatech.cs2340.hkskh.Users.UserManager;
@@ -61,17 +60,10 @@ public class MainActivity extends AppCompatActivity {
         TextView nameText = findViewById(id.main_text_name);
         TextView statusText = findViewById(id.main_status_text);
 
-        nameText.setText("Signed in as: " + user.getUsername());
+        String username = user.getUsername();
+        nameText.setText("Signed in as: " + username);
 
-        if (user.isCheckedIn()) {
-            Shelter shelter = shelterManager.findById(user.getShelterId());
-            statusText.setText("Currently checked in to shelter "
-                    + shelter.getName() + " (" + shelter.getId() + ") "
-                    + "\n\nFamily spaces reserved: " + user.getNumFamily()
-                    + "\n\nIndividual spaces reserved: " + user.getNumInd());
-        } else {
-            statusText.setText("Not checked in");
-        }
+        statusText.setText(user.getStatus(shelterManager));
 
 
         // Sets up the search options spinner and loads the options in.
@@ -90,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         "Logging out", Toast.LENGTH_SHORT);
                 logOut.show();
 
-                state.setCurrentUserId(-1);
+                state.setCurrentUser(null);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             }
         });
