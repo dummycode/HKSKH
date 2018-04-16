@@ -225,6 +225,7 @@ public class User {
     /**
      * Get status of a user
      *
+     * @param shelterManager the shelter manager
      * @return the status string
      */
     public CharSequence getStatus(ShelterManager shelterManager) {
