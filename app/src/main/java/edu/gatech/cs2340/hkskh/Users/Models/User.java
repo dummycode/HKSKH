@@ -227,7 +227,7 @@ public class User {
      *
      * @return the status string
      */
-    public String getStatus(ShelterManager shelterManager) {
+    public CharSequence getStatus(ShelterManager shelterManager) {
         if (isCheckedIn()) {
             Shelter shelter = shelterManager.findById(getShelterId());
             return "Currently checked in to shelter "

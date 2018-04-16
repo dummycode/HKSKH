@@ -51,8 +51,9 @@ public class ShelterServiceProvider {
                 InputStream is = resources.openRawResource(raw.shelters);
                 CSVReader reader = new CSVReader(
                         new BufferedReader(new InputStreamReader(is, "UTF-8")));
-                String[] row = reader.readNext();
-                while (row != null) {
+                String[] row;
+                reader.readNext();
+                while ((row = reader.readNext()) != null) {
                     row = reader.readNext();
                     try {
                         String name = row[1];
