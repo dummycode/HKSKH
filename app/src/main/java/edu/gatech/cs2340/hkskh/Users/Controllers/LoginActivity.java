@@ -3,6 +3,7 @@ package edu.gatech.cs2340.hkskh.Users.Controllers;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -49,8 +50,10 @@ public class LoginActivity extends AppCompatActivity {
         b1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = ed1.getText().toString();
-                String password = ed2.getText().toString();
+                Editable usernameEdit = ed1.getText();
+                String username = usernameEdit.toString();
+                Editable passEdit = ed2.getText();
+                String password = passEdit.toString();
                 if (userManager.login(username, password)) {
                     Application state = (Application) getApplicationContext();
                     User user = userManager.findByUsername(username);

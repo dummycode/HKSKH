@@ -35,7 +35,9 @@ public class ShelterManagerTest {
 
     @Test
     public void testUpdateNullVacancy(){
-        shelterManager.updateVacancy(null, BedType.INDIVIDUAL, 1);
+        Shelter shelter = null;
+        shelterManager.updateVacancy(shelter, BedType.INDIVIDUAL, 1);
+        assertNull(shelter);
     }
     @Test
     public void testUpdateIndividualVacancy(){

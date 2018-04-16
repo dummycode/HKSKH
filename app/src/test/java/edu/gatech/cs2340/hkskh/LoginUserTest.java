@@ -53,8 +53,9 @@ public class LoginUserTest {
 
     @Test
     public void loginCorrectUser() {
+        //mockUser = new User("kjin42",UserType.USER,"qwerty");
         when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
-        when(this.mockUser.getPass()).thenReturn("qwerty");
+        when(this.mockUser.validatePass("qwerty")).thenReturn(true);
 
         //this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
         boolean result = this.userManager.login("kjin42", "qwerty");
@@ -64,7 +65,7 @@ public class LoginUserTest {
     @Test
     public void loginWrongPass() {
         when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
-        when(this.mockUser.getPass()).thenReturn("qwerty");
+        when(this.mockUser.validatePass("wrongPass")).thenReturn(false);
 
         //this.userManager.register("kjin42", "Kevin", UserType.USER, "qwerty");
         boolean result = this.userManager.login("kjin42", "wrongPass");
@@ -73,7 +74,6 @@ public class LoginUserTest {
 
     @Test
     public void loginNullUser() {
-        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
         //when(this.mockUser.getPass()).thenReturn("qwerty");
         boolean result = this.userManager.login(null, "qwerty");
         assertEquals(false, result);
@@ -81,7 +81,6 @@ public class LoginUserTest {
 
     @Test
     public void loginNullPass() {
-        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
         //when(this.mockUser.getPass()).thenReturn("qwerty");
         boolean result = this.userManager.login("kjin42", null);
         assertEquals(false, result);
@@ -89,7 +88,6 @@ public class LoginUserTest {
 
     @Test
     public void loginNoUser() {
-        when(this.mockDB.userDao().findUserByUsername("kjin42")).thenReturn(mockUser);
         when(this.mockDB.userDao().findUserByUsername("kjin")).thenReturn(null);
         //when(this.mockUser.getPass()).thenReturn("qwerty");
         boolean result = this.userManager.login("kjin", "qwerty");

@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.hkskh.Shelters;
 
+import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -192,13 +193,17 @@ public class SearchService {
     public String setSearchFilter(View[] components, String searchType) {
         switch (searchType) {
             case "name":
-                return ((EditText)components[0]).getText().toString();
+                Editable e = ((EditText) components[0]).getText();
+                return e.toString();
             case "gender":
+
                 return ((RadioButton)components[1]).isChecked() ? "men" : "women";
             case "age":
-                return ((Spinner)components[2]).getSelectedItem().toString();
+                Object s = ((Spinner) components[2]).getSelectedItem();
+                return s.toString();
             default:
-                return ((EditText)components[0]).getText().toString();
+                Editable e2 = ((EditText) components[0]).getText();
+                return e2.toString();
         }
     }
 }

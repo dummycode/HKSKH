@@ -4,6 +4,7 @@ import android.R.layout;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -61,10 +62,16 @@ public class RegisterActivity extends AppCompatActivity {
         b1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = ed1.getText().toString();
-                String pass1 = ed2.getText().toString();
-                String pass2 = ed3.getText().toString();
-                String name = ed4.getText().toString();
+                Editable usernameEdit = ed1.getText();
+                String username = usernameEdit.toString();
+                Editable pass1Edit = ed2.getText();
+                String pass1 = pass1Edit.toString();
+
+                Editable pass2Edit = ed3.getText();
+                String pass2 = pass2Edit.toString();
+
+                Editable nameEdit = ed4.getText();
+                String name = nameEdit.toString();
 
                 if (!pass1.equals(pass2)) {
                     Toast.makeText(getApplicationContext(),
