@@ -64,6 +64,7 @@ public abstract class AppDatabase extends RoomDatabase {
      * Insert some default users
      */
     private void defaultUsers() {
+        //noinspection LawOfDemeter
         userDao().insert(new User("henry", UserType.USER, "pass"));
     }
 }

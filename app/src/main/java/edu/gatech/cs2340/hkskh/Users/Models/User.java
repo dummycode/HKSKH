@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import edu.gatech.cs2340.hkskh.Shelters.Enums.BedType;
+import edu.gatech.cs2340.hkskh.Shelters.Models.Shelter;
+import edu.gatech.cs2340.hkskh.Shelters.ShelterManager;
 import edu.gatech.cs2340.hkskh.Users.Converters.UserTypeConverter;
 import edu.gatech.cs2340.hkskh.Users.Enums.UserType;
 
@@ -206,7 +208,7 @@ public class User {
      * compute whether or not this user is checked in
      * @return true if both numFamily and numInd is 0
      */
-    public boolean isCheckedIn() {
+    private boolean isCheckedIn() {
         return !((numFamily == 0) && (numInd == 0));
     }
 
@@ -218,6 +220,23 @@ public class User {
      */
     public boolean validatePass(String pass) {
         return this.pass.equals(pass);
+    }
+
+    /**
+     * Get status of a user
+     *
+     * @return the status string
+     */
+    public String getStatus(ShelterManager shelterManager) {
+        if (isCheckedIn()) {
+            Shelter shelter = shelterManager.findById(getShelterId());
+            return "Currently checked in to shelter "
+                        + shelter.getName() + " (" + shelter.getId() + ") "
+                        + "\n\nFamily spaces reserved: " + getNumFamily()
+                        + "\n\nIndividual spaces reserved: " + getNumInd();
+        } else {
+            return "Not checked in";
+        }
     }
 
     @Override
