@@ -35,8 +35,15 @@ public class UserManager {
             return false;
         }
         User user = userDao.findUserByUsername(username);
-
-        return (user != null) && (user.validatePass(pass));
+        if (user == null || user.isLockedOut()) {
+            return false;
+        } else if (user.validatePass(pass)) {
+            user.resetNumBadAttempts();
+            userDao.insert(user);
+            return true;
+        }
+        userDao.insert(user);
+        return false;
     }
 
     /**

@@ -43,6 +43,9 @@ public class User {
     @ColumnInfo(name = "numInd")
     private int numInd;
 
+    @ColumnInfo(name = "numBadAttempts")
+    private int numBadAttempts;
+
 
     /**
      * Creates a new user
@@ -55,6 +58,7 @@ public class User {
         this.username = username;
         this.type = type;
         this.pass = pass;
+        this.numBadAttempts = 0;
     }
 
     /**
@@ -167,6 +171,28 @@ public class User {
     }
 
     /**
+     *  @return the number of incorrect login attempts the user currently has
+     */
+    public int getNumBadAttempts() {
+        return this.numBadAttempts;
+    }
+
+    /**
+     *
+     * @param badAttempts the number of incorrect login attempts
+     */
+    public void setNumBadAttempts(int badAttempts) {
+        this.numBadAttempts = badAttempts;
+    }
+
+    /**
+     * Resets the number of invalid login attempts to zero
+     */
+    public void resetNumBadAttempts() {
+        this.numBadAttempts = 0;
+    }
+
+    /**
      * Update the count of beds checked into
      *
      * @param bedType bed type to update
@@ -213,13 +239,27 @@ public class User {
     }
 
     /**
-     * Validate a password
+     * Validate a password, and increment number of incorrect attempts by one if failed
      *
      * @param pass the password
      * @return true or false
      */
     public boolean validatePass(String pass) {
-        return this.pass.equals(pass);
+        if(!this.pass.equals(pass)) {
+            numBadAttempts += 1;
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Use to determine whether or not user is locked out
+     *
+     * @return true if the user has 3 or more bad login attempts
+     */
+    public boolean isLockedOut() {
+        return this.numBadAttempts >= 3;
     }
 
     /**
