@@ -1,13 +1,15 @@
 package edu.gatech.cs2340.hkskh;
 
 
+import android.support.multidex.MultiDexApplication;
+
 import edu.gatech.cs2340.hkskh.Users.Models.User;
 
 /**
  * Created by henry on 3/26/18.
  * the application file, it sets the user instance/gets it for others to use
  */
-public class Application extends android.app.Application {
+public class Application extends MultiDexApplication {
 
     private int currentUserId;
     
